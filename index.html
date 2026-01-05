@@ -398,6 +398,14 @@
             box-shadow: 0 7px 15px rgba(243, 156, 18, 0.3);
         }
         
+        .btn-info {
+            background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+        }
+        
+        .btn-info:hover {
+            box-shadow: 0 7px 15px rgba(23, 162, 184, 0.3);
+        }
+        
         .btn-danger {
             background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
         }
@@ -411,6 +419,12 @@
             font-size: 0.9rem;
         }
         
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+        }
+        
         /* Table Styles */
         .table-container {
             overflow-x: auto;
@@ -422,7 +436,7 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 700px;
+            min-width: 800px;
         }
         
         table thead {
@@ -509,6 +523,49 @@
             border-radius: var(--border-radius);
             padding: 25px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: var(--border-radius);
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: #aaa;
+        }
+        
+        .close-modal:hover {
+            color: #000;
+        }
+        
+        .modal-title {
+            margin-bottom: 20px;
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            text-align: center;
         }
         
         /* Print Styles - ملونة وجميلة */
@@ -714,6 +771,11 @@
             .distribution-quantity input {
                 width: 100%;
             }
+            
+            .action-buttons {
+                flex-direction: column;
+                gap: 5px;
+            }
         }
         
         /* Scrollbar Styling */
@@ -893,6 +955,7 @@
                                 <th>الربح | Kâr</th>
                                 <th>التاريخ | Tarih</th>
                                 <th>المصادر | Kaynaklar</th>
+                                <th>الإجراءات | İşlemler</th>
                             </tr>
                         </thead>
                         <tbody id="salesTableBody">
@@ -930,6 +993,46 @@
         </div>
     </div>
     
+    <!-- Edit Sale Modal -->
+    <div id="editSaleModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeEditModal()">&times;</span>
+            <h2 class="modal-title">تعديل عملية البيع | Satışı Düzenle</h2>
+            <form id="editSaleForm">
+                <input type="hidden" id="editSaleId">
+                
+                <div class="form-group">
+                    <label for="editCustomerName">اسم العميل | Müşteri Adı</label>
+                    <input type="text" id="editCustomerName" class="form-control" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="editSaleQuantity">كمية البيع (كغ) | Satış Miktarı (kg)</label>
+                    <input type="number" id="editSaleQuantity" class="form-control" step="0.01" min="0" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="editSalePrice">سعر البيع (لكل كغ) | Satış Fiyatı (kg başına) <span class="dollar">$</span></label>
+                    <input type="number" id="editSalePrice" class="form-control" step="0.01" min="0" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="editSaleDate">تاريخ البيع | Satış Tarihi</label>
+                    <input type="date" id="editSaleDate" class="form-control" required>
+                </div>
+                
+                <div style="display: flex; gap: 15px; margin-top: 25px;">
+                    <button type="submit" class="btn btn-success" style="flex: 1;">
+                        <i class="fas fa-save"></i> حفظ التعديلات | Değişiklikleri Kaydet
+                    </button>
+                    <button type="button" class="btn btn-danger" onclick="closeEditModal()" style="flex: 1;">
+                        <i class="fas fa-times"></i> إلغاء | İptal
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
     <!-- Printable Report (Hidden by default) -->
     <div id="printable-report" style="display: none;"></div>
     
@@ -944,6 +1047,8 @@
         let sales = [];
         let selectedPurchaseSources = [];
         let quantityDistribution = {};
+        let isEditing = false;
+        let currentEditSaleId = null;
         
         // تحميل البيانات من localStorage إذا كانت موجودة
         document.addEventListener('DOMContentLoaded', function() {
@@ -1325,7 +1430,7 @@
             });
         }
         
-        // تحديث جدول المبيعات
+        // تحديث جدول المبيعات مع أزرار التعديل والحذف
         function updateSalesTable() {
             const tableBody = document.getElementById('salesTableBody');
             tableBody.innerHTML = '';
@@ -1352,9 +1457,158 @@
                     <td><span class="badge ${profitClass}"><span class="dollar">$</span> ${profitSign}${sale.profit.toFixed(2)}</span></td>
                     <td>${sale.date}</td>
                     <td style="text-align: right; font-size: 0.9rem;">${sourcesText}</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-info btn-sm" onclick="editSale(${sale.id})">
+                                <i class="fas fa-edit"></i> تعديل
+                            </button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteSale(${sale.id})">
+                                <i class="fas fa-trash"></i> حذف
+                            </button>
+                        </div>
+                    </td>
                 `;
                 tableBody.appendChild(row);
             });
+        }
+        
+        // تعديل عملية بيع
+        function editSale(saleId) {
+            const sale = sales.find(s => s.id === saleId);
+            if (!sale) return;
+            
+            currentEditSaleId = saleId;
+            isEditing = true;
+            
+            // ملء النموذج ببيانات البيع
+            document.getElementById('editSaleId').value = sale.id;
+            document.getElementById('editCustomerName').value = sale.customerName;
+            document.getElementById('editSaleQuantity').value = sale.quantity;
+            document.getElementById('editSalePrice').value = sale.price;
+            document.getElementById('editSaleDate').value = sale.date;
+            
+            // عرض النافذة المنبثقة
+            document.getElementById('editSaleModal').style.display = 'block';
+        }
+        
+        // إغلاق نافذة التعديل
+        function closeEditModal() {
+            document.getElementById('editSaleModal').style.display = 'none';
+            isEditing = false;
+            currentEditSaleId = null;
+            document.getElementById('editSaleForm').reset();
+        }
+        
+        // حفظ التعديلات على عملية البيع
+        document.getElementById('editSaleForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const saleId = parseInt(document.getElementById('editSaleId').value);
+            const saleIndex = sales.findIndex(s => s.id === saleId);
+            
+            if (saleIndex === -1) {
+                alert('عملية البيع غير موجودة | Satış bulunamadı');
+                closeEditModal();
+                return;
+            }
+            
+            const customerName = document.getElementById('editCustomerName').value;
+            const saleQuantity = parseFloat(document.getElementById('editSaleQuantity').value);
+            const salePrice = parseFloat(document.getElementById('editSalePrice').value);
+            const saleDate = document.getElementById('editSaleDate').value;
+            
+            if (saleQuantity <= 0 || salePrice <= 0) {
+                alert('الرجاء إدخال قيم صحيحة أكبر من الصفر | Lütfen sıfırdan büyük geçerli değerler girin');
+                return;
+            }
+            
+            // استعادة الكميات إلى المصادر (لأننا سنعدل)
+            const oldSale = sales[saleIndex];
+            
+            // استعادة الكميات للمصادر القديمة
+            if (oldSale.sources && oldSale.sources.length > 0) {
+                oldSale.sources.forEach(source => {
+                    const purchase = purchases.find(p => p.id === source.purchaseId);
+                    if (purchase) {
+                        purchase.remaining += source.quantity;
+                    }
+                });
+            }
+            
+            // حساب الربح الجديد (نستخدم المصادر القديمة مع الأسعار الجديدة)
+            let totalProfit = 0;
+            const sourcesDetails = [];
+            
+            if (oldSale.sources && oldSale.sources.length > 0) {
+                oldSale.sources.forEach(source => {
+                    const purchase = purchases.find(p => p.id === source.purchaseId);
+                    if (purchase && source.quantity <= purchase.remaining) {
+                        const profitFromSource = (salePrice - purchase.price) * source.quantity;
+                        totalProfit += profitFromSource;
+                        
+                        sourcesDetails.push({
+                            purchaseId: purchase.id,
+                            quantity: source.quantity,
+                            purchasePrice: purchase.price,
+                            profit: profitFromSource
+                        });
+                        
+                        // خصم الكمية من المصدر
+                        purchase.remaining -= source.quantity;
+                    }
+                });
+            }
+            
+            // تحديث بيانات البيع
+            sales[saleIndex] = {
+                ...oldSale,
+                customerName: customerName,
+                quantity: saleQuantity,
+                price: salePrice,
+                total: saleQuantity * salePrice,
+                profit: totalProfit,
+                date: saleDate
+            };
+            
+            saveData();
+            updatePurchasesTable();
+            updateSalesTable();
+            updateDashboardStats();
+            
+            closeEditModal();
+            alert('تم تعديل عملية البيع بنجاح! | Satış başarıyla güncellendi!');
+        });
+        
+        // حذف عملية بيع
+        function deleteSale(saleId) {
+            if (!confirm('هل أنت متأكد من حذف عملية البيع؟ هذا الإجراء لا يمكن التراجع عنه. | Satışı silmek istediğinize emin misiniz? Bu işlem geri alınamaz.')) {
+                return;
+            }
+            
+            const saleIndex = sales.findIndex(s => s.id === saleId);
+            if (saleIndex === -1) return;
+            
+            const sale = sales[saleIndex];
+            
+            // استعادة الكميات إلى المصادر
+            if (sale.sources && sale.sources.length > 0) {
+                sale.sources.forEach(source => {
+                    const purchase = purchases.find(p => p.id === source.purchaseId);
+                    if (purchase) {
+                        purchase.remaining += source.quantity;
+                    }
+                });
+            }
+            
+            // حذف عملية البيع
+            sales.splice(saleIndex, 1);
+            
+            saveData();
+            updatePurchasesTable();
+            updateSalesTable();
+            updateDashboardStats();
+            
+            alert('تم حذف عملية البيع بنجاح! | Satış başarıyla silindi!');
         }
         
         // تحديث إحصائيات لوحة التحكم
