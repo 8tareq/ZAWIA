@@ -228,6 +228,138 @@
             box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
         }
         
+        /* Quantity Distribution */
+        .quantity-distribution {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            margin-top: 15px;
+            border: 2px dashed #dee2e6;
+        }
+        
+        .distribution-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px;
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #e9ecef;
+        }
+        
+        .distribution-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .distribution-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .distribution-quantity {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .distribution-quantity input {
+            width: 100px;
+            padding: 8px 12px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            text-align: center;
+        }
+        
+        .remove-source {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        
+        .remove-source:hover {
+            background: #c0392b;
+        }
+        
+        .selected-sources {
+            background: #e8f5e9;
+            padding: 15px;
+            border-radius: var(--border-radius);
+            margin-top: 15px;
+            border: 1px solid #c8e6c9;
+        }
+        
+        .selected-sources h4 {
+            color: #27ae60;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .selected-sources-list {
+            max-height: 150px;
+            overflow-y: auto;
+        }
+        
+        .selected-source-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 12px;
+            background: white;
+            border-radius: 5px;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+        }
+        
+        .selected-source-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        /* Radio Buttons */
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 10px;
+        }
+        
+        .radio-option {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .radio-option:hover {
+            border-color: var(--secondary-color);
+            background-color: #edf7ff;
+        }
+        
+        .radio-option input[type="checkbox"] {
+            margin-left: 10px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+        
+        .radio-option label {
+            margin-bottom: 0;
+            cursor: pointer;
+            flex: 1;
+        }
+        
         .btn {
             display: inline-flex;
             align-items: center;
@@ -274,41 +406,9 @@
             box-shadow: 0 7px 15px rgba(231, 76, 60, 0.3);
         }
         
-        /* Radio Buttons */
-        .radio-group {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-top: 10px;
-        }
-        
-        .radio-option {
-            display: flex;
-            align-items: center;
-            padding: 15px;
-            background-color: #f8f9fa;
-            border-radius: 10px;
-            border: 2px solid #e9ecef;
-            transition: all 0.3s;
-            cursor: pointer;
-        }
-        
-        .radio-option:hover {
-            border-color: var(--secondary-color);
-            background-color: #edf7ff;
-        }
-        
-        .radio-option input[type="radio"] {
-            margin-left: 10px;
-            width: 20px;
-            height: 20px;
-            cursor: pointer;
-        }
-        
-        .radio-option label {
-            margin-bottom: 0;
-            cursor: pointer;
-            flex: 1;
+        .btn-sm {
+            padding: 8px 15px;
+            font-size: 0.9rem;
         }
         
         /* Table Styles */
@@ -600,6 +700,20 @@
                 margin-top: 10px;
                 width: 100%;
             }
+            
+            .distribution-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .distribution-quantity {
+                width: 100%;
+            }
+            
+            .distribution-quantity input {
+                width: 100%;
+            }
         }
         
         /* Scrollbar Styling */
@@ -729,15 +843,35 @@
                         <input type="number" id="salePrice" class="form-control" step="0.01" min="0" required>
                     </div>
                     
-                    <!-- Purchase Selection -->
+                    <!-- Purchase Selection - Multiple Sources -->
                     <div class="form-group">
-                        <label>اختر مصدر الكمية المباعة | Satılacak Miktarın Kaynağını Seçin:</label>
+                        <label>اختر مصادر الكمية المباعة | Satılacak Miktarın Kaynaklarını Seçin:</label>
                         <div id="purchaseOptions" class="radio-group">
                             <!-- سيتم ملؤها بواسطة JavaScript -->
                         </div>
+                        
+                        <!-- Selected Sources Distribution -->
+                        <div id="quantityDistribution" class="quantity-distribution" style="display: none;">
+                            <h4 style="margin-bottom: 15px; color: var(--primary-color);">توزيع الكمية على المصادر المختارة | Seçilen Kaynaklara Miktar Dağıtımı</h4>
+                            <div id="distributionList">
+                                <!-- سيتم ملؤها بواسطة JavaScript -->
+                            </div>
+                            <div style="margin-top: 15px; padding: 10px; background: #e8f4ff; border-radius: 5px;">
+                                <p>المجموع الموزع | Dağıtılan Toplam: <span id="distributedTotal">0</span> كغ / الكمية المطلوبة | Gerekli Miktar: <span id="requiredQuantity">0</span> كغ</p>
+                                <p id="distributionMessage" style="margin-top: 5px; font-size: 0.9rem;"></p>
+                            </div>
+                        </div>
+                        
+                        <!-- Selected Sources Summary -->
+                        <div id="selectedSourcesSummary" class="selected-sources" style="display: none;">
+                            <h4>المصادر المختارة | Seçilen Kaynaklar</h4>
+                            <div id="selectedSourcesList" class="selected-sources-list">
+                                <!-- سيتم ملؤها بواسطة JavaScript -->
+                            </div>
+                        </div>
                     </div>
                     
-                    <button type="submit" class="btn btn-success">
+                    <button type="submit" class="btn btn-success" id="submitSaleBtn">
                         <i class="fas fa-check-circle"></i> تسجيل عملية البيع | Satışı Kaydet
                     </button>
                 </form>
@@ -758,6 +892,7 @@
                                 <th>الإجمالي | Toplam</th>
                                 <th>الربح | Kâr</th>
                                 <th>التاريخ | Tarih</th>
+                                <th>المصادر | Kaynaklar</th>
                             </tr>
                         </thead>
                         <tbody id="salesTableBody">
@@ -807,6 +942,8 @@
         // البيانات الأساسية
         let purchases = [];
         let sales = [];
+        let selectedPurchaseSources = [];
+        let quantityDistribution = {};
         
         // تحميل البيانات من localStorage إذا كانت موجودة
         document.addEventListener('DOMContentLoaded', function() {
@@ -869,7 +1006,209 @@
             alert('تم تسجيل عملية الشراء بنجاح! | Alım başarıyla kaydedildi!');
         });
         
-        // إضافة عملية بيع جديدة
+        // تحديث خيارات الشراء للبيع (متعددة المصادر)
+        function updatePurchaseOptions() {
+            const purchaseOptions = document.getElementById('purchaseOptions');
+            purchaseOptions.innerHTML = '';
+            
+            purchases.forEach(purchase => {
+                if (purchase.remaining > 0) {
+                    const optionId = `purchase-${purchase.id}`;
+                    const isSelected = selectedPurchaseSources.includes(purchase.id);
+                    
+                    const optionHTML = `
+                        <div class="radio-option">
+                            <input type="checkbox" id="${optionId}" name="purchaseSource" value="${purchase.id}" ${isSelected ? 'checked' : ''} onchange="togglePurchaseSource(${purchase.id})">
+                            <label for="${optionId}">
+                                <strong>${purchase.quantity.toFixed(2)} كغ (${purchase.remaining.toFixed(2)} متبقي) | kg (${purchase.remaining.toFixed(2)} kalan)</strong><br>
+                                <small>سعر الشراء: <span class="dollar">$</span> ${purchase.price.toFixed(2)} للكغ | Alış fiyatı: <span class="dollar">$</span> ${purchase.price.toFixed(2)}/kg</small>
+                            </label>
+                        </div>
+                    `;
+                    purchaseOptions.innerHTML += optionHTML;
+                }
+            });
+            
+            // إذا لم توجد مشتريات متاحة
+            if (purchaseOptions.innerHTML === '') {
+                purchaseOptions.innerHTML = '<p style="color: #e74c3c; text-align: center; padding: 20px;">لا توجد مشتريات متاحة للبيع | Satış için mevcut alım yok</p>';
+            }
+            
+            // تحديث توزيع الكمية إذا كانت هناك مصادر مختارة
+            if (selectedPurchaseSources.length > 0) {
+                updateQuantityDistribution();
+            }
+        }
+        
+        // تبديل اختيار مصدر الشراء
+        function togglePurchaseSource(purchaseId) {
+            const index = selectedPurchaseSources.indexOf(purchaseId);
+            const saleQuantity = parseFloat(document.getElementById('saleQuantity').value) || 0;
+            
+            if (index === -1) {
+                // إضافة المصدر
+                selectedPurchaseSources.push(purchaseId);
+                quantityDistribution[purchaseId] = 0;
+            } else {
+                // إزالة المصدر
+                selectedPurchaseSources.splice(index, 1);
+                delete quantityDistribution[purchaseId];
+            }
+            
+            // عرض أو إخفاء توزيع الكمية
+            if (selectedPurchaseSources.length > 0) {
+                document.getElementById('quantityDistribution').style.display = 'block';
+                document.getElementById('selectedSourcesSummary').style.display = 'block';
+                updateQuantityDistribution();
+            } else {
+                document.getElementById('quantityDistribution').style.display = 'none';
+                document.getElementById('selectedSourcesSummary').style.display = 'none';
+            }
+            
+            // تحديث الملخص
+            updateSelectedSourcesSummary();
+        }
+        
+        // تحديث توزيع الكمية
+        function updateQuantityDistribution() {
+            const saleQuantity = parseFloat(document.getElementById('saleQuantity').value) || 0;
+            const distributionList = document.getElementById('distributionList');
+            distributionList.innerHTML = '';
+            
+            let totalDistributed = 0;
+            
+            selectedPurchaseSources.forEach(purchaseId => {
+                const purchase = purchases.find(p => p.id === purchaseId);
+                if (!purchase) return;
+                
+                // تخصيص كمية افتراضية بناءً على الكمية المتبقية
+                let defaultQuantity = 0;
+                if (saleQuantity > 0) {
+                    // توزيع متناسب مع الكمية المتبقية
+                    const remainingTotal = selectedPurchaseSources.reduce((sum, id) => {
+                        const p = purchases.find(p => p.id === id);
+                        return sum + (p ? p.remaining : 0);
+                    }, 0);
+                    
+                    if (remainingTotal > 0) {
+                        defaultQuantity = Math.min(purchase.remaining, (purchase.remaining / remainingTotal) * saleQuantity);
+                    }
+                }
+                
+                // استخدام القيمة السابقة أو الافتراضية
+                const currentQuantity = quantityDistribution[purchaseId] || defaultQuantity;
+                totalDistributed += currentQuantity;
+                
+                const distributionItem = document.createElement('div');
+                distributionItem.className = 'distribution-item';
+                distributionItem.innerHTML = `
+                    <div class="distribution-info">
+                        <div>
+                            <strong>مصدر #${purchase.id}</strong>
+                            <div style="font-size: 0.9rem; color: #666;">
+                                ${purchase.quantity.toFixed(2)} كغ (${purchase.remaining.toFixed(2)} متبقي)<br>
+                                سعر: <span class="dollar">$</span> ${purchase.price.toFixed(2)}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="distribution-quantity">
+                        <input type="number" 
+                               id="dist-${purchase.id}" 
+                               value="${currentQuantity.toFixed(2)}" 
+                               step="0.01" 
+                               min="0" 
+                               max="${purchase.remaining}"
+                               onchange="updateDistributionQuantity(${purchase.id}, this.value)"
+                               oninput="updateDistributionQuantity(${purchase.id}, this.value)">
+                        <span>كغ</span>
+                        <button type="button" class="remove-source" onclick="removeSource(${purchase.id})">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                `;
+                
+                distributionList.appendChild(distributionItem);
+                quantityDistribution[purchaseId] = currentQuantity;
+            });
+            
+            // تحديث الإجمالي والرسالة
+            document.getElementById('distributedTotal').textContent = totalDistributed.toFixed(2);
+            document.getElementById('requiredQuantity').textContent = saleQuantity.toFixed(2);
+            
+            const distributionMessage = document.getElementById('distributionMessage');
+            if (Math.abs(totalDistributed - saleQuantity) < 0.01) {
+                distributionMessage.innerHTML = '<span style="color: #27ae60;"><i class="fas fa-check-circle"></i> الكمية موزعة بشكل صحيح</span>';
+            } else if (totalDistributed < saleQuantity) {
+                const remaining = saleQuantity - totalDistributed;
+                distributionMessage.innerHTML = `<span style="color: #e67e22;"><i class="fas fa-exclamation-triangle"></i> تحتاج إلى توزيع ${remaining.toFixed(2)} كغ إضافية</span>`;
+            } else {
+                const extra = totalDistributed - saleQuantity;
+                distributionMessage.innerHTML = `<span style="color: #e74c3c;"><i class="fas fa-exclamation-circle"></i> هناك زيادة ${extra.toFixed(2)} كغ عن المطلوب</span>`;
+            }
+        }
+        
+        // تحديث كمية التوزيع لمصدر معين
+        function updateDistributionQuantity(purchaseId, value) {
+            const quantity = parseFloat(value) || 0;
+            const purchase = purchases.find(p => p.id === purchaseId);
+            
+            if (purchase && quantity <= purchase.remaining) {
+                quantityDistribution[purchaseId] = quantity;
+                updateQuantityDistribution();
+            } else if (purchase) {
+                // إذا تجاوزت الكمية المتبقية
+                document.getElementById(`dist-${purchaseId}`).value = purchase.remaining.toFixed(2);
+                quantityDistribution[purchaseId] = purchase.remaining;
+                updateQuantityDistribution();
+                alert(`الحد الأقصى للمصدر #${purchaseId} هو ${purchase.remaining.toFixed(2)} كغ`);
+            }
+        }
+        
+        // إزالة مصدر من القائمة
+        function removeSource(purchaseId) {
+            const index = selectedPurchaseSources.indexOf(purchaseId);
+            if (index !== -1) {
+                selectedPurchaseSources.splice(index, 1);
+                delete quantityDistribution[purchaseId];
+                
+                // تحديث خانة الاختيار
+                const checkbox = document.querySelector(`input[value="${purchaseId}"]`);
+                if (checkbox) {
+                    checkbox.checked = false;
+                }
+                
+                // تحديث الواجهة
+                if (selectedPurchaseSources.length > 0) {
+                    updateQuantityDistribution();
+                    updateSelectedSourcesSummary();
+                } else {
+                    document.getElementById('quantityDistribution').style.display = 'none';
+                    document.getElementById('selectedSourcesSummary').style.display = 'none';
+                }
+            }
+        }
+        
+        // تحديث ملخص المصادر المختارة
+        function updateSelectedSourcesSummary() {
+            const selectedSourcesList = document.getElementById('selectedSourcesList');
+            selectedSourcesList.innerHTML = '';
+            
+            selectedPurchaseSources.forEach(purchaseId => {
+                const purchase = purchases.find(p => p.id === purchaseId);
+                if (!purchase) return;
+                
+                const quantity = quantityDistribution[purchaseId] || 0;
+                const sourceItem = document.createElement('div');
+                sourceItem.className = 'selected-source-item';
+                sourceItem.innerHTML = `
+                    <span>مصدر #${purchase.id}: ${quantity.toFixed(2)} كغ</span>
+                    <span>سعر: <span class="dollar">$</span> ${purchase.price.toFixed(2)}</span>
+                `;
+                selectedSourcesList.appendChild(sourceItem);
+            });
+        }
+        
+        // إضافة عملية بيع جديدة (متعددة المصادر)
         document.getElementById('saleForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -882,31 +1221,63 @@
                 return;
             }
             
-            // الحصول على مصدر الشراء المختار
-            const selectedPurchaseOption = document.querySelector('input[name="purchaseSource"]:checked');
-            
-            if (!selectedPurchaseOption) {
-                alert('الرجاء اختيار مصدر الكمية المباعة | Lütfen satılacak miktarın kaynağını seçin');
+            // التحقق من وجود مصادر مختارة
+            if (selectedPurchaseSources.length === 0) {
+                alert('الرجاء اختيار مصدر واحد على الأقل للكمية المباعة | Lütfen satılacak miktar için en az bir kaynak seçin');
                 return;
             }
             
-            const purchaseId = parseInt(selectedPurchaseOption.value);
-            const selectedPurchase = purchases.find(p => p.id === purchaseId);
+            // حساب الكمية الموزعة الإجمالية
+            let totalDistributed = 0;
+            selectedPurchaseSources.forEach(purchaseId => {
+                totalDistributed += quantityDistribution[purchaseId] || 0;
+            });
             
-            if (!selectedPurchase) {
-                alert('خطأ في اختيار مصدر الشراء | Alım kaynağı seçiminde hata');
+            // التحقق من تطابق الكمية الموزعة مع الكمية المطلوبة
+            if (Math.abs(totalDistributed - saleQuantity) > 0.01) {
+                alert(`الكمية الموزعة (${totalDistributed.toFixed(2)} كغ) لا تطابق الكمية المطلوبة للبيع (${saleQuantity.toFixed(2)} كغ) | Dağıtılan miktar (${totalDistributed.toFixed(2)} kg) satış için gerekli miktarla (${saleQuantity.toFixed(2)} kg) eşleşmiyor`);
                 return;
             }
             
-            if (saleQuantity > selectedPurchase.remaining) {
-                alert(`الكمية المتاحة من هذا المصدر هي ${selectedPurchase.remaining} كغ فقط | Bu kaynaktan mevcut miktar sadece ${selectedPurchase.remaining} kg`);
-                return;
-            }
+            // التحقق من أن الكمية الموزعة لا تتجاوز الكمية المتبقية في كل مصدر
+            let isValid = true;
+            selectedPurchaseSources.forEach(purchaseId => {
+                const purchase = purchases.find(p => p.id === purchaseId);
+                const distributedQty = quantityDistribution[purchaseId] || 0;
+                
+                if (distributedQty > purchase.remaining) {
+                    alert(`الكمية الموزعة للمصدر #${purchaseId} (${distributedQty.toFixed(2)} كغ) تتجاوز الكمية المتبقية (${purchase.remaining.toFixed(2)} كغ) | #${purchaseId} kaynağına dağıtılan miktar (${distributedQty.toFixed(2)} kg) kalan miktarı (${purchase.remaining.toFixed(2)} kg) aşıyor`);
+                    isValid = false;
+                }
+            });
             
-            // حساب الربح
-            const profitPerKg = salePrice - selectedPurchase.price;
-            const totalProfit = profitPerKg * saleQuantity;
+            if (!isValid) return;
             
+            // حساب الربح الإجمالي
+            let totalProfit = 0;
+            const sourcesDetails = [];
+            
+            selectedPurchaseSources.forEach(purchaseId => {
+                const purchase = purchases.find(p => p.id === purchaseId);
+                const distributedQty = quantityDistribution[purchaseId] || 0;
+                
+                if (distributedQty > 0) {
+                    const profitFromSource = (salePrice - purchase.price) * distributedQty;
+                    totalProfit += profitFromSource;
+                    
+                    sourcesDetails.push({
+                        purchaseId: purchase.id,
+                        quantity: distributedQty,
+                        purchasePrice: purchase.price,
+                        profit: profitFromSource
+                    });
+                    
+                    // تحديث الكمية المتبقية من الشراء
+                    purchase.remaining -= distributedQty;
+                }
+            });
+            
+            // إنشاء سجل البيع
             const sale = {
                 id: Date.now(),
                 customerName: customerName,
@@ -914,24 +1285,23 @@
                 price: salePrice,
                 total: saleQuantity * salePrice,
                 profit: totalProfit,
-                purchaseId: purchaseId,
-                purchasePrice: selectedPurchase.price,
-                purchaseQuantity: saleQuantity,
+                sources: sourcesDetails,
                 date: new Date().toISOString().split('T')[0]
             };
-            
-            // تحديث الكمية المتبقية من الشراء
-            selectedPurchase.remaining -= saleQuantity;
             
             sales.push(sale);
             saveData();
             updatePurchasesTable();
             updateSalesTable();
             updateDashboardStats();
-            updatePurchaseOptions();
             
             // إعادة تعيين النموذج
             document.getElementById('saleForm').reset();
+            selectedPurchaseSources = [];
+            quantityDistribution = {};
+            document.getElementById('quantityDistribution').style.display = 'none';
+            document.getElementById('selectedSourcesSummary').style.display = 'none';
+            updatePurchaseOptions();
             
             alert('تم تسجيل عملية البيع بنجاح! | Satış başarıyla kaydedildi!');
         });
@@ -964,6 +1334,14 @@
                 const profitClass = sale.profit >= 0 ? 'badge-sale' : 'badge-purchase';
                 const profitSign = sale.profit >= 0 ? '+' : '';
                 
+                // عرض المصادر
+                let sourcesText = '';
+                if (sale.sources && sale.sources.length > 0) {
+                    sale.sources.forEach((source, i) => {
+                        sourcesText += `مصدر #${source.purchaseId}: ${source.quantity.toFixed(2)} كغ<br>`;
+                    });
+                }
+                
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${index + 1}</td>
@@ -973,6 +1351,7 @@
                     <td><span class="dollar">$</span> ${sale.total.toFixed(2)}</td>
                     <td><span class="badge ${profitClass}"><span class="dollar">$</span> ${profitSign}${sale.profit.toFixed(2)}</span></td>
                     <td>${sale.date}</td>
+                    <td style="text-align: right; font-size: 0.9rem;">${sourcesText}</td>
                 `;
                 tableBody.appendChild(row);
             });
@@ -995,33 +1374,6 @@
             // إجمالي الربح
             const totalProfit = sales.reduce((sum, sale) => sum + sale.profit, 0);
             document.getElementById('total-profit').innerHTML = totalProfit.toFixed(2) + ' <span class="dollar">$</span>';
-        }
-        
-        // تحديث خيارات الشراء للبيع
-        function updatePurchaseOptions() {
-            const purchaseOptions = document.getElementById('purchaseOptions');
-            purchaseOptions.innerHTML = '';
-            
-            purchases.forEach(purchase => {
-                if (purchase.remaining > 0) {
-                    const optionId = `purchase-${purchase.id}`;
-                    const optionHTML = `
-                        <div class="radio-option">
-                            <input type="radio" id="${optionId}" name="purchaseSource" value="${purchase.id}">
-                            <label for="${optionId}">
-                                <strong>${purchase.quantity.toFixed(2)} كغ (${purchase.remaining.toFixed(2)} متبقي) | kg (${purchase.remaining.toFixed(2)} kalan)</strong><br>
-                                <small>سعر الشراء: <span class="dollar">$</span> ${purchase.price.toFixed(2)} للكغ | Alış fiyatı: <span class="dollar">$</span> ${purchase.price.toFixed(2)}/kg</small>
-                            </label>
-                        </div>
-                    `;
-                    purchaseOptions.innerHTML += optionHTML;
-                }
-            });
-            
-            // إذا لم توجد مشتريات متاحة
-            if (purchaseOptions.innerHTML === '') {
-                purchaseOptions.innerHTML = '<p style="color: #e74c3c; text-align: center; padding: 20px;">لا توجد مشتريات متاحة للبيع | Satış için mevcut alım yok</p>';
-            }
         }
         
         // إنشاء تقرير اليوم
@@ -1057,10 +1409,15 @@
             // إنشاء جدول المبيعات للتقرير
             let salesTableHTML = '';
             dateSales.forEach((sale, index) => {
-                const purchaseSource = purchases.find(p => p.id === sale.purchaseId);
-                const purchaseInfo = purchaseSource ? 
-                    `${purchaseSource.quantity.toFixed(2)} كغ - $${purchaseSource.price.toFixed(2)}` : 
-                    'غير معروف | Bilinmiyor';
+                // تفاصيل المصادر
+                let sourcesDetails = '';
+                if (sale.sources && sale.sources.length > 0) {
+                    sale.sources.forEach((source, i) => {
+                        const purchase = purchases.find(p => p.id === source.purchaseId);
+                        const purchasePrice = purchase ? purchase.price : source.purchasePrice;
+                        sourcesDetails += `${i > 0 ? '<br>' : ''}مصدر #${source.purchaseId}: ${source.quantity.toFixed(2)} كغ بسعر ${purchasePrice.toFixed(2)}$`;
+                    });
+                }
                 
                 const profitClass = sale.profit >= 0 ? 'profit-positive' : 'profit-negative';
                 
@@ -1069,11 +1426,10 @@
                         <td>${index + 1}</td>
                         <td>${sale.customerName}</td>
                         <td>${sale.quantity.toFixed(2)} كغ</td>
-                        <td><span class="dollar">$</span> ${sale.purchasePrice.toFixed(2)}</td>
                         <td><span class="dollar">$</span> ${sale.price.toFixed(2)}</td>
                         <td><span class="dollar">$</span> ${sale.total.toFixed(2)}</td>
                         <td class="${profitClass}"><span class="dollar">$</span> ${sale.profit.toFixed(2)}</td>
-                        <td>${purchaseInfo}</td>
+                        <td>${sourcesDetails || 'غير معروف'}</td>
                     </tr>
                 `;
             });
@@ -1110,11 +1466,10 @@
                                 <th>#</th>
                                 <th>اسم العميل | Müşteri Adı</th>
                                 <th>الكمية | Miktar</th>
-                                <th>سعر الشراء | Alış Fiyatı</th>
                                 <th>سعر البيع | Satış Fiyatı</th>
                                 <th>الإجمالي | Toplam</th>
                                 <th>الربح | Kâr</th>
-                                <th>مصدر الكمية | Miktar Kaynağı</th>
+                                <th>المصادر | Kaynaklar</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -1125,7 +1480,6 @@
                                 <td colspan="2">إجمالي اليوم | Günlük Toplam</td>
                                 <td>${totalQuantity.toFixed(2)} كغ</td>
                                 <td colspan="2"></td>
-                                <td><span class="dollar">$</span> ${totalRevenue.toFixed(2)}</td>
                                 <td><span class="dollar">$</span> ${totalProfit.toFixed(2)}</td>
                                 <td></td>
                             </tr>
@@ -1167,10 +1521,15 @@
             // إنشاء جدول المبيعات للتقرير القابل للطباعة
             let salesTableHTML = '';
             dateSales.forEach((sale, index) => {
-                const purchaseSource = purchases.find(p => p.id === sale.purchaseId);
-                const purchaseInfo = purchaseSource ? 
-                    `${purchaseSource.quantity.toFixed(2)} كغ - $${purchaseSource.price.toFixed(2)}` : 
-                    'غير معروف | Bilinmiyor';
+                // تفاصيل المصادر
+                let sourcesDetails = '';
+                if (sale.sources && sale.sources.length > 0) {
+                    sale.sources.forEach((source, i) => {
+                        const purchase = purchases.find(p => p.id === source.purchaseId);
+                        const purchasePrice = purchase ? purchase.price : source.purchasePrice;
+                        sourcesDetails += `${i > 0 ? '<br>' : ''}مصدر #${source.purchaseId}: ${source.quantity.toFixed(2)} كغ - ${purchasePrice.toFixed(2)}$`;
+                    });
+                }
                 
                 const profitClass = sale.profit >= 0 ? 'profit-positive' : 'profit-negative';
                 
@@ -1179,11 +1538,10 @@
                         <td>${index + 1}</td>
                         <td>${sale.customerName}</td>
                         <td>${sale.quantity.toFixed(2)} كغ</td>
-                        <td><span class="dollar-print">$</span> ${sale.purchasePrice.toFixed(2)}</td>
                         <td><span class="dollar-print">$</span> ${sale.price.toFixed(2)}</td>
                         <td><span class="dollar-print">$</span> ${sale.total.toFixed(2)}</td>
                         <td class="${profitClass}"><span class="dollar-print">$</span> ${sale.profit.toFixed(2)}</td>
-                        <td>${purchaseInfo}</td>
+                        <td>${sourcesDetails || 'غير معروف'}</td>
                     </tr>
                 `;
             });
@@ -1225,11 +1583,10 @@
                             <th>#</th>
                             <th>اسم العميل<br>Müşteri Adı</th>
                             <th>الكمية<br>Miktar</th>
-                            <th>سعر الشراء<br>Alış Fiyatı</th>
                             <th>سعر البيع<br>Satış Fiyatı</th>
                             <th>الإجمالي<br>Toplam</th>
                             <th>الربح<br>Kâr</th>
-                            <th>مصدر الكمية<br>Miktar Kaynağı</th>
+                            <th>المصادر<br>Kaynaklar</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -1240,7 +1597,6 @@
                             <td colspan="2"><strong>إجمالي اليوم | Günlük Toplam</strong></td>
                             <td><strong>${totalQuantity.toFixed(2)} كغ</strong></td>
                             <td colspan="2"></td>
-                            <td><strong><span class="dollar-print">$</span> ${totalRevenue.toFixed(2)}</strong></td>
                             <td><strong><span class="dollar-print">$</span> ${totalProfit.toFixed(2)}</strong></td>
                             <td></td>
                         </tr>
@@ -1326,6 +1682,8 @@
             if (confirm('هل أنت متأكد من حذف جميع البيانات؟ هذا الإجراء لا يمكن التراجع عنه. | Tüm verileri silmek istediğinize emin misiniz? Bu işlem geri alınamaz.')) {
                 purchases = [];
                 sales = [];
+                selectedPurchaseSources = [];
+                quantityDistribution = {};
                 
                 localStorage.removeItem('alanharPurchases');
                 localStorage.removeItem('alanharSales');
@@ -1339,31 +1697,6 @@
                 alert('تم حذف جميع البيانات بنجاح | Tüm veriler başarıyla silindi');
             }
         }
-        
-        // إضافة زر إعادة تعيين البيانات في الواجهة
-        document.addEventListener('DOMContentLoaded', function() {
-            const header = document.querySelector('header .container');
-            const resetButton = document.createElement('button');
-            resetButton.innerHTML = '<i class="fas fa-trash-alt"></i> حذف جميع البيانات | Tüm Verileri Sil';
-            resetButton.className = 'btn btn-danger no-print';
-            resetButton.style.position = 'absolute';
-            resetButton.style.top = '25px';
-            resetButton.style.left = '25px';
-            resetButton.onclick = resetAllData;
-            
-            // زر تصدير البيانات
-            const exportButton = document.createElement('button');
-            exportButton.innerHTML = '<i class="fas fa-download"></i> تصدير البيانات | Verileri Dışa Aktar';
-            exportButton.className = 'btn btn-warning no-print';
-            exportButton.style.position = 'absolute';
-            exportButton.style.top = '25px';
-            exportButton.style.right = '25px';
-            exportButton.onclick = exportData;
-            
-            header.style.position = 'relative';
-            header.appendChild(resetButton);
-            header.appendChild(exportButton);
-        });
         
         // تصدير البيانات
         function exportData() {
@@ -1387,7 +1720,7 @@
             alert('تم تصدير البيانات بنجاح | Veriler başarıyla dışa aktarıldı');
         }
         
-        // استيراد البيانات (وظيفة إضافية)
+        // استيراد البيانات
         function importData(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -1400,6 +1733,8 @@
                     if (data.purchases && data.sales) {
                         purchases = data.purchases;
                         sales = data.sales;
+                        selectedPurchaseSources = [];
+                        quantityDistribution = {};
                         
                         saveData();
                         updatePurchasesTable();
@@ -1419,8 +1754,36 @@
             reader.readAsText(file);
         }
         
-        // إضافة زر استيراد البيانات
+        // تحديث توزيع الكمية عند تغيير كمية البيع
+        document.getElementById('saleQuantity').addEventListener('input', function() {
+            if (selectedPurchaseSources.length > 0) {
+                updateQuantityDistribution();
+            }
+        });
+        
+        // إضافة أزرار التحكم في الواجهة
         document.addEventListener('DOMContentLoaded', function() {
+            const header = document.querySelector('header .container');
+            
+            // زر حذف جميع البيانات
+            const resetButton = document.createElement('button');
+            resetButton.innerHTML = '<i class="fas fa-trash-alt"></i> حذف جميع البيانات | Tüm Verileri Sil';
+            resetButton.className = 'btn btn-danger no-print';
+            resetButton.style.position = 'absolute';
+            resetButton.style.top = '25px';
+            resetButton.style.left = '25px';
+            resetButton.onclick = resetAllData;
+            
+            // زر تصدير البيانات
+            const exportButton = document.createElement('button');
+            exportButton.innerHTML = '<i class="fas fa-download"></i> تصدير البيانات | Verileri Dışa Aktar';
+            exportButton.className = 'btn btn-warning no-print';
+            exportButton.style.position = 'absolute';
+            exportButton.style.top = '25px';
+            exportButton.style.right = '25px';
+            exportButton.onclick = exportData;
+            
+            // زر استيراد البيانات
             const importInput = document.createElement('input');
             importInput.type = 'file';
             importInput.accept = '.json';
@@ -1429,7 +1792,6 @@
             importInput.onchange = importData;
             document.body.appendChild(importInput);
             
-            const header = document.querySelector('header .container');
             const importButton = document.createElement('button');
             importButton.innerHTML = '<i class="fas fa-upload"></i> استيراد البيانات | Verileri İçe Aktar';
             importButton.className = 'btn btn-success no-print';
@@ -1438,6 +1800,9 @@
             importButton.style.right = '25px';
             importButton.onclick = () => document.getElementById('importInput').click();
             
+            header.style.position = 'relative';
+            header.appendChild(resetButton);
+            header.appendChild(exportButton);
             header.appendChild(importButton);
         });
     </script>
