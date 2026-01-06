@@ -133,6 +133,18 @@
             justify-content: center;
         }
         
+        .current-date-display {
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            border: 2px solid var(--secondary-color);
+        }
+        
         /* Dashboard Stats */
         .stats-container {
             display: grid;
@@ -870,6 +882,11 @@
     </header>
     
     <div class="container">
+        <!-- Current Date Display -->
+        <div class="current-date-display">
+            <span id="currentDateDisplay">عرض بيانات اليوم: </span>
+        </div>
+        
         <!-- Date Filter -->
         <div class="date-filter">
             <label for="currentDate">عرض بيانات تاريخ | Verileri Göster:</label>
@@ -958,30 +975,32 @@
                 </div>
                 
                 <!-- Purchases List -->
-                <div class="table-container">
-                    <table id="purchasesTable">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>الكمية | Miktar</th>
-                                <th>سعر الشراء | Alış Fiyatı</th>
-                                <th>الإجمالي | Toplam</th>
-                                <th>التاريخ | Tarih</th>
-                                <th>المتبقي | Kalan</th>
-                            </tr>
-                        </thead>
-                        <tbody id="purchasesTableBody">
-                            <!-- سيتم ملؤها بواسطة JavaScript -->
-                        </tbody>
-                        <tfoot style="font-weight: bold; background-color: #f8f9fa;">
-                            <tr>
-                                <td colspan="2">الإجمالي | Toplam</td>
-                                <td></td>
-                                <td id="totalPurchasesFooter">0 <span class="dollar">$</span></td>
-                                <td colspan="2"></td>
-                            </tr>
-                        </tfoot>
-                    </table>
+                <div id="purchasesTableContainer">
+                    <div class="table-container">
+                        <table id="purchasesTable">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>الكمية | Miktar</th>
+                                    <th>سعر الشراء | Alış Fiyatı</th>
+                                    <th>الإجمالي | Toplam</th>
+                                    <th>التاريخ | Tarih</th>
+                                    <th>المتبقي | Kalan</th>
+                                </tr>
+                            </thead>
+                            <tbody id="purchasesTableBody">
+                                <!-- سيتم ملؤها بواسطة JavaScript -->
+                            </tbody>
+                            <tfoot style="font-weight: bold; background-color: #f8f9fa;">
+                                <tr>
+                                    <td colspan="2">الإجمالي | Toplam</td>
+                                    <td></td>
+                                    <td id="totalPurchasesFooter">0 <span class="dollar">$</span></td>
+                                    <td colspan="2"></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
                 </div>
                 
                 <div id="purchasesEmpty" class="empty-state" style="display: none;">
@@ -1040,38 +1059,40 @@
                 </div>
                 
                 <!-- Sales List -->
-                <div class="table-container">
-                    <table id="salesTable">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>العميل | Müşteri</th>
-                                <th>الكمية | Miktar</th>
-                                <th>سعر البيع | Satış Fiyatı</th>
-                                <th>الإجمالي | Toplam</th>
-                                <th>المدفوع | Ödenen</th>
-                                <th>المتبقي | Kalan</th>
-                                <th>الربح | Kâr</th>
-                                <th>التاريخ | Tarih</th>
-                                <th>الحالة | Durum</th>
-                            </tr>
-                        </thead>
-                        <tbody id="salesTableBody">
-                            <!-- سيتم ملؤها بواسطة JavaScript -->
-                        </tbody>
-                        <tfoot style="font-weight: bold; background-color: #f8f9fa;">
-                            <tr>
-                                <td colspan="2">الإجمالي | Toplam</td>
-                                <td id="totalSalesQuantity">0 كغ</td>
-                                <td></td>
-                                <td id="totalSalesAmount">0 <span class="dollar">$</span></td>
-                                <td id="totalPaidAmount">0 <span class="dollar">$</span></td>
-                                <td id="totalRemainingAmount">0 <span class="dollar">$</span></td>
-                                <td id="totalProfitFooter">0 <span class="dollar">$</span></td>
-                                <td colspan="2"></td>
-                            </tr>
-                        </tfoot>
-                    </table>
+                <div id="salesTableContainer">
+                    <div class="table-container">
+                        <table id="salesTable">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>العميل | Müşteri</th>
+                                    <th>الكمية | Miktar</th>
+                                    <th>سعر البيع | Satış Fiyatı</th>
+                                    <th>الإجمالي | Toplam</th>
+                                    <th>المدفوع | Ödenen</th>
+                                    <th>المتبقي | Kalan</th>
+                                    <th>الربح | Kâr</th>
+                                    <th>التاريخ | Tarih</th>
+                                    <th>الحالة | Durum</th>
+                                </tr>
+                            </thead>
+                            <tbody id="salesTableBody">
+                                <!-- سيتم ملؤها بواسطة JavaScript -->
+                            </tbody>
+                            <tfoot style="font-weight: bold; background-color: #f8f9fa;">
+                                <tr>
+                                    <td colspan="2">الإجمالي | Toplam</td>
+                                    <td id="totalSalesQuantity">0 كغ</td>
+                                    <td></td>
+                                    <td id="totalSalesAmount">0 <span class="dollar">$</span></td>
+                                    <td id="totalPaidAmount">0 <span class="dollar">$</span></td>
+                                    <td id="totalRemainingAmount">0 <span class="dollar">$</span></td>
+                                    <td id="totalProfitFooter">0 <span class="dollar">$</span></td>
+                                    <td colspan="2"></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
                 </div>
                 
                 <div id="salesEmpty" class="empty-state" style="display: none;">
@@ -1123,6 +1144,7 @@
         let sales = [];
         let currentSaleData = null;
         let currentViewDate = new Date().toISOString().split('T')[0]; // تاريخ العرض الحالي
+        let currentFilterMode = 'date'; // 'date' أو 'all'
         
         // تحميل البيانات من localStorage إذا كانت موجودة
         document.addEventListener('DOMContentLoaded', function() {
@@ -1132,6 +1154,9 @@
             document.getElementById('reportDate').value = today;
             document.getElementById('currentDate').value = today;
             currentViewDate = today;
+            
+            // تحديث عرض التاريخ
+            updateDateDisplay();
             
             // تحميل البيانات المخزنة
             if (localStorage.getItem('alanharPurchases')) {
@@ -1151,6 +1176,23 @@
             // إنشاء تقرير اليوم عند التحميل
             generateTodayReport();
         });
+        
+        // تحديث عرض التاريخ الحالي
+        function updateDateDisplay() {
+            const displayElement = document.getElementById('currentDateDisplay');
+            if (currentFilterMode === 'all') {
+                displayElement.textContent = 'عرض جميع البيانات | Tüm veriler gösteriliyor';
+            } else {
+                const dateObj = new Date(currentViewDate);
+                const formattedDate = dateObj.toLocaleDateString('ar-EG', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+                displayElement.textContent = `عرض بيانات: ${formattedDate} | Veriler gösteriliyor: ${currentViewDate}`;
+            }
+        }
         
         // إضافة عملية شراء جديدة
         document.getElementById('purchaseForm').addEventListener('submit', function(e) {
@@ -1333,7 +1375,7 @@
                 profit: currentSaleData.profit,
                 purchaseSourceId: currentSaleData.purchaseSourceId,
                 purchasePrice: currentSaleData.purchasePrice,
-                date: currentSaleData.date,
+                date: currentViewDate,
                 status: remainingAmount > 0 ? 'pending' : 'completed'
             };
             
@@ -1361,23 +1403,14 @@
             
             let totalPurchasesAmount = 0;
             let totalPurchasesQuantity = 0;
-            let hasActivePurchases = false;
+            let hasPurchases = false;
             
             const filterType = document.getElementById('purchaseFilter').value;
             
-            purchases.forEach((purchase, index) => {
-                // تطبيق الفلترة
-                let showPurchase = false;
-                
-                if (filterType === 'all') {
-                    showPurchase = true;
-                } else if (filterType === 'active') {
-                    // عرض المشتريات النشطة فقط (التي لها كمية متبقية)
-                    showPurchase = purchase.remaining > 0;
-                }
-                
-                if (showPurchase) {
-                    hasActivePurchases = true;
+            // إذا كنا في وضع عرض الكل
+            if (currentFilterMode === 'all') {
+                purchases.forEach((purchase, index) => {
+                    hasPurchases = true;
                     totalPurchasesAmount += purchase.total;
                     totalPurchasesQuantity += purchase.quantity;
                     
@@ -1391,16 +1424,48 @@
                         <td>${purchase.remaining.toFixed(2)} كغ</td>
                     `;
                     tableBody.appendChild(row);
-                }
-            });
+                });
+            } 
+            // إذا كنا في وضع عرض حسب التاريخ
+            else {
+                purchases.forEach((purchase, index) => {
+                    // تطبيق الفلترة حسب النوع
+                    let showPurchase = false;
+                    
+                    if (filterType === 'all') {
+                        // عرض جميع المشتريات للتاريخ الحالي
+                        showPurchase = purchase.date === currentViewDate;
+                    } else if (filterType === 'active') {
+                        // عرض المشتريات النشطة فقط (التي لها كمية متبقية) للتاريخ الحالي
+                        showPurchase = purchase.remaining > 0 && purchase.date === currentViewDate;
+                    }
+                    
+                    if (showPurchase) {
+                        hasPurchases = true;
+                        totalPurchasesAmount += purchase.total;
+                        totalPurchasesQuantity += purchase.quantity;
+                        
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${index + 1}</td>
+                            <td>${purchase.quantity.toFixed(2)} كغ</td>
+                            <td><span class="dollar">$</span> ${purchase.price.toFixed(2)}</td>
+                            <td><span class="dollar">$</span> ${purchase.total.toFixed(2)}</td>
+                            <td>${purchase.date}</td>
+                            <td>${purchase.remaining.toFixed(2)} كغ</td>
+                        `;
+                        tableBody.appendChild(row);
+                    }
+                });
+            }
             
             // عرض أو إخفاء رسالة عدم وجود بيانات
-            if (hasActivePurchases) {
+            if (hasPurchases) {
                 document.getElementById('purchasesEmpty').style.display = 'none';
-                document.getElementById('purchasesTable').style.display = 'table';
+                document.getElementById('purchasesTableContainer').style.display = 'block';
             } else {
                 document.getElementById('purchasesEmpty').style.display = 'block';
-                document.getElementById('purchasesTable').style.display = 'none';
+                document.getElementById('purchasesTableContainer').style.display = 'none';
             }
             
             // تحديث الإجمالي في التذييل
@@ -1421,21 +1486,9 @@
             
             const filterType = document.getElementById('salesFilter').value;
             
-            sales.forEach((sale, index) => {
-                // تطبيق الفلترة
-                let showSale = false;
-                
-                if (filterType === 'all') {
-                    showSale = true;
-                } else if (filterType === 'today') {
-                    // عرض مبيعات اليوم الحالي فقط
-                    showSale = sale.date === currentViewDate;
-                } else if (filterType === 'pending') {
-                    // عرض المبيعات التي لها مستحقات فقط
-                    showSale = sale.remaining > 0 && sale.date === currentViewDate;
-                }
-                
-                if (showSale) {
+            // إذا كنا في وضع عرض الكل
+            if (currentFilterMode === 'all') {
+                sales.forEach((sale, index) => {
                     hasSales = true;
                     totalSalesQuantity += sale.quantity;
                     totalSalesAmount += sale.total;
@@ -1463,16 +1516,64 @@
                         <td><span class="badge ${statusClass}">${statusText} | ${statusTextTR}</span></td>
                     `;
                     tableBody.appendChild(row);
-                }
-            });
+                });
+            }
+            // إذا كنا في وضع عرض حسب التاريخ
+            else {
+                sales.forEach((sale, index) => {
+                    // تطبيق الفلترة
+                    let showSale = false;
+                    
+                    if (filterType === 'all') {
+                        // عرض جميع مبيعات اليوم
+                        showSale = sale.date === currentViewDate;
+                    } else if (filterType === 'today') {
+                        // عرض مبيعات اليوم فقط
+                        showSale = sale.date === currentViewDate;
+                    } else if (filterType === 'pending') {
+                        // عرض المبيعات التي لها مستحقات فقط لليوم الحالي
+                        showSale = sale.remaining > 0 && sale.date === currentViewDate;
+                    }
+                    
+                    if (showSale) {
+                        hasSales = true;
+                        totalSalesQuantity += sale.quantity;
+                        totalSalesAmount += sale.total;
+                        totalPaidAmount += sale.paid;
+                        totalRemainingAmount += sale.remaining;
+                        totalProfit += sale.profit;
+                        
+                        const profitClass = sale.profit >= 0 ? 'badge-sale' : 'badge-purchase';
+                        const profitSign = sale.profit >= 0 ? '+' : '';
+                        const statusClass = sale.status === 'completed' ? 'badge-sale' : 'badge-pending';
+                        const statusText = sale.status === 'completed' ? 'مكتمل' : 'معلق';
+                        const statusTextTR = sale.status === 'completed' ? 'Tamamlandı' : 'Beklemede';
+                        
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${index + 1}</td>
+                            <td>${sale.customerName}</td>
+                            <td>${sale.quantity.toFixed(2)} كغ</td>
+                            <td><span class="dollar">$</span> ${sale.price.toFixed(2)}</td>
+                            <td><span class="dollar">$</span> ${sale.total.toFixed(2)}</td>
+                            <td><span class="dollar">$</span> ${sale.paid.toFixed(2)}</td>
+                            <td><span class="dollar">$</span> ${sale.remaining.toFixed(2)}</td>
+                            <td><span class="badge ${profitClass}"><span class="dollar">$</span> ${profitSign}${sale.profit.toFixed(2)}</span></td>
+                            <td>${sale.date}</td>
+                            <td><span class="badge ${statusClass}">${statusText} | ${statusTextTR}</span></td>
+                        `;
+                        tableBody.appendChild(row);
+                    }
+                });
+            }
             
             // عرض أو إخفاء رسالة عدم وجود بيانات
             if (hasSales) {
                 document.getElementById('salesEmpty').style.display = 'none';
-                document.getElementById('salesTable').style.display = 'table';
+                document.getElementById('salesTableContainer').style.display = 'block';
             } else {
                 document.getElementById('salesEmpty').style.display = 'block';
-                document.getElementById('salesTable').style.display = 'none';
+                document.getElementById('salesTableContainer').style.display = 'none';
             }
             
             // تحديث الإجماليات في التذييل
@@ -1485,35 +1586,68 @@
         
         // تحديث إحصائيات لوحة التحكم حسب التاريخ المحدد
         function updateDashboardStats() {
-            // حساب إحصائيات اليوم المحدد
-            const todaySales = sales.filter(sale => sale.date === currentViewDate);
-            const activePurchases = purchases.filter(purchase => purchase.remaining > 0);
-            
-            // إجمالي المشتريات النشطة
-            const totalActivePurchasesQuantity = activePurchases.reduce((sum, purchase) => sum + purchase.quantity, 0);
-            const totalActivePurchasesAmount = activePurchases.reduce((sum, purchase) => sum + purchase.total, 0);
-            document.getElementById('total-purchases').textContent = totalActivePurchasesQuantity.toFixed(2) + ' كغ';
-            document.getElementById('purchases-total').innerHTML = totalActivePurchasesAmount.toFixed(2) + ' <span class="dollar">$</span>';
-            
-            // إجمالي مبيعات اليوم
-            const totalTodaySalesQuantity = todaySales.reduce((sum, sale) => sum + sale.quantity, 0);
-            const totalTodaySalesAmount = todaySales.reduce((sum, sale) => sum + sale.total, 0);
-            document.getElementById('total-sales').textContent = totalTodaySalesQuantity.toFixed(2) + ' كغ';
-            document.getElementById('sales-total').innerHTML = totalTodaySalesAmount.toFixed(2) + ' <span class="dollar">$</span>';
-            
-            // المخزون الحالي (كل المشتريات - كل المبيعات)
-            const totalPurchasesAll = purchases.reduce((sum, purchase) => sum + purchase.quantity, 0);
-            const totalSalesAll = sales.reduce((sum, sale) => sum + sale.quantity, 0);
-            const currentInventoryQuantity = totalPurchasesAll - totalSalesAll;
-            const currentInventoryValue = purchases.reduce((sum, purchase) => sum + (purchase.remaining * purchase.price), 0);
-            document.getElementById('current-inventory').textContent = currentInventoryQuantity.toFixed(2) + ' كغ';
-            document.getElementById('inventory-total').innerHTML = currentInventoryValue.toFixed(2) + ' <span class="dollar">$</span>';
-            
-            // إجمالي الربح والمبلغ المستحق لليوم
-            const totalTodayProfit = todaySales.reduce((sum, sale) => sum + sale.profit, 0);
-            const totalTodayRemaining = todaySales.reduce((sum, sale) => sum + sale.remaining, 0);
-            document.getElementById('total-profit').innerHTML = totalTodayProfit.toFixed(2) + ' <span class="dollar">$</span>';
-            document.getElementById('pending-amount').innerHTML = `مستحق اليوم: ${totalTodayRemaining.toFixed(2)} <span class="dollar">$</span>`;
+            // إذا كنا في وضع عرض الكل
+            if (currentFilterMode === 'all') {
+                // إحصائيات الكل
+                const totalPurchasesAll = purchases.reduce((sum, purchase) => sum + purchase.quantity, 0);
+                const totalPurchasesAmountAll = purchases.reduce((sum, purchase) => sum + purchase.total, 0);
+                const totalSalesAll = sales.reduce((sum, sale) => sum + sale.quantity, 0);
+                const totalSalesAmountAll = sales.reduce((sum, sale) => sum + sale.total, 0);
+                const totalProfitAll = sales.reduce((sum, sale) => sum + sale.profit, 0);
+                const totalRemainingAll = sales.reduce((sum, sale) => sum + sale.remaining, 0);
+                
+                // إجمالي المشتريات النشطة (التي لها كمية متبقية)
+                const activePurchases = purchases.filter(purchase => purchase.remaining > 0);
+                const totalActivePurchasesQuantity = activePurchases.reduce((sum, purchase) => sum + purchase.quantity, 0);
+                const totalActivePurchasesAmount = activePurchases.reduce((sum, purchase) => sum + purchase.total, 0);
+                
+                // المخزون الحالي
+                const currentInventoryQuantity = totalPurchasesAll - totalSalesAll;
+                const currentInventoryValue = purchases.reduce((sum, purchase) => sum + (purchase.remaining * purchase.price), 0);
+                
+                document.getElementById('total-purchases').textContent = totalActivePurchasesQuantity.toFixed(2) + ' كغ';
+                document.getElementById('purchases-total').innerHTML = totalActivePurchasesAmount.toFixed(2) + ' <span class="dollar">$</span>';
+                document.getElementById('total-sales').textContent = totalSalesAll.toFixed(2) + ' كغ';
+                document.getElementById('sales-total').innerHTML = totalSalesAmountAll.toFixed(2) + ' <span class="dollar">$</span>';
+                document.getElementById('current-inventory').textContent = currentInventoryQuantity.toFixed(2) + ' كغ';
+                document.getElementById('inventory-total').innerHTML = currentInventoryValue.toFixed(2) + ' <span class="dollar">$</span>';
+                document.getElementById('total-profit').innerHTML = totalProfitAll.toFixed(2) + ' <span class="dollar">$</span>';
+                document.getElementById('pending-amount').innerHTML = `إجمالي المستحق: ${totalRemainingAll.toFixed(2)} <span class="dollar">$</span>`;
+            } 
+            // إذا كنا في وضع عرض حسب التاريخ
+            else {
+                // حساب إحصائيات اليوم المحدد
+                const todaySales = sales.filter(sale => sale.date === currentViewDate);
+                const todayPurchases = purchases.filter(purchase => purchase.date === currentViewDate);
+                const activePurchases = todayPurchases.filter(purchase => purchase.remaining > 0);
+                
+                // إجمالي المشتريات النشطة لليوم
+                const totalActivePurchasesQuantity = activePurchases.reduce((sum, purchase) => sum + purchase.quantity, 0);
+                const totalActivePurchasesAmount = activePurchases.reduce((sum, purchase) => sum + purchase.total, 0);
+                
+                // إجمالي مبيعات اليوم
+                const totalTodaySalesQuantity = todaySales.reduce((sum, sale) => sum + sale.quantity, 0);
+                const totalTodaySalesAmount = todaySales.reduce((sum, sale) => sum + sale.total, 0);
+                
+                // إجمالي المشتريات والمبيعات الكلية للمخزون
+                const totalPurchasesAll = purchases.reduce((sum, purchase) => sum + purchase.quantity, 0);
+                const totalSalesAll = sales.reduce((sum, sale) => sum + sale.quantity, 0);
+                const currentInventoryQuantity = totalPurchasesAll - totalSalesAll;
+                const currentInventoryValue = purchases.reduce((sum, purchase) => sum + (purchase.remaining * purchase.price), 0);
+                
+                // إجمالي الربح والمبلغ المستحق لليوم
+                const totalTodayProfit = todaySales.reduce((sum, sale) => sum + sale.profit, 0);
+                const totalTodayRemaining = todaySales.reduce((sum, sale) => sum + sale.remaining, 0);
+                
+                document.getElementById('total-purchases').textContent = totalActivePurchasesQuantity.toFixed(2) + ' كغ';
+                document.getElementById('purchases-total').innerHTML = totalActivePurchasesAmount.toFixed(2) + ' <span class="dollar">$</span>';
+                document.getElementById('total-sales').textContent = totalTodaySalesQuantity.toFixed(2) + ' كغ';
+                document.getElementById('sales-total').innerHTML = totalTodaySalesAmount.toFixed(2) + ' <span class="dollar">$</span>';
+                document.getElementById('current-inventory').textContent = currentInventoryQuantity.toFixed(2) + ' كغ';
+                document.getElementById('inventory-total').innerHTML = currentInventoryValue.toFixed(2) + ' <span class="dollar">$</span>';
+                document.getElementById('total-profit').innerHTML = totalTodayProfit.toFixed(2) + ' <span class="dollar">$</span>';
+                document.getElementById('pending-amount').innerHTML = `مستحق اليوم: ${totalTodayRemaining.toFixed(2)} <span class="dollar">$</span>`;
+            }
         }
         
         // عرض بيانات اليوم الحالي
@@ -1521,11 +1655,13 @@
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('currentDate').value = today;
             currentViewDate = today;
+            currentFilterMode = 'date';
             
             // تحديث الفلاتر
             document.getElementById('purchaseFilter').value = 'active';
             document.getElementById('salesFilter').value = 'pending';
             
+            updateDateDisplay();
             updatePurchasesTable();
             updateSalesTable();
             updateDashboardStats();
@@ -1543,7 +1679,9 @@
             
             document.getElementById('currentDate').value = previousDay;
             currentViewDate = previousDay;
+            currentFilterMode = 'date';
             
+            updateDateDisplay();
             updatePurchasesTable();
             updateSalesTable();
             updateDashboardStats();
@@ -1568,7 +1706,9 @@
             
             document.getElementById('currentDate').value = nextDay;
             currentViewDate = nextDay;
+            currentFilterMode = 'date';
             
+            updateDateDisplay();
             updatePurchasesTable();
             updateSalesTable();
             updateDashboardStats();
@@ -1580,32 +1720,24 @@
         
         // عرض جميع البيانات (بدون فلترة)
         function showAllData() {
-            // تحديث الفلاتر لعرض الكل
+            currentFilterMode = 'all';
+            
+            // تحديث الفلاتر
             document.getElementById('purchaseFilter').value = 'all';
             document.getElementById('salesFilter').value = 'all';
             
+            updateDateDisplay();
             updatePurchasesTable();
             updateSalesTable();
-            
-            // تحديث الإحصائيات لتعكس الكل
-            const totalPurchasesAll = purchases.reduce((sum, purchase) => sum + purchase.quantity, 0);
-            const totalPurchasesAmountAll = purchases.reduce((sum, purchase) => sum + purchase.total, 0);
-            const totalSalesAll = sales.reduce((sum, sale) => sum + sale.quantity, 0);
-            const totalSalesAmountAll = sales.reduce((sum, sale) => sum + sale.total, 0);
-            const totalProfitAll = sales.reduce((sum, sale) => sum + sale.profit, 0);
-            const totalRemainingAll = sales.reduce((sum, sale) => sum + sale.remaining, 0);
-            
-            document.getElementById('total-purchases').textContent = totalPurchasesAll.toFixed(2) + ' كغ';
-            document.getElementById('purchases-total').innerHTML = totalPurchasesAmountAll.toFixed(2) + ' <span class="dollar">$</span>';
-            document.getElementById('total-sales').textContent = totalSalesAll.toFixed(2) + ' كغ';
-            document.getElementById('sales-total').innerHTML = totalSalesAmountAll.toFixed(2) + ' <span class="dollar">$</span>';
-            document.getElementById('total-profit').innerHTML = totalProfitAll.toFixed(2) + ' <span class="dollar">$</span>';
-            document.getElementById('pending-amount').innerHTML = `إجمالي المستحق: ${totalRemainingAll.toFixed(2)} <span class="dollar">$</span>`;
+            updateDashboardStats();
         }
         
         // عند تغيير تاريخ العرض
         document.getElementById('currentDate').addEventListener('change', function() {
             currentViewDate = this.value;
+            currentFilterMode = 'date';
+            
+            updateDateDisplay();
             updatePurchasesTable();
             updateSalesTable();
             updateDashboardStats();
@@ -1940,11 +2072,13 @@
                 sales = [];
                 currentSaleData = null;
                 currentViewDate = new Date().toISOString().split('T')[0];
+                currentFilterMode = 'date';
                 
                 localStorage.removeItem('alanharPurchases');
                 localStorage.removeItem('alanharSales');
                 
                 document.getElementById('currentDate').value = currentViewDate;
+                updateDateDisplay();
                 updatePurchasesTable();
                 updateSalesTable();
                 updateDashboardStats();
@@ -1992,9 +2126,11 @@
                         sales = data.sales;
                         currentSaleData = null;
                         currentViewDate = new Date().toISOString().split('T')[0];
+                        currentFilterMode = 'date';
                         
                         saveData();
                         document.getElementById('currentDate').value = currentViewDate;
+                        updateDateDisplay();
                         updatePurchasesTable();
                         updateSalesTable();
                         updateDashboardStats();
