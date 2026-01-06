@@ -442,6 +442,59 @@
             background-color: white;
         }
         
+        /* Multi Source Selection */
+        .multi-source-container {
+            background: #f0f7ff;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            margin-top: 15px;
+            border: 1px solid #bbdefb;
+        }
+        
+        .selected-sources-list {
+            margin-top: 15px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .selected-source-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border-left: 4px solid var(--secondary-color);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .selected-source-info {
+            flex: 1;
+        }
+        
+        .selected-source-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .btn-remove-source {
+            background: var(--danger-color);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .btn-remove-source:hover {
+            background: #c0392b;
+        }
+        
         .btn {
             display: inline-flex;
             align-items: center;
@@ -680,6 +733,16 @@
                 border: 1px solid #c8e6c9 !important;
             }
             
+            .print-final-totals {
+                background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%) !important;
+                -webkit-print-color-adjust: exact !important;
+                color-adjust: exact !important;
+                padding: 20px !important;
+                border-radius: 10px !important;
+                margin: 25px 0 !important;
+                border: 2px solid #ffb74d !important;
+            }
+            
             .print-signature {
                 margin-top: 40px !important;
                 padding-top: 20px !important;
@@ -694,6 +757,16 @@
             
             .profit-negative {
                 color: #e74c3c !important;
+                font-weight: bold !important;
+            }
+            
+            .remaining-red {
+                color: #e74c3c !important;
+                font-weight: bold !important;
+            }
+            
+            .paid-green {
+                color: #27ae60 !important;
                 font-weight: bold !important;
             }
             
@@ -839,8 +912,16 @@
                         <span id="modalSaleQuantity">0 كغ</span>
                     </div>
                     <div class="payment-item">
+                        <span>متوسط سعر الشراء | Ortalama Alış Fiyatı:</span>
+                        <span id="modalAvgPurchasePrice">0 <span class="dollar">$</span></span>
+                    </div>
+                    <div class="payment-item">
                         <span>سعر البيع | Satış Fiyatı:</span>
                         <span id="modalSalePrice">0 <span class="dollar">$</span></span>
+                    </div>
+                    <div class="payment-item">
+                        <span>متوسط ربح القطعة | Ortalama Parça Kârı:</span>
+                        <span id="modalAvgProfitPerUnit">0 <span class="dollar">$</span></span>
                     </div>
                     <div class="payment-item total">
                         <span>المبلغ الإجمالي | Toplam Tutar:</span>
@@ -850,13 +931,17 @@
                 
                 <div class="form-group">
                     <label for="amountPaid">المبلغ المدفوع | Ödenen Tutar <span class="dollar">$</span></label>
-                    <input type="number" id="amountPaid" class="form-control" step="0.01" min="0" required>
+                    <input type="number" id="amountPaid" class="form-control" step="0.01" min="0" value="0" required>
                 </div>
                 
                 <div class="payment-remaining" id="paymentRemaining">
                     <div class="payment-item">
-                        <span>المبلغ المتبقي | Kalan Tutar:</span>
-                        <span id="remainingAmount">0 <span class="dollar">$</span></span>
+                        <span style="color: #e74c3c; font-weight: bold;">القيمة المتبقية | Kalan Değer:</span>
+                        <span id="remainingAmount" style="color: #e74c3c; font-weight: bold;">0 <span class="dollar">$</span></span>
+                    </div>
+                    <div class="payment-item">
+                        <span style="color: #27ae60; font-weight: bold;">القيمة الفعلية | Gerçek Değer:</span>
+                        <span id="actualAmount" style="color: #27ae60; font-weight: bold;">0 <span class="dollar">$</span></span>
                     </div>
                     <div class="payment-item">
                         <span>تاريخ التسديد | Ödeme Tarihi:</span>
@@ -864,7 +949,7 @@
                     </div>
                 </div>
                 
-                <button class="btn btn-success" onclick="completeSaleWithPayment()" style="width: 100%;">
+                <button class="btn btn-success" onclick="completeSaleWithPayment()" id="confirmSaleBtn" style="width: 100%; margin-top: 20px;">
                     <i class="fas fa-check-circle"></i> تأكيد البيع والدفع | Satışı ve Ödemeyi Onayla
                 </button>
             </div>
@@ -946,8 +1031,8 @@
                     </div>
                     <div class="section-filter">
                         <select id="purchaseFilter" onchange="updatePurchasesTable()">
-                            <option value="active">المتبقي فقط (نشط)</option>
                             <option value="all">عرض الكل</option>
+                            <option value="active">المتبقي فقط (نشط)</option>
                         </select>
                     </div>
                 </div>
@@ -994,7 +1079,7 @@
                             </tbody>
                             <tfoot style="font-weight: bold; background-color: #f8f9fa;">
                                 <tr>
-                                    <td colspan="2">الإجمالي | Toplam</td>
+                                    <td colspan="2">إجمالي اليوم | Günlük Toplam</td>
                                     <td></td>
                                     <td id="totalPurchasesFooter">0 <span class="dollar">$</span></td>
                                     <td colspan="3"></td>
@@ -1020,8 +1105,8 @@
                     </div>
                     <div class="section-filter">
                         <select id="salesFilter" onchange="updateSalesTable()">
-                            <option value="pending">المستحقات فقط</option>
                             <option value="today">اليوم فقط</option>
+                            <option value="pending">المستحقات فقط</option>
                             <option value="all">عرض الكل</option>
                         </select>
                     </div>
@@ -1044,13 +1129,28 @@
                             <input type="number" id="salePrice" class="form-control" step="0.01" min="0" required>
                         </div>
                         
-                        <!-- Purchase Source Selection -->
-                        <div class="form-group">
-                            <label for="purchaseSource">اختر مصدر الشراء | Alım Kaynağını Seçin:</label>
-                            <select id="purchaseSource" class="form-control source-select">
-                                <option value="">-- اختر مصدر الشراء | Alım Kaynağı Seçin --</option>
-                                <!-- سيتم ملؤها بواسطة JavaScript -->
-                            </select>
+                        <!-- Multiple Purchase Sources Selection -->
+                        <div class="multi-source-container">
+                            <h4 style="color: var(--primary-color); margin-bottom: 15px;">اختيار مصادر الشراء | Alım Kaynaklarını Seçin:</h4>
+                            <div class="form-group">
+                                <label for="purchaseSourceSelect">اختر مصدر شراء | Alım Kaynağı Seçin:</label>
+                                <select id="purchaseSourceSelect" class="form-control source-select">
+                                    <option value="">-- اختر مصدر الشراء | Alım Kaynağı Seçin --</option>
+                                    <!-- سيتم ملؤها بواسطة JavaScript -->
+                                </select>
+                                <button type="button" class="btn btn-sm btn-info" onclick="addPurchaseSource()" style="margin-top: 10px;">
+                                    <i class="fas fa-plus"></i> إضافة مصدر | Kaynak Ekle
+                                </button>
+                            </div>
+                            
+                            <div class="selected-sources-list" id="selectedSourcesList">
+                                <!-- سيتم ملؤها عند إضافة مصادر -->
+                            </div>
+                            
+                            <div id="selectedSourcesSummary" style="margin-top: 15px; padding: 10px; background: #e8f5e9; border-radius: 8px; display: none;">
+                                <p><strong>إجمالي الكمية المختارة | Seçilen Toplam Miktar:</strong> <span id="totalSelectedQuantity">0</span> كغ</p>
+                                <p><strong>متوسط سعر الشراء | Ortalama Alış Fiyatı:</strong> <span id="avgPurchasePrice">0</span> <span class="dollar">$</span></p>
+                            </div>
                         </div>
                         
                         <button type="submit" class="btn btn-success" id="submitSaleBtn">
@@ -1068,13 +1168,14 @@
                                     <th>#</th>
                                     <th>العميل | Müşteri</th>
                                     <th>الكمية | Miktar</th>
+                                    <th>متوسط سعر الشراء | Ort. Alış Fiyatı</th>
                                     <th>سعر البيع | Satış Fiyatı</th>
+                                    <th>متوسط ربح القطعة | Ort. Parça Kârı</th>
                                     <th>الإجمالي | Toplam</th>
                                     <th>المدفوع | Ödenen</th>
                                     <th>المتبقي | Kalan</th>
                                     <th>الربح | Kâr</th>
                                     <th>التاريخ | Tarih</th>
-                                    <th>الحالة | Durum</th>
                                     <th>التحكم | Kontrol</th>
                                 </tr>
                             </thead>
@@ -1083,14 +1184,16 @@
                             </tbody>
                             <tfoot style="font-weight: bold; background-color: #f8f9fa;">
                                 <tr>
-                                    <td colspan="2">الإجمالي | Toplam</td>
+                                    <td colspan="2">إجمالي اليوم | Günlük Toplam</td>
                                     <td id="totalSalesQuantity">0 كغ</td>
+                                    <td></td>
+                                    <td></td>
                                     <td></td>
                                     <td id="totalSalesAmount">0 <span class="dollar">$</span></td>
                                     <td id="totalPaidAmount">0 <span class="dollar">$</span></td>
                                     <td id="totalRemainingAmount">0 <span class="dollar">$</span></td>
                                     <td id="totalProfitFooter">0 <span class="dollar">$</span></td>
-                                    <td colspan="3"></td>
+                                    <td colspan="2"></td>
                                 </tr>
                             </tfoot>
                         </table>
@@ -1145,6 +1248,7 @@
         let purchases = [];
         let sales = [];
         let currentSaleData = null;
+        let selectedSources = []; // مصادر الشراء المختارة للبيع الحالي
         let currentViewDate = new Date().toISOString().split('T')[0]; // تاريخ العرض الحالي
         
         // تحميل البيانات من localStorage إذا كانت موجودة
@@ -1176,6 +1280,9 @@
             
             // إنشاء تقرير اليوم عند التحميل
             generateTodayReport();
+            
+            // إضافة حدث لحقل المبلغ المدفوع
+            document.getElementById('amountPaid').addEventListener('input', updatePaymentRemaining);
         });
         
         // تحديث عرض التاريخ الحالي
@@ -1228,8 +1335,8 @@
         
         // تحديث خيارات مصادر الشراء
         function updatePurchaseSourceOptions() {
-            const purchaseSource = document.getElementById('purchaseSource');
-            purchaseSource.innerHTML = '<option value="">-- اختر مصدر الشراء | Alım Kaynağı Seçin --</option>';
+            const purchaseSourceSelect = document.getElementById('purchaseSourceSelect');
+            purchaseSourceSelect.innerHTML = '<option value="">-- اختر مصدر الشراء | Alım Kaynağı Seçin --</option>';
             
             // عرض جميع المشتريات التي لها كمية متبقية (بغض النظر عن التاريخ)
             purchases.forEach(purchase => {
@@ -1237,14 +1344,130 @@
                     const option = document.createElement('option');
                     option.value = purchase.id;
                     option.textContent = `مصدر #${purchase.id}: ${purchase.remaining.toFixed(2)} كغ متبقي - سعر: ${purchase.price.toFixed(2)}$ للكغ (تاريخ: ${purchase.date})`;
-                    purchaseSource.appendChild(option);
+                    purchaseSourceSelect.appendChild(option);
                 }
             });
             
             // إذا لم توجد مشتريات متاحة
-            if (purchaseSource.options.length === 1) {
-                purchaseSource.innerHTML += '<option value="" disabled>لا توجد مشتريات متاحة للبيع | Satış için mevcut alım yok</option>';
+            if (purchaseSourceSelect.options.length === 1) {
+                purchaseSourceSelect.innerHTML += '<option value="" disabled>لا توجد مشتريات متاحة للبيع | Satış için mevcut alım yok</option>';
             }
+        }
+        
+        // إضافة مصدر شراء للقائمة
+        function addPurchaseSource() {
+            const purchaseSourceSelect = document.getElementById('purchaseSourceSelect');
+            const purchaseId = parseInt(purchaseSourceSelect.value);
+            
+            if (!purchaseId) {
+                alert('الرجاء اختيار مصدر شراء | Lütfen bir alım kaynağı seçin');
+                return;
+            }
+            
+            const purchase = purchases.find(p => p.id === purchaseId);
+            if (!purchase) {
+                alert('المصدر المحدد غير موجود | Seçilen kaynak mevcut değil');
+                return;
+            }
+            
+            // التحقق من عدم تكرار المصدر
+            if (selectedSources.find(s => s.id === purchase.id)) {
+                alert('هذا المصدر مضاف مسبقاً | Bu kaynak zaten eklenmiş');
+                return;
+            }
+            
+            // طلب الكمية المطلوبة من هذا المصدر
+            const maxQuantity = purchase.remaining;
+            const quantity = prompt(`أدخل الكمية المراد سحبها من هذا المصدر (الحد الأقصى: ${maxQuantity.toFixed(2)} كغ) | Bu kaynaktan çekilecek miktarı girin (Maksimum: ${maxQuantity.toFixed(2)} kg):`, maxQuantity.toFixed(2));
+            
+            if (quantity === null) return;
+            
+            const quantityNum = parseFloat(quantity);
+            
+            if (isNaN(quantityNum) || quantityNum <= 0) {
+                alert('الرجاء إدخال كمية صحيحة أكبر من الصفر | Lütfen sıfırdan büyük geçerli bir miktar girin');
+                return;
+            }
+            
+            if (quantityNum > maxQuantity) {
+                alert(`الكمية المطلوبة (${quantityNum.toFixed(2)} كغ) تتجاوز الكمية المتبقية في المصدر (${maxQuantity.toFixed(2)} كغ) | İstenen miktar (${quantityNum.toFixed(2)} kg) kaynaktaki kalan miktarı (${maxQuantity.toFixed(2)} kg) aşıyor`);
+                return;
+            }
+            
+            // إضافة المصدر إلى القائمة المختارة
+            selectedSources.push({
+                id: purchase.id,
+                quantity: quantityNum,
+                price: purchase.price,
+                purchaseDate: purchase.date
+            });
+            
+            // تحديث عرض المصادر المختارة
+            updateSelectedSourcesDisplay();
+            
+            // إعادة تعيين التحديد
+            purchaseSourceSelect.value = '';
+        }
+        
+        // تحديث عرض المصادر المختارة
+        function updateSelectedSourcesDisplay() {
+            const selectedSourcesList = document.getElementById('selectedSourcesList');
+            const summaryDiv = document.getElementById('selectedSourcesSummary');
+            
+            selectedSourcesList.innerHTML = '';
+            
+            if (selectedSources.length === 0) {
+                summaryDiv.style.display = 'none';
+                return;
+            }
+            
+            let totalSelectedQuantity = 0;
+            let totalWeightedPrice = 0;
+            
+            selectedSources.forEach((source, index) => {
+                const purchase = purchases.find(p => p.id === source.id);
+                if (!purchase) return;
+                
+                totalSelectedQuantity += source.quantity;
+                totalWeightedPrice += source.quantity * source.price;
+                
+                const sourceItem = document.createElement('div');
+                sourceItem.className = 'selected-source-item';
+                sourceItem.innerHTML = `
+                    <div class="selected-source-info">
+                        <strong>مصدر #${source.id}</strong>
+                        <div>الكمية: ${source.quantity.toFixed(2)} كغ</div>
+                        <div>السعر: ${source.price.toFixed(2)}$ للكغ</div>
+                        <div>الإجمالي: ${(source.quantity * source.price).toFixed(2)}$</div>
+                    </div>
+                    <div class="selected-source-actions">
+                        <button class="btn-remove-source" onclick="removeSelectedSource(${index})" title="حذف المصدر | Kaynağı Sil">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                `;
+                selectedSourcesList.appendChild(sourceItem);
+            });
+            
+            // تحديث الملخص
+            const avgPurchasePrice = totalSelectedQuantity > 0 ? totalWeightedPrice / totalSelectedQuantity : 0;
+            
+            document.getElementById('totalSelectedQuantity').textContent = totalSelectedQuantity.toFixed(2);
+            document.getElementById('avgPurchasePrice').textContent = avgPurchasePrice.toFixed(2);
+            
+            summaryDiv.style.display = 'block';
+            
+            // تحديث حقل كمية البيع إذا كانت القيمة غير محددة
+            const saleQuantityInput = document.getElementById('saleQuantity');
+            if (!saleQuantityInput.value || parseFloat(saleQuantityInput.value) !== totalSelectedQuantity) {
+                saleQuantityInput.value = totalSelectedQuantity.toFixed(2);
+            }
+        }
+        
+        // إزالة مصدر من القائمة المختارة
+        function removeSelectedSource(index) {
+            selectedSources.splice(index, 1);
+            updateSelectedSourcesDisplay();
         }
         
         // إضافة عملية بيع جديدة
@@ -1254,38 +1477,44 @@
             const customerName = document.getElementById('customerName').value;
             const saleQuantity = parseFloat(document.getElementById('saleQuantity').value);
             const salePrice = parseFloat(document.getElementById('salePrice').value);
-            const purchaseSourceId = parseInt(document.getElementById('purchaseSource').value);
             
             if (saleQuantity <= 0 || salePrice <= 0) {
                 alert('الرجاء إدخال قيم صحيحة أكبر من الصفر | Lütfen sıfırdan büyük geçerli değerler girin');
                 return;
             }
             
-            if (!purchaseSourceId) {
-                alert('الرجاء اختيار مصدر للكمية المباعة | Lütfen satılacak miktar için bir kaynak seçin');
+            if (selectedSources.length === 0) {
+                alert('الرجاء اختيار مصدر واحد على الأقل للبيع | Lütfen satış için en az bir kaynak seçin');
                 return;
             }
             
-            const purchase = purchases.find(p => p.id === purchaseSourceId);
-            if (!purchase) {
-                alert('المصدر المحدد غير موجود | Seçilen kaynak mevcut değil');
+            // حساب إجمالي الكمية المختارة ومتوسط سعر الشراء
+            let totalSelectedQuantity = 0;
+            let totalWeightedPrice = 0;
+            
+            selectedSources.forEach(source => {
+                totalSelectedQuantity += source.quantity;
+                totalWeightedPrice += source.quantity * source.price;
+            });
+            
+            if (Math.abs(saleQuantity - totalSelectedQuantity) > 0.01) {
+                alert(`كمية البيع (${saleQuantity.toFixed(2)} كغ) لا تطابق إجمالي الكمية المختارة من المصادر (${totalSelectedQuantity.toFixed(2)} كغ) | Satış miktarı (${saleQuantity.toFixed(2)} kg) seçilen kaynakların toplam miktarıyla (${totalSelectedQuantity.toFixed(2)} kg) eşleşmiyor`);
                 return;
             }
             
-            if (saleQuantity > purchase.remaining) {
-                alert(`الكمية المطلوبة (${saleQuantity.toFixed(2)} كغ) تتجاوز الكمية المتبقية في المصدر (${purchase.remaining.toFixed(2)} كغ) | İstenen miktar (${saleQuantity.toFixed(2)} kg) kaynaktaki kalan miktarı (${purchase.remaining.toFixed(2)} kg) aşıyor`);
-                return;
-            }
+            const avgPurchasePrice = totalSelectedQuantity > 0 ? totalWeightedPrice / totalSelectedQuantity : 0;
+            const avgProfitPerUnit = salePrice - avgPurchasePrice;
             
             // حفظ بيانات البيع الحالية لعرضها في نموذج الدفع
             currentSaleData = {
                 customerName: customerName,
                 quantity: saleQuantity,
                 price: salePrice,
+                avgPurchasePrice: avgPurchasePrice,
+                avgProfitPerUnit: avgProfitPerUnit,
                 total: saleQuantity * salePrice,
-                purchaseSourceId: purchaseSourceId,
-                purchasePrice: purchase.price,
-                profit: (salePrice - purchase.price) * saleQuantity,
+                selectedSources: JSON.parse(JSON.stringify(selectedSources)), // نسخة عميقة
+                profit: avgProfitPerUnit * saleQuantity,
                 date: currentViewDate // استخدام تاريخ العرض الحالي
             };
             
@@ -1299,14 +1528,16 @@
             
             document.getElementById('modalCustomerName').textContent = currentSaleData.customerName;
             document.getElementById('modalSaleQuantity').textContent = currentSaleData.quantity.toFixed(2) + ' كغ';
+            document.getElementById('modalAvgPurchasePrice').innerHTML = currentSaleData.avgPurchasePrice.toFixed(2) + ' <span class="dollar">$</span>';
             document.getElementById('modalSalePrice').innerHTML = currentSaleData.price.toFixed(2) + ' <span class="dollar">$</span>';
+            document.getElementById('modalAvgProfitPerUnit').innerHTML = currentSaleData.avgProfitPerUnit.toFixed(2) + ' <span class="dollar">$</span>';
             document.getElementById('modalTotalAmount').innerHTML = currentSaleData.total.toFixed(2) + ' <span class="dollar">$</span>';
             
             // تعيين تاريخ اليوم
             document.getElementById('paymentDate').textContent = currentViewDate;
             
             // إعادة تعيين حقل المبلغ المدفوع
-            document.getElementById('amountPaid').value = '';
+            document.getElementById('amountPaid').value = '0';
             document.getElementById('paymentRemaining').classList.remove('active');
             
             // عرض النموذج
@@ -1317,23 +1548,26 @@
         function closePaymentModal() {
             document.getElementById('paymentModal').classList.remove('active');
             currentSaleData = null;
+            selectedSources = []; // إعادة تعيين المصادر المختارة
+            updateSelectedSourcesDisplay();
         }
         
         // تحديث المبلغ المتبقي عند إدخال المبلغ المدفوع
-        document.getElementById('amountPaid').addEventListener('input', function() {
+        function updatePaymentRemaining() {
             if (!currentSaleData) return;
             
             const amountPaid = parseFloat(this.value) || 0;
             const remainingAmount = currentSaleData.total - amountPaid;
             
             document.getElementById('remainingAmount').innerHTML = remainingAmount.toFixed(2) + ' <span class="dollar">$</span>';
+            document.getElementById('actualAmount').innerHTML = amountPaid.toFixed(2) + ' <span class="dollar">$</span>';
             
             if (amountPaid > 0) {
                 document.getElementById('paymentRemaining').classList.add('active');
             } else {
                 document.getElementById('paymentRemaining').classList.remove('active');
             }
-        });
+        }
         
         // إكمال عملية البيع مع الدفع
         function completeSaleWithPayment() {
@@ -1352,14 +1586,14 @@
                 return;
             }
             
-            const purchase = purchases.find(p => p.id === currentSaleData.purchaseSourceId);
-            if (!purchase) {
-                alert('المصدر المحدد غير موجود | Seçilen kaynak mevcut değil');
-                return;
-            }
-            
-            // تحديث الكمية المتبقية من الشراء
-            purchase.remaining -= currentSaleData.quantity;
+            // تحديث الكمية المتبقية من المشتريات المختارة
+            currentSaleData.selectedSources.forEach(source => {
+                const purchase = purchases.find(p => p.id === source.id);
+                if (purchase) {
+                    purchase.remaining -= source.quantity;
+                    if (purchase.remaining < 0) purchase.remaining = 0;
+                }
+            });
             
             // إنشاء سجل البيع
             const sale = {
@@ -1367,12 +1601,13 @@
                 customerName: currentSaleData.customerName,
                 quantity: currentSaleData.quantity,
                 price: currentSaleData.price,
+                avgPurchasePrice: currentSaleData.avgPurchasePrice,
+                avgProfitPerUnit: currentSaleData.avgProfitPerUnit,
                 total: currentSaleData.total,
                 paid: amountPaid,
                 remaining: remainingAmount,
                 profit: currentSaleData.profit,
-                purchaseSourceId: currentSaleData.purchaseSourceId,
-                purchasePrice: currentSaleData.purchasePrice,
+                selectedSources: currentSaleData.selectedSources,
                 date: currentViewDate,
                 status: remainingAmount > 0 ? 'pending' : 'completed'
             };
@@ -1386,7 +1621,8 @@
             
             // إعادة تعيين النموذج
             document.getElementById('saleForm').reset();
-            document.getElementById('purchaseSource').value = '';
+            selectedSources = [];
+            updateSelectedSourcesDisplay();
             
             // إغلاق نموذج الدفع
             closePaymentModal();
@@ -1410,12 +1646,14 @@
         function deleteSale(saleId) {
             if (confirm('هل تريد حذف عملية البيع هذه؟ | Bu satışı silmek istiyor musunuz?')) {
                 const sale = sales.find(s => s.id === saleId);
-                if (sale) {
-                    // استعادة الكمية المتبقية للمصدر
-                    const purchase = purchases.find(p => p.id === sale.purchaseSourceId);
-                    if (purchase) {
-                        purchase.remaining += sale.quantity;
-                    }
+                if (sale && sale.selectedSources) {
+                    // استعادة الكمية المتبقية للمصادر
+                    sale.selectedSources.forEach(source => {
+                        const purchase = purchases.find(p => p.id === source.id);
+                        if (purchase) {
+                            purchase.remaining += source.quantity;
+                        }
+                    });
                 }
                 
                 sales = sales.filter(s => s.id !== saleId);
@@ -1474,34 +1712,23 @@
                 return;
             }
             
-            // تحديث الكمية في المصدر
-            const purchase = purchases.find(p => p.id === sale.purchaseSourceId);
-            if (purchase) {
-                // استعادة الكمية القديمة وإضافة الجديدة
-                purchase.remaining += sale.quantity;
-                purchase.remaining -= parseFloat(newQuantity);
-                
-                if (purchase.remaining < 0) {
-                    alert('الكمية تتجاوز المتوفر في المصدر | Miktar kaynaktaki mevcut miktarı aşıyor');
-                    purchase.remaining += parseFloat(newQuantity); // التراجع
-                    return;
-                }
+            // استعادة الكمية القديمة من المصادر
+            if (sale.selectedSources) {
+                sale.selectedSources.forEach(source => {
+                    const purchase = purchases.find(p => p.id === source.id);
+                    if (purchase) {
+                        purchase.remaining += source.quantity;
+                    }
+                });
             }
             
-            sale.quantity = parseFloat(newQuantity);
-            sale.price = parseFloat(newPrice);
-            sale.total = newTotal;
-            sale.paid = parseFloat(newPaid);
-            sale.remaining = newTotal - sale.paid;
-            sale.profit = (sale.price - sale.purchasePrice) * sale.quantity;
-            sale.status = sale.remaining > 0 ? 'pending' : 'completed';
+            // TODO: هنا يجب إعادة حساب المصادر للكمية الجديدة
+            // للتبسيط، سنطلب من المستخدم إعادة تحديد المصادر
             
-            saveData();
-            updatePurchasesTable();
-            updateSalesTable();
-            updateDashboardStats();
-            updatePurchaseSourceOptions();
-            alert('تم تعديل عملية البيع بنجاح | Satış başarıyla düzenlendi');
+            alert('للتعديل، يرجى حذف عملية البيع الحالية وإضافة بيع جديد بالمعلومات الصحيحة | Düzenlemek için lütfen mevcut satışı silin ve doğru bilgilerle yeni bir satış ekleyin');
+            
+            // لحذف البيع الحالي
+            deleteSale(saleId);
         }
         
         // تحديث جدول المشتريات مع الفلترة
@@ -1565,7 +1792,7 @@
                 document.getElementById('purchasesTableContainer').style.display = 'none';
             }
             
-            // تحديث الإجمالي في التذييل
+            // تحديث الإجمالي في التذييل (لليوم المحدد فقط)
             document.getElementById('totalPurchasesFooter').innerHTML = totalPurchasesAmount.toFixed(2) + ' <span class="dollar">$</span>';
         }
         
@@ -1579,11 +1806,13 @@
             let totalPaidAmount = 0;
             let totalRemainingAmount = 0;
             let totalProfit = 0;
+            let totalProfitPerUnit = 0;
+            let totalPurchaseCost = 0;
             let hasSales = false;
             
             const filterType = document.getElementById('salesFilter').value;
             
-            // تصفية المبيعات حسب التاريخ الحالي
+            // تصفية المبيعات حسب التاريخ الحالي فقط
             const filteredSales = sales.filter(sale => sale.date === currentViewDate);
             
             filteredSales.forEach((sale, index) => {
@@ -1608,25 +1837,27 @@
                     totalPaidAmount += sale.paid;
                     totalRemainingAmount += sale.remaining;
                     totalProfit += sale.profit;
+                    totalProfitPerUnit += sale.avgProfitPerUnit;
+                    totalPurchaseCost += (sale.quantity * sale.avgPurchasePrice);
                     
                     const profitClass = sale.profit >= 0 ? 'badge-sale' : 'badge-purchase';
                     const profitSign = sale.profit >= 0 ? '+' : '';
-                    const statusClass = sale.status === 'completed' ? 'badge-sale' : 'badge-pending';
-                    const statusText = sale.status === 'completed' ? 'مكتمل' : 'معلق';
-                    const statusTextTR = sale.status === 'completed' ? 'Tamamlandı' : 'Beklemede';
+                    const remainingColor = sale.remaining > 0 ? 'color: #e74c3c; font-weight: bold;' : 'color: #27ae60; font-weight: bold;';
+                    const statusText = sale.remaining > 0 ? `<span style="color: #e74c3c;">${sale.remaining.toFixed(2)}$</span>` : '<span style="color: #27ae60;">مكتمل</span>';
                     
                     const row = document.createElement('tr');
                     row.innerHTML = `
                         <td>${index + 1}</td>
                         <td>${sale.customerName}</td>
                         <td>${sale.quantity.toFixed(2)} كغ</td>
+                        <td><span class="dollar">$</span> ${sale.avgPurchasePrice.toFixed(2)}</td>
                         <td><span class="dollar">$</span> ${sale.price.toFixed(2)}</td>
+                        <td><span class="dollar">$</span> ${sale.avgProfitPerUnit.toFixed(2)}</td>
                         <td><span class="dollar">$</span> ${sale.total.toFixed(2)}</td>
                         <td><span class="dollar">$</span> ${sale.paid.toFixed(2)}</td>
-                        <td><span class="dollar">$</span> ${sale.remaining.toFixed(2)}</td>
+                        <td style="${remainingColor}"><span class="dollar">$</span> ${sale.remaining.toFixed(2)}</td>
                         <td><span class="badge ${profitClass}"><span class="dollar">$</span> ${profitSign}${sale.profit.toFixed(2)}</span></td>
                         <td>${sale.date}</td>
-                        <td><span class="badge ${statusClass}">${statusText} | ${statusTextTR}</span></td>
                         <td>
                             <button class="btn btn-sm btn-warning" onclick="editSale(${sale.id})" title="تعديل | Düzenle">
                                 <i class="fas fa-edit"></i>
@@ -1649,7 +1880,7 @@
                 document.getElementById('salesTableContainer').style.display = 'none';
             }
             
-            // تحديث الإجماليات في التذييل
+            // تحديث الإجماليات في التذييل (لليوم المحدد فقط)
             document.getElementById('totalSalesQuantity').textContent = totalSalesQuantity.toFixed(2) + ' كغ';
             document.getElementById('totalSalesAmount').innerHTML = totalSalesAmount.toFixed(2) + ' <span class="dollar">$</span>';
             document.getElementById('totalPaidAmount').innerHTML = totalPaidAmount.toFixed(2) + ' <span class="dollar">$</span>';
@@ -1659,26 +1890,26 @@
         
         // تحديث إحصائيات لوحة التحكم حسب التاريخ المحدد
         function updateDashboardStats() {
-            // حساب إحصائيات اليوم المحدد
+            // حساب إحصائيات اليوم المحدد فقط
             const todaySales = sales.filter(sale => sale.date === currentViewDate);
             const todayPurchases = purchases.filter(purchase => purchase.date === currentViewDate);
             const activePurchases = todayPurchases.filter(purchase => purchase.remaining > 0);
             
-            // إجمالي المشتريات النشطة لليوم
+            // إجمالي المشتريات النشطة لليوم المحدد فقط
             const totalActivePurchasesQuantity = activePurchases.reduce((sum, purchase) => sum + purchase.quantity, 0);
             const totalActivePurchasesAmount = activePurchases.reduce((sum, purchase) => sum + purchase.total, 0);
             
-            // إجمالي مبيعات اليوم
+            // إجمالي مبيعات اليوم المحدد فقط
             const totalTodaySalesQuantity = todaySales.reduce((sum, sale) => sum + sale.quantity, 0);
             const totalTodaySalesAmount = todaySales.reduce((sum, sale) => sum + sale.total, 0);
             
-            // إجمالي المشتريات والمبيعات الكلية للمخزون
+            // إجمالي المشتريات والمبيعات الكلية للمخزون (جميع الأيام)
             const totalPurchasesAll = purchases.reduce((sum, purchase) => sum + purchase.quantity, 0);
             const totalSalesAll = sales.reduce((sum, sale) => sum + sale.quantity, 0);
             const currentInventoryQuantity = totalPurchasesAll - totalSalesAll;
             const currentInventoryValue = purchases.reduce((sum, purchase) => sum + (purchase.remaining * purchase.price), 0);
             
-            // إجمالي الربح والمبلغ المستحق لليوم
+            // إجمالي الربح والمبلغ المستحق لليوم المحدد فقط
             const totalTodayProfit = todaySales.reduce((sum, sale) => sum + sale.profit, 0);
             const totalTodayRemaining = todaySales.reduce((sum, sale) => sum + sale.remaining, 0);
             
@@ -1699,8 +1930,8 @@
             currentViewDate = today;
             
             // تحديث الفلاتر
-            document.getElementById('purchaseFilter').value = 'active';
-            document.getElementById('salesFilter').value = 'pending';
+            document.getElementById('purchaseFilter').value = 'all';
+            document.getElementById('salesFilter').value = 'today';
             
             updateDateDisplay();
             updatePurchasesTable();
@@ -1722,8 +1953,8 @@
             currentViewDate = previousDay;
             
             // تحديث الفلاتر
-            document.getElementById('purchaseFilter').value = 'active';
-            document.getElementById('salesFilter').value = 'pending';
+            document.getElementById('purchaseFilter').value = 'all';
+            document.getElementById('salesFilter').value = 'today';
             
             updateDateDisplay();
             updatePurchasesTable();
@@ -1752,8 +1983,8 @@
             currentViewDate = nextDay;
             
             // تحديث الفلاتر
-            document.getElementById('purchaseFilter').value = 'active';
-            document.getElementById('salesFilter').value = 'pending';
+            document.getElementById('purchaseFilter').value = 'all';
+            document.getElementById('salesFilter').value = 'today';
             
             updateDateDisplay();
             updatePurchasesTable();
@@ -1774,31 +2005,32 @@
             updatePurchasesTable();
             updateSalesTable();
             
-            // تحديث الإحصائيات لتعكس جميع البيانات
-            const totalPurchasesAll = purchases.reduce((sum, purchase) => sum + purchase.quantity, 0);
-            const totalPurchasesAmountAll = purchases.reduce((sum, purchase) => sum + purchase.total, 0);
-            const totalSalesAll = sales.reduce((sum, sale) => sum + sale.quantity, 0);
-            const totalSalesAmountAll = sales.reduce((sum, sale) => sum + sale.total, 0);
-            const totalProfitAll = sales.reduce((sum, sale) => sum + sale.profit, 0);
-            const totalRemainingAll = sales.reduce((sum, sale) => sum + sale.remaining, 0);
+            // تحديث الإحصائيات لتعكس جميع البيانات للتاريخ المحدد فقط
+            const todaySales = sales.filter(sale => sale.date === currentViewDate);
+            const todayPurchases = purchases.filter(purchase => purchase.date === currentViewDate);
+            const activePurchases = todayPurchases.filter(purchase => purchase.remaining > 0);
             
-            // حساب المشتريات النشطة (التي لها كمية متبقية)
-            const activePurchases = purchases.filter(purchase => purchase.remaining > 0);
             const totalActivePurchasesQuantity = activePurchases.reduce((sum, purchase) => sum + purchase.quantity, 0);
             const totalActivePurchasesAmount = activePurchases.reduce((sum, purchase) => sum + purchase.total, 0);
+            const totalTodaySalesQuantity = todaySales.reduce((sum, sale) => sum + sale.quantity, 0);
+            const totalTodaySalesAmount = todaySales.reduce((sum, sale) => sum + sale.total, 0);
+            const totalTodayProfit = todaySales.reduce((sum, sale) => sum + sale.profit, 0);
+            const totalTodayRemaining = todaySales.reduce((sum, sale) => sum + sale.remaining, 0);
             
-            // حساب المخزون الحالي
+            // حساب المخزون الحالي (جميع الأيام)
+            const totalPurchasesAll = purchases.reduce((sum, purchase) => sum + purchase.quantity, 0);
+            const totalSalesAll = sales.reduce((sum, sale) => sum + sale.quantity, 0);
             const currentInventoryQuantity = totalPurchasesAll - totalSalesAll;
             const currentInventoryValue = purchases.reduce((sum, purchase) => sum + (purchase.remaining * purchase.price), 0);
             
             document.getElementById('total-purchases').textContent = totalActivePurchasesQuantity.toFixed(2) + ' كغ';
             document.getElementById('purchases-total').innerHTML = totalActivePurchasesAmount.toFixed(2) + ' <span class="dollar">$</span>';
-            document.getElementById('total-sales').textContent = totalSalesAll.toFixed(2) + ' كغ';
-            document.getElementById('sales-total').innerHTML = totalSalesAmountAll.toFixed(2) + ' <span class="dollar">$</span>';
+            document.getElementById('total-sales').textContent = totalTodaySalesQuantity.toFixed(2) + ' كغ';
+            document.getElementById('sales-total').innerHTML = totalTodaySalesAmount.toFixed(2) + ' <span class="dollar">$</span>';
             document.getElementById('current-inventory').textContent = currentInventoryQuantity.toFixed(2) + ' كغ';
             document.getElementById('inventory-total').innerHTML = currentInventoryValue.toFixed(2) + ' <span class="dollar">$</span>';
-            document.getElementById('total-profit').innerHTML = totalProfitAll.toFixed(2) + ' <span class="dollar">$</span>';
-            document.getElementById('pending-amount').innerHTML = `إجمالي المستحق: ${totalRemainingAll.toFixed(2)} <span class="dollar">$</span>`;
+            document.getElementById('total-profit').innerHTML = totalTodayProfit.toFixed(2) + ' <span class="dollar">$</span>';
+            document.getElementById('pending-amount').innerHTML = `إجمالي المستحق: ${totalTodayRemaining.toFixed(2)} <span class="dollar">$</span>`;
         }
         
         // عند تغيير تاريخ العرض
@@ -1806,8 +2038,8 @@
             currentViewDate = this.value;
             
             // تحديث الفلاتر
-            document.getElementById('purchaseFilter').value = 'active';
-            document.getElementById('salesFilter').value = 'pending';
+            document.getElementById('purchaseFilter').value = 'all';
+            document.getElementById('salesFilter').value = 'today';
             
             updateDateDisplay();
             updatePurchasesTable();
@@ -1838,7 +2070,7 @@
                 return;
             }
             
-            // تصفية المبيعات حسب التاريخ المحدد
+            // تصفية المبيعات حسب التاريخ المحدد فقط
             const dateSales = sales.filter(sale => sale.date === selectedDate);
             
             if (dateSales.length === 0) {
@@ -1852,48 +2084,50 @@
                 `;
                 
                 // تحديث التقرير القابل للطباعة أيضًا
-                updatePrintableReport(selectedDate, [], 0, 0, 0, 0, 0, 0, 0, 0, 0);
+                updatePrintableReport(selectedDate, [], 0, 0, 0, 0, 0);
                 return;
             }
             
-            // إحصائيات التقرير
+            // إحصائيات التقرير للتاريخ المحدد فقط
             const totalQuantity = dateSales.reduce((sum, sale) => sum + sale.quantity, 0);
             const totalRevenue = dateSales.reduce((sum, sale) => sum + sale.total, 0);
             const totalProfit = dateSales.reduce((sum, sale) => sum + sale.profit, 0);
             const totalPaid = dateSales.reduce((sum, sale) => sum + sale.paid, 0);
             const totalRemaining = dateSales.reduce((sum, sale) => sum + sale.remaining, 0);
             
-            // إجماليات المشتريات والمبيعات الكلية
-            const totalPurchasesAll = purchases.reduce((sum, purchase) => sum + purchase.quantity, 0);
-            const totalSalesAll = sales.reduce((sum, sale) => sum + sale.quantity, 0);
-            const totalProfitAll = sales.reduce((sum, sale) => sum + sale.profit, 0);
-            const totalRemainingAll = sales.reduce((sum, sale) => sum + sale.remaining, 0);
+            // حساب إجمالي تكلفة الشراء للتاريخ المحدد
+            let totalPurchaseCost = 0;
+            dateSales.forEach(sale => {
+                totalPurchaseCost += sale.quantity * sale.avgPurchasePrice;
+            });
             
-            // إنشاء جدول المبيعات للتقرير
+            // إنشاء جدول المبيعات للتقرير مع إضافة سعر الشراء وربح القطعة
             let salesTableHTML = '';
             dateSales.forEach((sale, index) => {
                 const profitClass = sale.profit >= 0 ? 'profit-positive' : 'profit-negative';
-                const statusText = sale.status === 'completed' ? 'مكتمل' : 'معلق';
-                const statusTextTR = sale.status === 'completed' ? 'Tamamlandı' : 'Beklemede';
+                const remainingColor = sale.remaining > 0 ? 'color: #e74c3c; font-weight: bold;' : 'color: #27ae60; font-weight: bold;';
+                const statusText = sale.remaining > 0 ? `<span style="color: #e74c3c;">${sale.remaining.toFixed(2)}$</span>` : '<span style="color: #27ae60;">مكتمل</span>';
                 
                 salesTableHTML += `
                     <tr>
                         <td>${index + 1}</td>
                         <td>${sale.customerName}</td>
                         <td>${sale.quantity.toFixed(2)} كغ</td>
+                        <td><span class="dollar">$</span> ${sale.avgPurchasePrice.toFixed(2)}</td>
                         <td><span class="dollar">$</span> ${sale.price.toFixed(2)}</td>
+                        <td><span class="dollar">$</span> ${sale.avgProfitPerUnit.toFixed(2)}</td>
                         <td><span class="dollar">$</span> ${sale.total.toFixed(2)}</td>
                         <td><span class="dollar">$</span> ${sale.paid.toFixed(2)}</td>
-                        <td><span class="dollar">$</span> ${sale.remaining.toFixed(2)}</td>
+                        <td style="${remainingColor}"><span class="dollar">$</span> ${sale.remaining.toFixed(2)}</td>
                         <td class="${profitClass}"><span class="dollar">$</span> ${sale.profit.toFixed(2)}</td>
-                        <td>${statusText} | ${statusTextTR}</td>
+                        <td>${statusText}</td>
                     </tr>
                 `;
             });
             
             let reportHTML = `
                 <div style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); padding: 25px; border-radius: var(--border-radius); margin-bottom: 30px;">
-                    <h3 style="color: var(--primary-color); text-align: center; margin-bottom: 20px;">ملخص التقرير | Rapor Özeti - ${selectedDate}</h3>
+                    <h3 style="color: var(--primary-color); text-align: center; margin-bottom: 20px;">ملخص التقرير اليومي | Günlük Rapor Özeti - ${selectedDate}</h3>
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
                         <div style="text-align: center; padding: 15px; background: white; border-radius: 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.05);">
                             <h4 style="color: var(--primary-color); margin-bottom: 10px;">عدد المعاملات | İşlem Sayısı</h4>
@@ -1922,7 +2156,9 @@
                                 <th>#</th>
                                 <th>اسم العميل | Müşteri Adı</th>
                                 <th>الكمية | Miktar</th>
+                                <th>متوسط سعر الشراء | Ort. Alış Fiyatı</th>
                                 <th>سعر البيع | Satış Fiyatı</th>
+                                <th>متوسط ربح القطعة | Ort. Parça Kârı</th>
                                 <th>الإجمالي | Toplam</th>
                                 <th>المدفوع | Ödenen</th>
                                 <th>المتبقي | Kalan</th>
@@ -1937,6 +2173,8 @@
                             <tr>
                                 <td colspan="2">إجمالي اليوم | Günlük Toplam</td>
                                 <td>${totalQuantity.toFixed(2)} كغ</td>
+                                <td><span class="dollar">$</span> ${totalPurchaseCost.toFixed(2)}</td>
+                                <td></td>
                                 <td></td>
                                 <td><span class="dollar">$</span> ${totalRevenue.toFixed(2)}</td>
                                 <td><span class="dollar">$</span> ${totalPaid.toFixed(2)}</td>
@@ -1949,27 +2187,19 @@
                 </div>
                 
                 <div style="margin-top: 30px; background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); padding: 25px; border-radius: var(--border-radius);">
-                    <h3 style="color: var(--primary-color); margin-bottom: 20px; text-align: center;">الإجماليات الكلية | Genel Toplamlar</h3>
+                    <h3 style="color: var(--primary-color); margin-bottom: 20px; text-align: center;">الإجماليات النهائية | Nihai Toplamlar</h3>
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
                         <div style="text-align: center; padding: 15px; background: white; border-radius: 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.05);">
-                            <h4 style="color: var(--primary-color); margin-bottom: 10px;">إجمالي المشتريات | Toplam Alımlar</h4>
-                            <p style="font-size: 1.5rem; font-weight: bold;">${totalPurchasesAll.toFixed(2)} كغ</p>
-                            <p style="font-size: 1.2rem; color: #666;"><span class="dollar">$</span> ${purchases.reduce((sum, purchase) => sum + purchase.total, 0).toFixed(2)}</p>
+                            <h4 style="color: var(--primary-color); margin-bottom: 10px;">إجمالي تكلفة الشراء | Toplam Alış Maliyeti</h4>
+                            <p style="font-size: 1.5rem; font-weight: bold; color: var(--secondary-color);"><span class="dollar">$</span> ${totalPurchaseCost.toFixed(2)}</p>
                         </div>
                         <div style="text-align: center; padding: 15px; background: white; border-radius: 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.05);">
-                            <h4 style="color: var(--primary-color); margin-bottom: 10px;">إجمالي المبيعات | Toplam Satışlar</h4>
-                            <p style="font-size: 1.5rem; font-weight: bold;">${totalSalesAll.toFixed(2)} كغ</p>
-                            <p style="font-size: 1.2rem; color: #666;"><span class="dollar">$</span> ${sales.reduce((sum, sale) => sum + sale.total, 0).toFixed(2)}</p>
+                            <h4 style="color: var(--primary-color); margin-bottom: 10px;">إجمالي إيرادات البيع | Toplam Satış Geliri</h4>
+                            <p style="font-size: 1.5rem; font-weight: bold; color: var(--accent-color);"><span class="dollar">$</span> ${totalRevenue.toFixed(2)}</p>
                         </div>
                         <div style="text-align: center; padding: 15px; background: white; border-radius: 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.05);">
-                            <h4 style="color: var(--primary-color); margin-bottom: 10px;">المخزون الحالي | Mevcut Stok</h4>
-                            <p style="font-size: 1.5rem; font-weight: bold;">${(totalPurchasesAll - totalSalesAll).toFixed(2)} كغ</p>
-                            <p style="font-size: 1.2rem; color: #666;"><span class="dollar">$</span> ${purchases.reduce((sum, purchase) => sum + (purchase.remaining * purchase.price), 0).toFixed(2)}</p>
-                        </div>
-                        <div style="text-align: center; padding: 15px; background: white; border-radius: 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.05);">
-                            <h4 style="color: var(--primary-color); margin-bottom: 10px;">إجمالي الربح الكلي | Toplam Kâr</h4>
-                            <p style="font-size: 1.5rem; font-weight: bold; color: var(--success-color);"><span class="dollar">$</span> ${totalProfitAll.toFixed(2)}</p>
-                            <p style="font-size: 1.2rem; color: #e74c3c; font-weight: bold;">مستحق: <span class="dollar">$</span> ${totalRemainingAll.toFixed(2)}</p>
+                            <h4 style="color: var(--primary-color); margin-bottom: 10px;">إجمالي الربح الصافي | Toplam Net Kâr</h4>
+                            <p style="font-size: 1.5rem; font-weight: bold; color: var(--success-color);"><span class="dollar">$</span> ${totalProfit.toFixed(2)}</p>
                         </div>
                     </div>
                 </div>
@@ -1978,26 +2208,29 @@
             document.getElementById('reportContent').innerHTML = reportHTML;
             
             // تحديث التقرير القابل للطباعة أيضًا
-            updatePrintableReport(selectedDate, dateSales, totalQuantity, totalRevenue, totalProfit, totalPaid, totalRemaining, totalPurchasesAll, totalSalesAll, totalProfitAll, totalRemainingAll);
+            updatePrintableReport(selectedDate, dateSales, totalQuantity, totalPurchaseCost, totalRevenue, totalProfit, totalPaid, totalRemaining);
         }
         
         // تحديث التقرير القابل للطباعة
-        function updatePrintableReport(selectedDate, dateSales, totalQuantity, totalRevenue, totalProfit, totalPaid, totalRemaining, totalPurchasesAll, totalSalesAll, totalProfitAll, totalRemainingAll) {
+        function updatePrintableReport(selectedDate, dateSales, totalQuantity, totalPurchaseCost, totalRevenue, totalProfit, totalPaid, totalRemaining) {
             // إنشاء جدول المبيعات للتقرير القابل للطباعة
             let salesTableHTML = '';
             dateSales.forEach((sale, index) => {
                 const profitClass = sale.profit >= 0 ? 'profit-positive' : 'profit-negative';
-                const statusText = sale.status === 'completed' ? 'مكتمل' : 'معلق';
+                const remainingColor = sale.remaining > 0 ? 'remaining-red' : 'paid-green';
+                const statusText = sale.remaining > 0 ? `<span class="remaining-red">${sale.remaining.toFixed(2)}$</span>` : '<span class="paid-green">مكتمل</span>';
                 
                 salesTableHTML += `
                     <tr>
                         <td>${index + 1}</td>
                         <td>${sale.customerName}</td>
                         <td>${sale.quantity.toFixed(2)} كغ</td>
+                        <td><span class="dollar-print">$</span> ${sale.avgPurchasePrice.toFixed(2)}</td>
                         <td><span class="dollar-print">$</span> ${sale.price.toFixed(2)}</td>
+                        <td><span class="dollar-print">$</span> ${sale.avgProfitPerUnit.toFixed(2)}</td>
                         <td><span class="dollar-print">$</span> ${sale.total.toFixed(2)}</td>
                         <td><span class="dollar-print">$</span> ${sale.paid.toFixed(2)}</td>
-                        <td><span class="dollar-print">$</span> ${sale.remaining.toFixed(2)}</td>
+                        <td class="${remainingColor}"><span class="dollar-print">$</span> ${sale.remaining.toFixed(2)}</td>
                         <td class="${profitClass}"><span class="dollar-print">$</span> ${sale.profit.toFixed(2)}</td>
                         <td>${statusText}</td>
                     </tr>
@@ -2005,9 +2238,6 @@
             });
             
             const printDate = new Date().toLocaleDateString('ar-EG');
-            const totalPurchasesAmount = purchases.reduce((sum, purchase) => sum + purchase.total, 0);
-            const totalSalesAmount = sales.reduce((sum, sale) => sum + sale.total, 0);
-            const currentInventoryValue = purchases.reduce((sum, purchase) => sum + (purchase.remaining * purchase.price), 0);
             
             const printableReportHTML = `
                 <div class="print-header">
@@ -2024,16 +2254,16 @@
                 </div>
                 
                 <div class="print-summary">
-                    <h3 style="text-align: center; margin-bottom: 15px;">ملخص التقرير | Rapor Özeti</h3>
+                    <h3 style="text-align: center; margin-bottom: 15px;">ملخص التقرير اليومي | Günlük Rapor Özeti</h3>
                     <div style="display: flex; justify-content: space-around; flex-wrap: wrap;">
                         <div style="text-align: center; padding: 10px;">
                             <p><strong>عدد المعاملات | İşlem Sayısı:</strong> ${dateSales.length}</p>
                             <p><strong>إجمالي الكمية المباعة | Toplam Satılan Miktar:</strong> ${totalQuantity.toFixed(2)} كغ</p>
-                            <p><strong>إجمالي الإيرادات | Toplam Gelir:</strong> <span class="dollar-print">$</span> ${totalRevenue.toFixed(2)}</p>
+                            <p><strong>إجمالي تكلفة الشراء | Toplam Alış Maliyeti:</strong> <span class="dollar-print">$</span> ${totalPurchaseCost.toFixed(2)}</p>
                         </div>
                         <div style="text-align: center; padding: 10px;">
+                            <p><strong>إجمالي الإيرادات | Toplam Gelir:</strong> <span class="dollar-print">$</span> ${totalRevenue.toFixed(2)}</p>
                             <p><strong>إجمالي المدفوع | Toplam Ödenen:</strong> <span class="dollar-print">$</span> ${totalPaid.toFixed(2)}</p>
-                            <p><strong>إجمالي الربح | Toplam Kâr:</strong> <span class="dollar-print">$</span> ${totalProfit.toFixed(2)}</p>
                             <p><strong>المبلغ المستحق | Alacak:</strong> <span class="dollar-print">$</span> ${totalRemaining.toFixed(2)}</p>
                         </div>
                     </div>
@@ -2046,7 +2276,9 @@
                             <th>#</th>
                             <th>اسم العميل<br>Müşteri Adı</th>
                             <th>الكمية<br>Miktar</th>
+                            <th>متوسط سعر الشراء<br>Ort. Alış Fiyatı</th>
                             <th>سعر البيع<br>Satış Fiyatı</th>
+                            <th>متوسط ربح القطعة<br>Ort. Parça Kârı</th>
                             <th>الإجمالي<br>Toplam</th>
                             <th>المدفوع<br>Ödenen</th>
                             <th>المتبقي<br>Kalan</th>
@@ -2061,6 +2293,8 @@
                         <tr style="background-color: #e8f5e9 !important;">
                             <td colspan="2"><strong>إجمالي اليوم | Günlük Toplam</strong></td>
                             <td><strong>${totalQuantity.toFixed(2)} كغ</strong></td>
+                            <td><strong><span class="dollar-print">$</span> ${totalPurchaseCost.toFixed(2)}</strong></td>
+                            <td></td>
                             <td></td>
                             <td><strong><span class="dollar-print">$</span> ${totalRevenue.toFixed(2)}</strong></td>
                             <td><strong><span class="dollar-print">$</span> ${totalPaid.toFixed(2)}</strong></td>
@@ -2072,16 +2306,31 @@
                 </table>
                 
                 <div class="print-totals">
-                    <h3 style="text-align: center; margin-bottom: 15px;">الإجماليات الكلية | Genel Toplamlar</h3>
+                    <h3 style="text-align: center; margin-bottom: 15px;">إحصائيات المبيعات | Satış İstatistikleri</h3>
                     <div style="display: flex; justify-content: space-around; flex-wrap: wrap;">
                         <div style="text-align: center; padding: 10px;">
-                            <p><strong>إجمالي المشتريات | Toplam Alımlar:</strong> ${totalPurchasesAll.toFixed(2)} كغ (<span class="dollar-print">$</span> ${totalPurchasesAmount.toFixed(2)})</p>
-                            <p><strong>إجمالي المبيعات | Toplam Satışlar:</strong> ${totalSalesAll.toFixed(2)} كغ (<span class="dollar-print">$</span> ${totalSalesAmount.toFixed(2)})</p>
+                            <p><strong>عدد المعاملات | İşlem Sayısı:</strong> ${dateSales.length}</p>
+                            <p><strong>إجمالي الكمية المباعة | Toplam Satılan Miktar:</strong> ${totalQuantity.toFixed(2)} كغ</p>
+                            <p><strong>متوسط سعر الشراء | Ortalama Alış Fiyatı:</strong> <span class="dollar-print">$</span> ${(totalPurchaseCost / totalQuantity || 0).toFixed(2)}</p>
                         </div>
                         <div style="text-align: center; padding: 10px;">
-                            <p><strong>المخزون الحالي | Mevcut Stok:</strong> ${(totalPurchasesAll - totalSalesAll).toFixed(2)} كغ (<span class="dollar-print">$</span> ${currentInventoryValue.toFixed(2)})</p>
-                            <p><strong>إجمالي الربح الكلي | Toplam Kâr:</strong> <span class="dollar-print">$</span> ${totalProfitAll.toFixed(2)}</p>
-                            <p><strong>إجمالي المبلغ المستحق | Toplam Alacak:</strong> <span class="dollar-print">$</span> ${totalRemainingAll.toFixed(2)}</p>
+                            <p><strong>متوسط سعر البيع | Ortalama Satış Fiyatı:</strong> <span class="dollar-print">$</span> ${(totalRevenue / totalQuantity || 0).toFixed(2)}</p>
+                            <p><strong>متوسط ربح القطعة | Ortalama Parça Kârı:</strong> <span class="dollar-print">$</span> ${(totalProfit / totalQuantity || 0).toFixed(2)}</p>
+                            <p><strong>نسبة الربحية | Kârlılık Oranı:</strong> ${((totalProfit / totalPurchaseCost) * 100 || 0).toFixed(2)}%</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="print-final-totals">
+                    <h3 style="text-align: center; margin-bottom: 15px;">الإجماليات النهائية | Nihai Toplamlar</h3>
+                    <div style="display: flex; justify-content: space-around; flex-wrap: wrap;">
+                        <div style="text-align: center; padding: 10px;">
+                            <p><strong>إجمالي تكلفة الشراء | Toplam Alış Maliyeti:</strong> <span class="dollar-print">$</span> ${totalPurchaseCost.toFixed(2)}</p>
+                            <p><strong>إجمالي إيرادات البيع | Toplam Satış Geliri:</strong> <span class="dollar-print">$</span> ${totalRevenue.toFixed(2)}</p>
+                        </div>
+                        <div style="text-align: center; padding: 10px;">
+                            <p><strong>إجمالي الربح الصافي | Toplam Net Kâr:</strong> <span class="dollar-print">$</span> ${totalProfit.toFixed(2)}</p>
+                            <p><strong>إجمالي المبلغ المتبقي | Toplam Kalan Tutar:</strong> <span class="dollar-print">$</span> ${totalRemaining.toFixed(2)}</p>
                         </div>
                     </div>
                 </div>
@@ -2129,7 +2378,7 @@
                 setTimeout(() => {
                     printableReport.style.display = 'none';
                 }, 100);
-            }, 500);
+            }, 100);
         }
         
         // حفظ البيانات في localStorage
@@ -2144,6 +2393,7 @@
                 purchases = [];
                 sales = [];
                 currentSaleData = null;
+                selectedSources = [];
                 currentViewDate = new Date().toISOString().split('T')[0];
                 
                 localStorage.removeItem('alanharPurchases');
@@ -2155,6 +2405,7 @@
                 updateSalesTable();
                 updateDashboardStats();
                 updatePurchaseSourceOptions();
+                updateSelectedSourcesDisplay();
                 document.getElementById('reportContent').innerHTML = '';
                 
                 alert('تم حذف جميع البيانات بنجاح | Tüm veriler başarıyla silindi');
@@ -2197,6 +2448,7 @@
                         purchases = data.purchases;
                         sales = data.sales;
                         currentSaleData = null;
+                        selectedSources = [];
                         currentViewDate = new Date().toISOString().split('T')[0];
                         
                         saveData();
@@ -2206,6 +2458,7 @@
                         updateSalesTable();
                         updateDashboardStats();
                         updatePurchaseSourceOptions();
+                        updateSelectedSourcesDisplay();
                         generateTodayReport();
                         
                         alert('تم استيراد البيانات بنجاح | Veriler başarıyla içe aktarıldı');
