@@ -986,6 +986,7 @@
                                     <th>الإجمالي | Toplam</th>
                                     <th>التاريخ | Tarih</th>
                                     <th>المتبقي | Kalan</th>
+                                    <th>التحكم | Kontrol</th>
                                 </tr>
                             </thead>
                             <tbody id="purchasesTableBody">
@@ -996,7 +997,7 @@
                                     <td colspan="2">الإجمالي | Toplam</td>
                                     <td></td>
                                     <td id="totalPurchasesFooter">0 <span class="dollar">$</span></td>
-                                    <td colspan="2"></td>
+                                    <td colspan="3"></td>
                                 </tr>
                             </tfoot>
                         </table>
@@ -1074,6 +1075,7 @@
                                     <th>الربح | Kâr</th>
                                     <th>التاريخ | Tarih</th>
                                     <th>الحالة | Durum</th>
+                                    <th>التحكم | Kontrol</th>
                                 </tr>
                             </thead>
                             <tbody id="salesTableBody">
@@ -1088,7 +1090,7 @@
                                     <td id="totalPaidAmount">0 <span class="dollar">$</span></td>
                                     <td id="totalRemainingAmount">0 <span class="dollar">$</span></td>
                                     <td id="totalProfitFooter">0 <span class="dollar">$</span></td>
-                                    <td colspan="2"></td>
+                                    <td colspan="3"></td>
                                 </tr>
                             </tfoot>
                         </table>
@@ -1110,14 +1112,14 @@
                 <h2>تقرير مفصل للمبيعات | Detaylı Satış Raporu</h2>
             </div>
             
-            <div class="date-selection">
+            <div class="date-selection" style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 20px;">
                 <label for="reportDate">اختر تاريخ التقرير | Rapor Tarihini Seçin:</label>
-                <input type="date" id="reportDate" value="">
+                <input type="date" id="reportDate" value="" style="padding: 8px 12px; border-radius: 8px; border: 2px solid #ced4da;">
+                <button class="btn btn-info" onclick="generateDetailedReport()" style="margin-right: 10px;">
+                    <i class="fas fa-sync-alt"></i> إنشاء تقرير جديد | Yeni Rapor Oluştur
+                </button>
                 <button class="btn btn-warning" onclick="generateTodayReport()">
                     <i class="fas fa-calendar-day"></i> تقرير اليوم | Bugünün Raporu
-                </button>
-                <button class="btn" onclick="generateDetailedReport()">
-                    <i class="fas fa-search"></i> عرض التقرير | Raporu Görüntüle
                 </button>
                 <button class="btn btn-success" onclick="printReportDirectly()">
                     <i class="fas fa-print"></i> طباعة التقرير | Raporu Yazdır
@@ -1392,6 +1394,116 @@
             alert('تم تسجيل عملية البيع بنجاح! | Satış başarıyla kaydedildi!');
         }
         
+        // حذف عملية شراء
+        function deletePurchase(purchaseId) {
+            if (confirm('هل تريد حذف عملية الشراء هذه؟ | Bu alımı silmek istiyor musunuz?')) {
+                purchases = purchases.filter(p => p.id !== purchaseId);
+                saveData();
+                updatePurchasesTable();
+                updateDashboardStats();
+                updatePurchaseSourceOptions();
+                alert('تم حذف عملية الشراء بنجاح | Alım başarıyla silindi');
+            }
+        }
+        
+        // حذف عملية بيع
+        function deleteSale(saleId) {
+            if (confirm('هل تريد حذف عملية البيع هذه؟ | Bu satışı silmek istiyor musunuz?')) {
+                const sale = sales.find(s => s.id === saleId);
+                if (sale) {
+                    // استعادة الكمية المتبقية للمصدر
+                    const purchase = purchases.find(p => p.id === sale.purchaseSourceId);
+                    if (purchase) {
+                        purchase.remaining += sale.quantity;
+                    }
+                }
+                
+                sales = sales.filter(s => s.id !== saleId);
+                saveData();
+                updateSalesTable();
+                updateDashboardStats();
+                updatePurchaseSourceOptions();
+                alert('تم حذف عملية البيع بنجاح | Satış başarıyla silindi');
+            }
+        }
+        
+        // تعديل عملية شراء
+        function editPurchase(purchaseId) {
+            const purchase = purchases.find(p => p.id === purchaseId);
+            if (!purchase) return;
+            
+            const newQuantity = prompt(`الكمية الجديدة (كغ) | Yeni miktar (kg):`, purchase.quantity);
+            if (newQuantity === null) return;
+            
+            const newPrice = prompt(`السعر الجديد ($) | Yeni fiyat ($):`, purchase.price);
+            if (newPrice === null) return;
+            
+            const newRemaining = prompt(`الكمية المتبقية الجديدة (كغ) | Yeni kalan miktar (kg):`, purchase.remaining);
+            if (newRemaining === null) return;
+            
+            purchase.quantity = parseFloat(newQuantity);
+            purchase.price = parseFloat(newPrice);
+            purchase.remaining = parseFloat(newRemaining);
+            purchase.total = purchase.quantity * purchase.price;
+            
+            saveData();
+            updatePurchasesTable();
+            updateDashboardStats();
+            updatePurchaseSourceOptions();
+            alert('تم تعديل عملية الشراء بنجاح | Alım başarıyla düzenlendi');
+        }
+        
+        // تعديل عملية بيع
+        function editSale(saleId) {
+            const sale = sales.find(s => s.id === saleId);
+            if (!sale) return;
+            
+            const newQuantity = prompt(`الكمية الجديدة (كغ) | Yeni miktar (kg):`, sale.quantity);
+            if (newQuantity === null) return;
+            
+            const newPrice = prompt(`السعر الجديد ($) | Yeni fiyat ($):`, sale.price);
+            if (newPrice === null) return;
+            
+            const newPaid = prompt(`المبلغ المدفوع الجديد ($) | Yeni ödenen miktar ($):`, sale.paid);
+            if (newPaid === null) return;
+            
+            // التحقق من أن المدفوع الجديد لا يتجاوز الإجمالي
+            const newTotal = parseFloat(newQuantity) * parseFloat(newPrice);
+            if (parseFloat(newPaid) > newTotal) {
+                alert('المبلغ المدفوع لا يمكن أن يتجاوز الإجمالي | Ödenen tutar toplamı aşamaz');
+                return;
+            }
+            
+            // تحديث الكمية في المصدر
+            const purchase = purchases.find(p => p.id === sale.purchaseSourceId);
+            if (purchase) {
+                // استعادة الكمية القديمة وإضافة الجديدة
+                purchase.remaining += sale.quantity;
+                purchase.remaining -= parseFloat(newQuantity);
+                
+                if (purchase.remaining < 0) {
+                    alert('الكمية تتجاوز المتوفر في المصدر | Miktar kaynaktaki mevcut miktarı aşıyor');
+                    purchase.remaining += parseFloat(newQuantity); // التراجع
+                    return;
+                }
+            }
+            
+            sale.quantity = parseFloat(newQuantity);
+            sale.price = parseFloat(newPrice);
+            sale.total = newTotal;
+            sale.paid = parseFloat(newPaid);
+            sale.remaining = newTotal - sale.paid;
+            sale.profit = (sale.price - sale.purchasePrice) * sale.quantity;
+            sale.status = sale.remaining > 0 ? 'pending' : 'completed';
+            
+            saveData();
+            updatePurchasesTable();
+            updateSalesTable();
+            updateDashboardStats();
+            updatePurchaseSourceOptions();
+            alert('تم تعديل عملية البيع بنجاح | Satış başarıyla düzenlendi');
+        }
+        
         // تحديث جدول المشتريات مع الفلترة
         function updatePurchasesTable() {
             const tableBody = document.getElementById('purchasesTableBody');
@@ -1431,6 +1543,14 @@
                         <td><span class="dollar">$</span> ${purchase.total.toFixed(2)}</td>
                         <td>${purchase.date}</td>
                         <td>${purchase.remaining.toFixed(2)} كغ</td>
+                        <td>
+                            <button class="btn btn-sm btn-warning" onclick="editPurchase(${purchase.id})" title="تعديل | Düzenle">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="deletePurchase(${purchase.id})" title="حذف | Sil">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
                     `;
                     tableBody.appendChild(row);
                 }
@@ -1507,6 +1627,14 @@
                         <td><span class="badge ${profitClass}"><span class="dollar">$</span> ${profitSign}${sale.profit.toFixed(2)}</span></td>
                         <td>${sale.date}</td>
                         <td><span class="badge ${statusClass}">${statusText} | ${statusTextTR}</span></td>
+                        <td>
+                            <button class="btn btn-sm btn-warning" onclick="editSale(${sale.id})" title="تعديل | Düzenle">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteSale(${sale.id})" title="حذف | Sil">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
                     `;
                     tableBody.appendChild(row);
                 }
@@ -1702,6 +1830,14 @@
         function generateDetailedReport() {
             const selectedDate = document.getElementById('reportDate').value;
             
+            // إذا لم يتم تحديد تاريخ، استخدم تاريخ اليوم
+            if (!selectedDate) {
+                const today = new Date().toISOString().split('T')[0];
+                document.getElementById('reportDate').value = today;
+                generateDetailedReport();
+                return;
+            }
+            
             // تصفية المبيعات حسب التاريخ المحدد
             const dateSales = sales.filter(sale => sale.date === selectedDate);
             
@@ -1711,8 +1847,12 @@
                         <i class="fas fa-exclamation-circle" style="font-size: 3.5rem; color: #e74c3c; margin-bottom: 20px;"></i>
                         <h3 style="color: #e74c3c; margin-bottom: 15px;">لا توجد مبيعات في التاريخ المحدد | Seçilen tarihte satış yok</h3>
                         <p style="font-size: 1.1rem; color: #666;">${selectedDate}</p>
+                        <p style="margin-top: 10px;">الرجاء اختيار تاريخ آخر أو إضافة مبيعات جديدة | Lütfen başka bir tarih seçin veya yeni satışlar ekleyin</p>
                     </div>
                 `;
+                
+                // تحديث التقرير القابل للطباعة أيضًا
+                updatePrintableReport(selectedDate, [], 0, 0, 0, 0, 0, 0, 0, 0, 0);
                 return;
             }
             
@@ -1969,38 +2109,27 @@
         
         // طباعة التقرير مباشرة
         function printReportDirectly() {
-            const selectedDate = document.getElementById('reportDate').value;
-            const dateSales = sales.filter(sale => sale.date === selectedDate);
+            const selectedDate = document.getElementById('reportDate').value || new Date().toISOString().split('T')[0];
             
-            if (dateSales.length === 0) {
-                alert('لا توجد مبيعات في التاريخ المحدد للطباعة | Seçilen tarihte yazdırılacak satış yok');
-                return;
-            }
-            
-            // تحديث التقرير القابل للطباعة أولاً
-            const totalQuantity = dateSales.reduce((sum, sale) => sum + sale.quantity, 0);
-            const totalRevenue = dateSales.reduce((sum, sale) => sum + sale.total, 0);
-            const totalProfit = dateSales.reduce((sum, sale) => sum + sale.profit, 0);
-            const totalPaid = dateSales.reduce((sum, sale) => sum + sale.paid, 0);
-            const totalRemaining = dateSales.reduce((sum, sale) => sum + sale.remaining, 0);
-            const totalPurchasesAll = purchases.reduce((sum, purchase) => sum + purchase.quantity, 0);
-            const totalSalesAll = sales.reduce((sum, sale) => sum + sale.quantity, 0);
-            const totalProfitAll = sales.reduce((sum, sale) => sum + sale.profit, 0);
-            const totalRemainingAll = sales.reduce((sum, sale) => sum + sale.remaining, 0);
-            
-            updatePrintableReport(selectedDate, dateSales, totalQuantity, totalRevenue, totalProfit, totalPaid, totalRemaining, totalPurchasesAll, totalSalesAll, totalProfitAll, totalRemainingAll);
-            
-            // إظهار التقرير القابل للطباعة
-            document.getElementById('printable-report').style.display = 'block';
+            // إذا لم يكن هناك بيانات، أنشئ تقريراً
+            generateDetailedReport();
             
             // الانتظار قليلاً ثم الطباعة
             setTimeout(() => {
+                const printableReport = document.getElementById('printable-report');
+                if (printableReport.innerHTML.trim() === '') {
+                    alert('لا توجد بيانات للطباعة. الرجاء إنشاء تقرير أولاً. | Yazdırılacak veri yok. Lütfen önce rapor oluşturun.');
+                    return;
+                }
+                
+                printableReport.style.display = 'block';
                 window.print();
-                // إخفاء التقرير بعد الطباعة
+                
+                // إخفاء بعد الطباعة
                 setTimeout(() => {
-                    document.getElementById('printable-report').style.display = 'none';
+                    printableReport.style.display = 'none';
                 }, 100);
-            }, 100);
+            }, 500);
         }
         
         // حفظ البيانات في localStorage
