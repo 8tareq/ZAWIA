@@ -1612,13 +1612,12 @@
         let purchases = [];
         let sales = [];
         let currentSaleData = null;
-        let currentSaleForReceive = null; // للبيع الحالي لاستلام دفعة
-        let selectedSources = []; // مصادر الشراء المختارة للبيع الحالي
-        let currentViewDate = new Date().toISOString().split('T')[0]; // تاريخ العرض الحالي
+        let currentSaleForReceive = null;
+        let selectedSources = [];
+        let currentViewDate = new Date().toISOString().split('T')[0];
         
         // تحميل البيانات من localStorage إذا كانت موجودة
         document.addEventListener('DOMContentLoaded', function() {
-            // تعيين تاريخ اليوم كتاريخ افتراضي
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('purchaseDate').value = today;
             document.getElementById('reportDate').value = today;
@@ -1626,10 +1625,8 @@
             document.getElementById('receiveDate').value = today;
             currentViewDate = today;
             
-            // تحديث عرض التاريخ
             updateDateDisplay();
             
-            // تحميل البيانات المخزنة
             if (localStorage.getItem('alanharPurchases')) {
                 purchases = JSON.parse(localStorage.getItem('alanharPurchases'));
             }
@@ -1638,21 +1635,17 @@
                 sales = JSON.parse(localStorage.getItem('alanharSales'));
             }
             
-            // تحديث الواجهة
             updatePurchasesTable();
             updateSalesTable();
             updateDashboardStats();
             updatePurchaseSourcesList();
             
-            // إنشاء تقرير اليوم عند التحميل
             generateTodayReport();
             
-            // إضافة حدث لحقل المبلغ المدفوع
             document.getElementById('amountPaid').addEventListener('input', updatePaymentRemaining);
             document.getElementById('receiveAmount').addEventListener('input', updateReceiveAmount);
         });
         
-        // تحديث عرض التاريخ الحالي
         function updateDateDisplay() {
             const displayElement = document.getElementById('currentDateDisplay');
             const dateObj = new Date(currentViewDate);
@@ -1665,7 +1658,6 @@
             displayElement.textContent = `عرض بيانات: ${formattedDate} | Veriler gösteriliyor: ${currentViewDate}`;
         }
         
-        // إضافة عملية شراء جديدة
         document.getElementById('purchaseForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -1685,7 +1677,7 @@
                 total: quantity * price,
                 date: date,
                 remaining: quantity,
-                originalQuantity: quantity // حفظ الكمية الأصلية
+                originalQuantity: quantity
             };
             
             purchases.push(purchase);
@@ -1694,25 +1686,21 @@
             updateDashboardStats();
             updatePurchaseSourcesList();
             
-            // إعادة تعيين النموذج
             document.getElementById('purchaseForm').reset();
             document.getElementById('purchaseDate').value = new Date().toISOString().split('T')[0];
             
             alert('تم تسجيل عملية الشراء بنجاح! | Alım başarıyla kaydedildi!');
         });
         
-        // تحديث قائمة مصادر الشراء (تظهر فقط المصادر التي لها كمية متبقية)
         function updatePurchaseSourcesList() {
             const sourcesList = document.getElementById('sourcesList');
             sourcesList.innerHTML = '';
             
-            // عرض المشتريات التي لها كمية متبقية فقط (بغض النظر عن التاريخ)
             const activePurchases = purchases.filter(purchase => purchase.remaining > 0);
             
             activePurchases.forEach(purchase => {
                 const isSelected = selectedSources.find(s => s.id === purchase.id);
                 
-                // حساب نسبة الكمية المتبقية
                 const remainingPercentage = (purchase.remaining / purchase.originalQuantity) * 100;
                 let remainingClass = 'remaining-high';
                 if (remainingPercentage < 30) remainingClass = 'remaining-low';
@@ -1744,7 +1732,6 @@
                     ${isSelected ? `<div class="source-order">${selectedSources.findIndex(s => s.id === purchase.id) + 1}</div>` : ''}
                 `;
                 
-                // إضافة حدث النقر
                 sourceItem.onclick = function(e) {
                     if (!e.target.classList.contains('source-quantity-input') && 
                         !e.target.classList.contains('btn-full-quantity')) {
@@ -1755,7 +1742,6 @@
                 sourcesList.appendChild(sourceItem);
             });
             
-            // إذا لم توجد مشتريات متاحة
             if (sourcesList.children.length === 0) {
                 sourcesList.innerHTML = `
                     <div style="grid-column: 1 / -1; text-align: center; padding: 20px; color: #666;">
@@ -1766,11 +1752,9 @@
                 `;
             }
             
-            // تحديث عرض المصادر المختارة
             updateSelectedSourcesDisplay();
         }
         
-        // تبديل اختيار المصدر
         function toggleSourceSelection(purchaseId) {
             const purchase = purchases.find(p => p.id === purchaseId);
             if (!purchase) return;
@@ -1778,24 +1762,21 @@
             const index = selectedSources.findIndex(s => s.id === purchaseId);
             
             if (index === -1) {
-                // إضافة المصدر
                 const defaultQuantity = purchase.remaining;
                 selectedSources.push({
                     id: purchase.id,
                     quantity: defaultQuantity,
                     price: purchase.price,
                     purchaseDate: purchase.date,
-                    remaining: purchase.remaining // حفظ الكمية المتبقية الأصلية
+                    remaining: purchase.remaining
                 });
             } else {
-                // إزالة المصدر
                 selectedSources.splice(index, 1);
             }
             
             updatePurchaseSourcesList();
         }
         
-        // تحديث كمية المصدر
         function updateSourceQuantity(purchaseId, quantity) {
             const quantityNum = parseFloat(quantity);
             const purchase = purchases.find(p => p.id === purchaseId);
@@ -1817,7 +1798,6 @@
             }
         }
         
-        // تعيين الكمية الكاملة للمصدر
         function setFullQuantity(purchaseId) {
             const purchase = purchases.find(p => p.id === purchaseId);
             if (!purchase) return;
@@ -1826,7 +1806,6 @@
             updateSourceQuantity(purchaseId, purchase.remaining);
         }
         
-        // تحديث عرض المصادر المختارة
         function updateSelectedSourcesDisplay() {
             const selectedSourcesList = document.getElementById('selectedSourcesList');
             const summaryDiv = document.getElementById('selectedSourcesSummary');
@@ -1848,7 +1827,6 @@
                 totalSelectedQuantity += source.quantity;
                 totalPurchaseCost += source.quantity * source.price;
                 
-                // حساب نسبة الكمية المختارة من الكمية المتبقية
                 const percentage = (source.quantity / purchase.remaining) * 100;
                 let remainingClass = 'remaining-high';
                 if (percentage > 80) remainingClass = 'remaining-high';
@@ -1874,7 +1852,6 @@
                 selectedSourcesList.appendChild(sourceItem);
             });
             
-            // تحديث الملخص
             const salePrice = parseFloat(document.getElementById('salePrice').value) || 0;
             const totalSaleCost = totalSelectedQuantity * salePrice;
             
@@ -1885,20 +1862,17 @@
             
             summaryDiv.style.display = 'block';
             
-            // تحديث حقل كمية البيع إذا كانت القيمة غير محددة
             const saleQuantityInput = document.getElementById('saleQuantity');
             if (!saleQuantityInput.value || parseFloat(saleQuantityInput.value) !== totalSelectedQuantity) {
                 saleQuantityInput.value = totalSelectedQuantity.toFixed(2);
             }
         }
         
-        // إزالة مصدر من القائمة المختارة
         function removeSelectedSource(index) {
             selectedSources.splice(index, 1);
             updatePurchaseSourcesList();
         }
         
-        // إضافة عملية بيع جديدة
         document.getElementById('saleForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -1916,7 +1890,6 @@
                 return;
             }
             
-            // حساب إجمالي الكمية المختارة
             let totalSelectedQuantity = 0;
             let totalPurchaseCost = 0;
             
@@ -1932,23 +1905,20 @@
             
             const totalSaleAmount = saleQuantity * salePrice;
             
-            // حفظ بيانات البيع الحالية لعرضها في نموذج الدفع
             currentSaleData = {
                 customerName: customerName,
                 quantity: saleQuantity,
                 price: salePrice,
                 totalPurchaseCost: totalPurchaseCost,
                 total: totalSaleAmount,
-                selectedSources: JSON.parse(JSON.stringify(selectedSources)), // نسخة عميقة
+                selectedSources: JSON.parse(JSON.stringify(selectedSources)),
                 profit: totalSaleAmount - totalPurchaseCost,
-                date: currentViewDate // استخدام تاريخ العرض الحالي
+                date: currentViewDate
             };
             
-            // عرض نموذج الدفع
             openPaymentModal();
         });
         
-        // فتح نموذج الدفع
         function openPaymentModal() {
             if (!currentSaleData) return;
             
@@ -1957,26 +1927,20 @@
             document.getElementById('modalSalePrice').innerHTML = currentSaleData.price.toFixed(2) + ' <span class="dollar">$</span>';
             document.getElementById('modalTotalAmount').innerHTML = currentSaleData.total.toFixed(2) + ' <span class="dollar">$</span>';
             
-            // تعيين تاريخ اليوم
             document.getElementById('paymentDate').textContent = currentViewDate;
-            
-            // إعادة تعيين حقل المبلغ المدفوع
             document.getElementById('amountPaid').value = '0';
             document.getElementById('paymentRemaining').classList.remove('active');
             
-            // عرض النموذج
             document.getElementById('paymentModal').classList.add('active');
         }
         
-        // إغلاق نموذج الدفع
         function closePaymentModal() {
             document.getElementById('paymentModal').classList.remove('active');
             currentSaleData = null;
-            selectedSources = []; // إعادة تعيين المصادر المختارة
+            selectedSources = [];
             updateSelectedSourcesDisplay();
         }
         
-        // تحديث المبلغ المتبقي عند إدخال المبلغ المدفوع
         function updatePaymentRemaining() {
             if (!currentSaleData) return;
             
@@ -1993,7 +1957,6 @@
             }
         }
         
-        // إكمال عملية البيع مع الدفع
         function completeSaleWithPayment() {
             if (!currentSaleData) return;
             
@@ -2019,7 +1982,7 @@
                 }
             });
             
-            // إنشاء سجل البيع - سجل منفصل لكل مصدر
+            // إنشاء سجل منفصل لكل مصدر مع ربحه الخاص
             currentSaleData.selectedSources.forEach((source, index) => {
                 const purchase = purchases.find(p => p.id === source.id);
                 if (!purchase) return;
@@ -2033,7 +1996,7 @@
                 const sourceRemaining = sourceTotal - sourcePaid;
                 
                 const sale = {
-                    id: Date.now() + index, // ID فريد لكل مصدر
+                    id: Date.now() + index,
                     customerName: currentSaleData.customerName,
                     sourceId: source.id,
                     sourceIndex: index + 1,
@@ -2046,10 +2009,10 @@
                     paid: sourcePaid,
                     remaining: sourceRemaining,
                     purchaseDate: source.purchaseDate,
-                    selectedSources: [source], // تخزين هذا المصدر فقط
+                    selectedSources: [source],
                     date: currentViewDate,
                     status: sourceRemaining > 0 ? 'pending' : 'completed',
-                    parentSaleId: Date.now() // ID للربط بين مصادر نفس البيع
+                    parentSaleId: Date.now()
                 };
                 
                 sales.push(sale);
@@ -2061,18 +2024,15 @@
             updateDashboardStats();
             updatePurchaseSourcesList();
             
-            // إعادة تعيين النموذج
             document.getElementById('saleForm').reset();
             selectedSources = [];
             updateSelectedSourcesDisplay();
             
-            // إغلاق نموذج الدفع
             closePaymentModal();
             
             alert('تم تسجيل عملية البيع بنجاح! | Satış başarıyla kaydedildi!');
         }
         
-        // فتح نموذج استلام دفعة
         function openReceivePaymentModal(saleId) {
             const sale = sales.find(s => s.id === saleId);
             if (!sale) return;
@@ -2085,21 +2045,17 @@
             document.getElementById('receivePaidAmount').innerHTML = sale.paid.toFixed(2) + ' <span class="dollar">$</span>';
             document.getElementById('receiveRemainingAmount').innerHTML = sale.remaining.toFixed(2) + ' <span class="dollar">$</span>';
             
-            // تعيين تاريخ اليوم
             document.getElementById('receiveDate').value = new Date().toISOString().split('T')[0];
             document.getElementById('receiveAmount').value = '0';
             
-            // عرض النموذج
             document.getElementById('receivePaymentModal').classList.add('active');
         }
         
-        // إغلاق نموذج استلام دفعة
         function closeReceivePaymentModal() {
             document.getElementById('receivePaymentModal').classList.remove('active');
             currentSaleForReceive = null;
         }
         
-        // تحديث المبلغ المستلم
         function updateReceiveAmount() {
             if (!currentSaleForReceive) return;
             
@@ -2112,7 +2068,6 @@
             }
         }
         
-        // إكمال استلام الدفعة
         function completeReceivePayment() {
             if (!currentSaleForReceive) return;
             
@@ -2129,12 +2084,10 @@
                 return;
             }
             
-            // تحديث بيانات البيع
             currentSaleForReceive.paid += receiveAmount;
             currentSaleForReceive.remaining = currentSaleForReceive.total - currentSaleForReceive.paid;
             currentSaleForReceive.status = currentSaleForReceive.remaining > 0 ? 'pending' : 'completed';
             
-            // إضافة سجل الدفعة
             if (!currentSaleForReceive.payments) {
                 currentSaleForReceive.payments = [];
             }
@@ -2149,13 +2102,11 @@
             updateSalesTable();
             updateDashboardStats();
             
-            // إغلاق النموذج
             closeReceivePaymentModal();
             
             alert(`تم استلام الدفعة البالغة ${receiveAmount.toFixed(2)}$ بنجاح! | ${receiveAmount.toFixed(2)}$ tutarındaki ödeme başarıyla alındı!`);
         }
         
-        // حذف عملية شراء
         function deletePurchase(purchaseId) {
             if (confirm('هل تريد حذف عملية الشراء هذه؟ | Bu alımı silmek istiyor musunuz?')) {
                 purchases = purchases.filter(p => p.id !== purchaseId);
@@ -2167,12 +2118,10 @@
             }
         }
         
-        // حذف عملية بيع
         function deleteSale(saleId) {
             if (confirm('هل تريد حذف عملية البيع هذه؟ | Bu satışı silmek istiyor musunuz?')) {
                 const sale = sales.find(s => s.id === saleId);
                 if (sale && sale.selectedSources) {
-                    // استعادة الكمية المتبقية للمصادر
                     sale.selectedSources.forEach(source => {
                         const purchase = purchases.find(p => p.id === source.id);
                         if (purchase) {
@@ -2190,7 +2139,6 @@
             }
         }
         
-        // تعديل عملية شراء
         function editPurchase(purchaseId) {
             const purchase = purchases.find(p => p.id === purchaseId);
             if (!purchase) return;
@@ -2207,7 +2155,7 @@
             purchase.quantity = parseFloat(newQuantity);
             purchase.price = parseFloat(newPrice);
             purchase.remaining = parseFloat(newRemaining);
-            purchase.originalQuantity = purchase.quantity; // تحديث الكمية الأصلية
+            purchase.originalQuantity = purchase.quantity;
             purchase.total = purchase.quantity * purchase.price;
             
             saveData();
@@ -2217,7 +2165,6 @@
             alert('تم تعديل عملية الشراء بنجاح | Alım başarıyla düzenlendi');
         }
         
-        // تعديل عملية بيع
         function editSale(saleId) {
             const sale = sales.find(s => s.id === saleId);
             if (!sale) return;
@@ -2225,13 +2172,12 @@
             const newQuantity = prompt(`الكمية الجديدة (كغ) | Yeni miktar (kg):`, sale.quantity);
             if (newQuantity === null) return;
             
-            const newPrice = prompt(`السعر الجديد ($) | Yeni fiyat ($):`, sale.price);
+            const newPrice = prompt(`السعر الجديد ($) | Yeni fiyat ($):`, sale.salePrice);
             if (newPrice === null) return;
             
             const newPaid = prompt(`المبلغ المدفوع الجديد ($) | Yeni ödenen miktar ($):`, sale.paid);
             if (newPaid === null) return;
             
-            // التحقق من أن المدفوع الجديد لا يتجاوز الإجمالي
             const newTotal = parseFloat(newQuantity) * parseFloat(newPrice);
             if (parseFloat(newPaid) > newTotal) {
                 alert('المبلغ المدفوع لا يمكن أن يتجاوز الإجمالي | Ödenen tutar toplamı aşamaz');
@@ -2240,11 +2186,9 @@
             
             alert('للتعديل، يرجى حذف عملية البيع الحالية وإضافة بيع جديد بالمعلومات الصحيحة | Düzenlemek için lütfen mevcut satışı silin ve doğru bilgilerle yeni bir satış ekleyin');
             
-            // لحذف البيع الحالي
             deleteSale(saleId);
         }
         
-        // تحديث جدول المشتريات مع الفلترة
         function updatePurchasesTable() {
             const tableBody = document.getElementById('purchasesTableBody');
             tableBody.innerHTML = '';
@@ -2254,19 +2198,14 @@
             let hasPurchases = false;
             
             const filterType = document.getElementById('purchaseFilter').value;
-            
-            // تصفية المشتريات حسب التاريخ الحالي
             const filteredPurchases = purchases.filter(purchase => purchase.date === currentViewDate);
             
             filteredPurchases.forEach((purchase, index) => {
-                // تطبيق الفلترة حسب النوع
                 let showPurchase = false;
                 
                 if (filterType === 'all') {
-                    // عرض جميع المشتريات للتاريخ الحالي
                     showPurchase = true;
                 } else if (filterType === 'active') {
-                    // عرض المشتريات النشطة فقط (التي لها كمية متبقية) للتاريخ الحالي
                     showPurchase = purchase.remaining > 0;
                 }
                 
@@ -2275,7 +2214,6 @@
                     totalPurchasesAmount += purchase.total;
                     totalPurchasesQuantity += purchase.quantity;
                     
-                    // تحديد لون الكمية المتبقية
                     const remainingPercentage = (purchase.remaining / purchase.originalQuantity) * 100;
                     let remainingClass = 'remaining-high';
                     if (remainingPercentage === 0) remainingClass = 'remaining-zero';
@@ -2303,7 +2241,6 @@
                 }
             });
             
-            // عرض أو إخفاء رسالة عدم وجود بيانات
             if (hasPurchases) {
                 document.getElementById('purchasesEmpty').style.display = 'none';
                 document.getElementById('purchasesTableContainer').style.display = 'block';
@@ -2312,11 +2249,9 @@
                 document.getElementById('purchasesTableContainer').style.display = 'none';
             }
             
-            // تحديث الإجمالي في التذييل (لليوم المحدد فقط)
             document.getElementById('totalPurchasesFooter').innerHTML = totalPurchasesAmount.toFixed(2) + ' <span class="dollar">$</span>';
         }
         
-        // تحديث جدول المبيعات مع الفلترة حسب التاريخ
         function updateSalesTable() {
             const tableBody = document.getElementById('salesTableBody');
             tableBody.innerHTML = '';
@@ -2327,11 +2262,9 @@
             let hasSales = false;
             
             const filterType = document.getElementById('salesFilter').value;
-            
-            // تصفية المبيعات حسب التاريخ الحالي فقط
             const filteredSales = sales.filter(sale => sale.date === currentViewDate);
             
-            // تجميع المبيعات حسب parentSaleId لعرضها معاً
+            // تجميع المبيعات حسب parentSaleId
             const groupedSales = {};
             filteredSales.forEach(sale => {
                 if (!groupedSales[sale.parentSaleId]) {
@@ -2348,17 +2281,13 @@
             Object.keys(groupedSales).forEach(parentSaleId => {
                 const group = groupedSales[parentSaleId];
                 
-                // تطبيق الفلترة
                 let showGroup = false;
                 
                 if (filterType === 'all') {
-                    // عرض جميع مبيعات اليوم
                     showGroup = true;
                 } else if (filterType === 'today') {
-                    // عرض مبيعات اليوم فقط
                     showGroup = true;
                 } else if (filterType === 'pending') {
-                    // عرض المبيعات التي لها مستحقات فقط لليوم الحالي
                     const hasPending = group.sources.some(sale => sale.remaining > 0);
                     showGroup = hasPending;
                 }
@@ -2366,12 +2295,10 @@
                 if (showGroup && group.sources.length > 0) {
                     hasSales = true;
                     
-                    // عرض الصف الرئيسي (أول مصدر)
                     const firstSale = group.sources[0];
                     const profitClass = firstSale.profit >= 0 ? 'badge-sale' : 'badge-purchase';
                     const profitSign = firstSale.profit >= 0 ? '+' : '';
                     
-                    // صف العنوان الرئيسي للبيع
                     const headerRow = document.createElement('tr');
                     headerRow.className = 'sales-source-header';
                     headerRow.innerHTML = `
@@ -2405,7 +2332,6 @@
                     totalSalesAmount += firstSale.total;
                     totalProfit += firstSale.profit;
                     
-                    // عرض المصادر المتبقية (إذا وجدت)
                     for (let i = 1; i < group.sources.length; i++) {
                         const sale = group.sources[i];
                         const sourceProfitClass = sale.profit >= 0 ? 'badge-sale' : 'badge-purchase';
@@ -2433,7 +2359,6 @@
                 }
             });
             
-            // عرض أو إخفاء رسالة عدم وجود بيانات
             if (hasSales) {
                 document.getElementById('salesEmpty').style.display = 'none';
                 document.getElementById('salesTableContainer').style.display = 'block';
@@ -2442,34 +2367,27 @@
                 document.getElementById('salesTableContainer').style.display = 'none';
             }
             
-            // تحديث الإجماليات في التذييل (لليوم المحدد فقط)
             document.getElementById('totalSalesQuantity').textContent = totalSalesQuantity.toFixed(2) + ' كغ';
             document.getElementById('totalProfitFooter').innerHTML = totalProfit.toFixed(2) + ' <span class="dollar">$</span>';
             document.getElementById('totalSalesAmount').innerHTML = totalSalesAmount.toFixed(2) + ' <span class="dollar">$</span>';
         }
         
-        // تحديث إحصائيات لوحة التحكم حسب التاريخ المحدد
         function updateDashboardStats() {
-            // حساب إحصائيات اليوم المحدد فقط
             const todaySales = sales.filter(sale => sale.date === currentViewDate);
             const todayPurchases = purchases.filter(purchase => purchase.date === currentViewDate);
             const activePurchases = todayPurchases.filter(purchase => purchase.remaining > 0);
             
-            // إجمالي المشتريات النشطة لليوم المحدد فقط
             const totalActivePurchasesQuantity = activePurchases.reduce((sum, purchase) => sum + purchase.quantity, 0);
             const totalActivePurchasesAmount = activePurchases.reduce((sum, purchase) => sum + purchase.total, 0);
             
-            // إجمالي مبيعات اليوم المحدد فقط
             const totalTodaySalesQuantity = todaySales.reduce((sum, sale) => sum + sale.quantity, 0);
             const totalTodaySalesAmount = todaySales.reduce((sum, sale) => sum + sale.total, 0);
             
-            // إجمالي المشتريات والمبيعات الكلية للمخزون (جميع الأيام)
             const totalPurchasesAll = purchases.reduce((sum, purchase) => sum + purchase.quantity, 0);
             const totalSalesAll = sales.reduce((sum, sale) => sum + sale.quantity, 0);
             const currentInventoryQuantity = totalPurchasesAll - totalSalesAll;
             const currentInventoryValue = purchases.reduce((sum, purchase) => sum + (purchase.remaining * purchase.price), 0);
             
-            // إجمالي الربح والمبلغ المستحق لليوم المحدد فقط
             const totalTodayProfit = todaySales.reduce((sum, sale) => sum + sale.profit, 0);
             const totalTodayRemaining = todaySales.reduce((sum, sale) => sum + sale.remaining, 0);
             
@@ -2483,13 +2401,11 @@
             document.getElementById('pending-amount').innerHTML = `مستحق اليوم: ${totalTodayRemaining.toFixed(2)} <span class="dollar">$</span>`;
         }
         
-        // عرض بيانات اليوم الحالي
         function showToday() {
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('currentDate').value = today;
             currentViewDate = today;
             
-            // تحديث الفلاتر
             document.getElementById('purchaseFilter').value = 'all';
             document.getElementById('salesFilter').value = 'today';
             
@@ -2498,12 +2414,10 @@
             updateSalesTable();
             updateDashboardStats();
             
-            // تحديث تقرير اليوم
             document.getElementById('reportDate').value = today;
             generateTodayReport();
         }
         
-        // عرض بيانات اليوم السابق
         function showPreviousDay() {
             const currentDate = new Date(currentViewDate);
             currentDate.setDate(currentDate.getDate() - 1);
@@ -2512,7 +2426,6 @@
             document.getElementById('currentDate').value = previousDay;
             currentViewDate = previousDay;
             
-            // تحديث الفلاتر
             document.getElementById('purchaseFilter').value = 'all';
             document.getElementById('salesFilter').value = 'today';
             
@@ -2521,18 +2434,15 @@
             updateSalesTable();
             updateDashboardStats();
             
-            // تحديث تقرير التاريخ الجديد
             document.getElementById('reportDate').value = previousDay;
             generateDetailedReport();
         }
         
-        // عرض بيانات اليوم التالي
         function showNextDay() {
             const currentDate = new Date(currentViewDate);
             currentDate.setDate(currentDate.getDate() + 1);
             const nextDay = currentDate.toISOString().split('T')[0];
             
-            // التحقق من عدم تجاوز اليوم الحالي
             const today = new Date().toISOString().split('T')[0];
             if (nextDay > today) {
                 alert('لا يمكن عرض بيانات يوم في المستقبل | Gelecekteki bir günün verilerini gösteremezsiniz');
@@ -2542,7 +2452,6 @@
             document.getElementById('currentDate').value = nextDay;
             currentViewDate = nextDay;
             
-            // تحديث الفلاتر
             document.getElementById('purchaseFilter').value = 'all';
             document.getElementById('salesFilter').value = 'today';
             
@@ -2551,21 +2460,17 @@
             updateSalesTable();
             updateDashboardStats();
             
-            // تحديث تقرير التاريخ الجديد
             document.getElementById('reportDate').value = nextDay;
             generateDetailedReport();
         }
         
-        // عرض جميع البيانات (بدون فلترة)
         function showAllData() {
-            // تحديث الفلاتر
             document.getElementById('purchaseFilter').value = 'all';
             document.getElementById('salesFilter').value = 'all';
             
             updatePurchasesTable();
             updateSalesTable();
             
-            // تحديث الإحصائيات لتعكس جميع البيانات للتاريخ المحدد فقط
             const todaySales = sales.filter(sale => sale.date === currentViewDate);
             const todayPurchases = purchases.filter(purchase => purchase.date === currentViewDate);
             const activePurchases = todayPurchases.filter(purchase => purchase.remaining > 0);
@@ -2577,7 +2482,6 @@
             const totalTodayProfit = todaySales.reduce((sum, sale) => sum + sale.profit, 0);
             const totalTodayRemaining = todaySales.reduce((sum, sale) => sum + sale.remaining, 0);
             
-            // حساب المخزون الحالي (جميع الأيام)
             const totalPurchasesAll = purchases.reduce((sum, purchase) => sum + purchase.quantity, 0);
             const totalSalesAll = sales.reduce((sum, sale) => sum + sale.quantity, 0);
             const currentInventoryQuantity = totalPurchasesAll - totalSalesAll;
@@ -2593,11 +2497,9 @@
             document.getElementById('pending-amount').innerHTML = `إجمالي المستحق: ${totalTodayRemaining.toFixed(2)} <span class="dollar">$</span>`;
         }
         
-        // عند تغيير تاريخ العرض
         document.getElementById('currentDate').addEventListener('change', function() {
             currentViewDate = this.value;
             
-            // تحديث الفلاتر
             document.getElementById('purchaseFilter').value = 'all';
             document.getElementById('salesFilter').value = 'today';
             
@@ -2606,23 +2508,19 @@
             updateSalesTable();
             updateDashboardStats();
             
-            // تحديث تقرير التاريخ الجديد
             document.getElementById('reportDate').value = currentViewDate;
             generateDetailedReport();
         });
         
-        // إنشاء تقرير اليوم
         function generateTodayReport() {
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('reportDate').value = today;
             generateDetailedReport();
         }
         
-        // إنشاء تقرير مفصل حسب التاريخ
         function generateDetailedReport() {
             const selectedDate = document.getElementById('reportDate').value;
             
-            // إذا لم يتم تحديد تاريخ، استخدم تاريخ اليوم
             if (!selectedDate) {
                 const today = new Date().toISOString().split('T')[0];
                 document.getElementById('reportDate').value = today;
@@ -2630,7 +2528,6 @@
                 return;
             }
             
-            // تصفية المبيعات حسب التاريخ المحدد فقط
             const dateSales = sales.filter(sale => sale.date === selectedDate);
             
             if (dateSales.length === 0) {
@@ -2643,12 +2540,10 @@
                     </div>
                 `;
                 
-                // تحديث التقرير القابل للطباعة أيضًا
-                updatePrintableReport(selectedDate, [], 0, 0, 0, 0);
+                updatePrintableReport(selectedDate, {}, 0, 0, 0, 0, 0, 0);
                 return;
             }
             
-            // تجميع المبيعات حسب parentSaleId
             const groupedSales = {};
             dateSales.forEach(sale => {
                 if (!groupedSales[sale.parentSaleId]) {
@@ -2661,20 +2556,17 @@
                 groupedSales[sale.parentSaleId].sources.push(sale);
             });
             
-            // إحصائيات التقرير للتاريخ المحدد فقط
             const totalQuantity = dateSales.reduce((sum, sale) => sum + sale.quantity, 0);
             const totalRevenue = dateSales.reduce((sum, sale) => sum + sale.total, 0);
             const totalProfit = dateSales.reduce((sum, sale) => sum + sale.profit, 0);
             const totalPaid = dateSales.reduce((sum, sale) => sum + sale.paid, 0);
             const totalRemaining = dateSales.reduce((sum, sale) => sum + sale.remaining, 0);
             
-            // حساب إجمالي تكلفة الشراء للتاريخ المحدد
             let totalPurchaseCost = 0;
             dateSales.forEach(sale => {
                 totalPurchaseCost += sale.quantity * sale.purchasePrice;
             });
             
-            // إنشاء جدول المبيعات للتقرير
             let salesTableHTML = '';
             let saleIndex = 1;
             
@@ -2682,7 +2574,6 @@
                 const group = groupedSales[parentSaleId];
                 
                 if (group.sources.length > 0) {
-                    // عرض كل مصدر في مجموعة البيع
                     group.sources.forEach((sale, sourceIndex) => {
                         const profitClass = sale.profit >= 0 ? 'profit-positive' : 'profit-negative';
                         const profitSign = sale.profit >= 0 ? '+' : '';
@@ -2783,11 +2674,9 @@
             
             document.getElementById('reportContent').innerHTML = reportHTML;
             
-            // تحديث التقرير القابل للطباعة أيضًا
             updatePrintableReport(selectedDate, groupedSales, totalQuantity, totalPurchaseCost, totalRevenue, totalProfit, totalPaid, totalRemaining);
         }
         
-        // تحديث التقرير القابل للطباعة
         function updatePrintableReport(selectedDate, groupedSales, totalQuantity, totalPurchaseCost, totalRevenue, totalProfit, totalPaid, totalRemaining) {
             const printDate = new Date().toLocaleDateString('ar-EG', {
                 year: 'numeric',
@@ -2795,7 +2684,6 @@
                 day: 'numeric'
             });
             
-            // إنشاء جدول المبيعات للتقرير القابل للطباعة
             let salesTableHTML = '';
             let saleIndex = 1;
             
@@ -2803,7 +2691,6 @@
                 const group = groupedSales[parentSaleId];
                 
                 if (group.sources.length > 0) {
-                    // عرض كل مصدر في مجموعة البيع
                     group.sources.forEach((sale, sourceIndex) => {
                         const profitClass = sale.profit >= 0 ? 'profit-positive' : 'profit-negative';
                         const profitSign = sale.profit >= 0 ? '+' : '';
@@ -2951,14 +2838,11 @@
             document.getElementById('printable-report').innerHTML = printableReportHTML;
         }
         
-        // طباعة التقرير مباشرة
         function printReportDirectly() {
             const selectedDate = document.getElementById('reportDate').value || new Date().toISOString().split('T')[0];
             
-            // إذا لم يكن هناك بيانات، أنشئ تقريراً
             generateDetailedReport();
             
-            // الانتظار قليلاً ثم الطباعة
             setTimeout(() => {
                 const printableReport = document.getElementById('printable-report');
                 if (printableReport.innerHTML.trim() === '') {
@@ -2969,20 +2853,17 @@
                 printableReport.style.display = 'block';
                 window.print();
                 
-                // إخفاء بعد الطباعة
                 setTimeout(() => {
                     printableReport.style.display = 'none';
                 }, 100);
             }, 100);
         }
         
-        // حفظ البيانات في localStorage
         function saveData() {
             localStorage.setItem('alanharPurchases', JSON.stringify(purchases));
             localStorage.setItem('alanharSales', JSON.stringify(sales));
         }
         
-        // إعادة تعيين جميع البيانات
         function resetAllData() {
             if (confirm('هل أنت متأكد من حذف جميع البيانات؟ هذا الإجراء لا يمكن التراجع عنه. | Tüm verileri silmek istediğinize emin misiniz? Bu işlem geri alınamaz.')) {
                 purchases = [];
@@ -3007,7 +2888,6 @@
             }
         }
         
-        // تصدير البيانات
         function exportData() {
             const data = {
                 purchases: purchases,
@@ -3029,7 +2909,6 @@
             alert('تم تصدير البيانات بنجاح | Veriler başarıyla dışa aktarıldı');
         }
         
-        // استيراد البيانات
         function importData(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -3067,11 +2946,9 @@
             reader.readAsText(file);
         }
         
-        // إضافة أزرار التحكم في الواجهة
         document.addEventListener('DOMContentLoaded', function() {
             const header = document.querySelector('header .container');
             
-            // زر حذف جميع البيانات
             const resetButton = document.createElement('button');
             resetButton.innerHTML = '<i class="fas fa-trash-alt"></i> حذف جميع البيانات | Tüm Verileri Sil';
             resetButton.className = 'btn btn-danger no-print';
@@ -3080,7 +2957,6 @@
             resetButton.style.left = '25px';
             resetButton.onclick = resetAllData;
             
-            // زر تصدير البيانات
             const exportButton = document.createElement('button');
             exportButton.innerHTML = '<i class="fas fa-download"></i> تصدير البيانات | Verileri Dışa Aktar';
             exportButton.className = 'btn btn-warning no-print';
@@ -3089,7 +2965,6 @@
             exportButton.style.right = '25px';
             exportButton.onclick = exportData;
             
-            // زر استيراد البيانات
             const importInput = document.createElement('input');
             importInput.type = 'file';
             importInput.accept = '.json';
