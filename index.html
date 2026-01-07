@@ -754,6 +754,46 @@
             transform: translateY(-1px);
         }
         
+        /* Sources Details in Sales Table */
+        .sources-details {
+            margin-top: 10px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 3px solid var(--secondary-color);
+        }
+        
+        .source-detail-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            border-bottom: 1px dashed #ddd;
+            font-size: 0.85rem;
+        }
+        
+        .source-detail-item:last-child {
+            border-bottom: none;
+        }
+        
+        .source-detail-item .source-info {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .source-detail-item .source-number {
+            background: var(--primary-color);
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: bold;
+        }
+        
         /* Report Content */
         #reportContent {
             background-color: white;
@@ -762,7 +802,7 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
         }
         
-        /* Print Styles - A4 كامل وصحيح */
+        /* Print Styles - A4 تجميلي محترف */
         @media print {
             @page {
                 size: A4 portrait;
@@ -774,7 +814,7 @@
                 color: black !important;
                 font-size: 11pt !important;
                 line-height: 1.5 !important;
-                font-family: 'Arial', 'Helvetica', sans-serif !important;
+                font-family: 'Arial', 'Helvetica', 'Segoe UI', sans-serif !important;
                 margin: 0 !important;
                 padding: 0 !important;
                 visibility: hidden;
@@ -792,7 +832,7 @@
                 margin: 0 !important;
                 font-size: 11pt !important;
                 line-height: 1.5 !important;
-                font-family: 'Arial', 'Helvetica', sans-serif !important;
+                font-family: 'Arial', 'Helvetica', 'Segoe UI', sans-serif !important;
                 color: black !important;
             }
             
@@ -800,22 +840,31 @@
                 text-align: center;
                 margin-bottom: 15px;
                 padding-bottom: 15px;
-                border-bottom: 2px solid #2c3e50;
+                border-bottom: 3px solid #2c3e50;
                 page-break-after: avoid;
             }
             
             .print-header h1 {
                 color: #2c3e50 !important;
-                font-size: 22pt !important;
-                margin-bottom: 8px !important;
+                font-size: 24pt !important;
+                margin-bottom: 5px !important;
                 font-weight: bold !important;
+                letter-spacing: 1px;
             }
             
             .print-header h2 {
                 color: #e67e22 !important;
-                font-size: 16pt !important;
-                margin-bottom: 10px !important;
+                font-size: 18pt !important;
+                margin-bottom: 8px !important;
                 font-weight: bold !important;
+            }
+            
+            .print-header-logo {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+                margin-bottom: 10px;
             }
             
             .print-header-info {
@@ -823,17 +872,18 @@
                 justify-content: space-between;
                 font-size: 10pt !important;
                 margin-top: 10px !important;
-                padding: 8px !important;
-                background: #f8f9fa !important;
-                border-radius: 5px !important;
+                padding: 10px !important;
+                background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
+                border-radius: 8px !important;
+                border: 1px solid #ddd !important;
             }
             
             .print-summary {
-                background: #f8f9fa !important;
+                background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
                 padding: 15px !important;
-                border-radius: 8px !important;
+                border-radius: 10px !important;
                 margin-bottom: 15px !important;
-                border: 1px solid #ddd !important;
+                border: 2px solid #ddd !important;
                 page-break-inside: avoid !important;
             }
             
@@ -845,20 +895,22 @@
             }
             
             .print-summary-item {
-                padding: 8px !important;
+                padding: 10px !important;
                 background: white !important;
-                border-radius: 6px !important;
-                border: 1px solid #eee !important;
+                border-radius: 8px !important;
+                border: 1px solid #e0e0e0 !important;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.05) !important;
             }
             
             .print-summary-item h4 {
-                font-size: 10pt !important;
+                font-size: 9pt !important;
                 margin-bottom: 5px !important;
                 color: #2c3e50 !important;
+                font-weight: bold !important;
             }
             
             .print-summary-item p {
-                font-size: 12pt !important;
+                font-size: 14pt !important;
                 font-weight: bold !important;
                 margin: 0 !important;
             }
@@ -873,35 +925,71 @@
                 border-collapse: collapse !important;
                 font-size: 9pt !important;
                 page-break-inside: auto !important;
+                margin-bottom: 15px !important;
             }
             
             .print-table th {
-                background: #2c3e50 !important;
+                background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%) !important;
                 color: white !important;
-                padding: 8px 5px !important;
+                padding: 10px 6px !important;
                 text-align: center !important;
                 border: 1px solid #1a2530 !important;
                 font-weight: bold !important;
-                font-size: 9pt !important;
+                font-size: 9.5pt !important;
             }
             
             .print-table td {
-                padding: 6px 4px !important;
+                padding: 8px 5px !important;
                 text-align: center !important;
                 border: 1px solid #ddd !important;
                 font-size: 9pt !important;
+                vertical-align: top !important;
             }
             
             .print-table tr:nth-child(even) {
                 background-color: #f9f9f9 !important;
             }
             
+            .print-sources-details {
+                margin-top: 8px !important;
+                padding: 8px !important;
+                background: #f8f9fa !important;
+                border-radius: 6px !important;
+                border-left: 3px solid #3498db !important;
+                font-size: 8.5pt !important;
+            }
+            
+            .print-source-item {
+                display: flex !important;
+                justify-content: space-between !important;
+                padding: 4px 0 !important;
+                border-bottom: 1px dashed #ddd !important;
+            }
+            
+            .print-source-item:last-child {
+                border-bottom: none !important;
+            }
+            
+            .print-source-number {
+                background: #2c3e50 !important;
+                color: white !important;
+                width: 18px !important;
+                height: 18px !important;
+                border-radius: 50% !important;
+                display: inline-flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                font-size: 9px !important;
+                font-weight: bold !important;
+                margin-left: 5px !important;
+            }
+            
             .print-totals {
-                background: #e8f5e9 !important;
+                background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%) !important;
                 padding: 15px !important;
-                border-radius: 8px !important;
+                border-radius: 10px !important;
                 margin: 15px 0 !important;
-                border: 1px solid #c8e6c9 !important;
+                border: 2px solid #c8e6c9 !important;
                 page-break-inside: avoid !important;
             }
             
@@ -912,18 +1000,18 @@
             }
             
             .print-final-totals {
-                background: #fff3e0 !important;
+                background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%) !important;
                 padding: 15px !important;
-                border-radius: 8px !important;
+                border-radius: 10px !important;
                 margin: 15px 0 !important;
                 border: 2px solid #ffb74d !important;
                 page-break-inside: avoid !important;
             }
             
             .print-signature {
-                margin-top: 20px !important;
+                margin-top: 25px !important;
                 padding-top: 15px !important;
-                border-top: 1px solid #2c3e50 !important;
+                border-top: 2px solid #2c3e50 !important;
                 page-break-inside: avoid !important;
                 font-size: 10pt !important;
             }
@@ -931,7 +1019,7 @@
             .signature-area {
                 display: flex !important;
                 justify-content: space-between !important;
-                margin-top: 30px !important;
+                margin-top: 40px !important;
             }
             
             .signature-box {
@@ -942,7 +1030,7 @@
             .signature-line {
                 border-top: 1px solid #000 !important;
                 width: 80% !important;
-                margin: 40px auto 5px auto !important;
+                margin: 50px auto 8px auto !important;
             }
             
             .profit-positive {
@@ -968,6 +1056,13 @@
             .dollar-print {
                 color: #f39c12 !important;
                 font-weight: bold !important;
+                font-family: 'Courier New', monospace !important;
+            }
+            
+            .number-cell {
+                text-align: right !important;
+                font-family: 'Courier New', monospace !important;
+                font-weight: bold !important;
             }
             
             /* إخفاء جميع العناصر الأخرى */
@@ -992,8 +1087,8 @@
             
             /* تنسيق للأرقام */
             .number-cell {
-                text-align: right !important;
                 font-family: 'Courier New', monospace !important;
+                font-weight: bold !important;
             }
         }
         
@@ -1128,20 +1223,18 @@
                         <span id="modalSaleQuantity">0 كغ</span>
                     </div>
                     <div class="payment-item">
-                        <span>متوسط سعر الشراء | Ortalama Alış Fiyatı:</span>
-                        <span id="modalAvgPurchasePrice">0 <span class="dollar">$</span></span>
-                    </div>
-                    <div class="payment-item">
                         <span>سعر البيع | Satış Fiyatı:</span>
                         <span id="modalSalePrice">0 <span class="dollar">$</span></span>
-                    </div>
-                    <div class="payment-item">
-                        <span>متوسط ربح القطعة | Ortalama Parça Kârı:</span>
-                        <span id="modalAvgProfitPerUnit">0 <span class="dollar">$</span></span>
                     </div>
                     <div class="payment-item total">
                         <span>المبلغ الإجمالي | Toplam Tutar:</span>
                         <span id="modalTotalAmount">0 <span class="dollar">$</span></span>
+                    </div>
+                    
+                    <!-- تفاصيل المصادر -->
+                    <div id="modalSourcesDetails" style="margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ddd; display: none;">
+                        <h5 style="color: var(--primary-color); margin-bottom: 10px;">تفاصيل مصادر الشراء | Alım Kaynakları Detayı:</h5>
+                        <div id="modalSourcesList"></div>
                     </div>
                 </div>
                 
@@ -1417,8 +1510,8 @@
                                         <p><strong>عدد المصادر | Kaynak Sayısı:</strong> <span id="totalSelectedSources">0</span></p>
                                     </div>
                                     <div>
-                                        <p><strong>متوسط سعر الشراء | Ortalama Alış Fiyatı:</strong> <span id="avgPurchasePrice">0</span> <span class="dollar">$</span></p>
-                                        <p><strong>الإجمالي الشرائي | Toplam Alış Tutarı:</strong> <span id="totalPurchaseCost">0</span> <span class="dollar">$</span></p>
+                                        <p><strong>إجمالي تكلفة الشراء | Toplam Alış Tutarı:</strong> <span id="totalPurchaseCost">0</span> <span class="dollar">$</span></p>
+                                        <p><strong>إجمالي الربح المتوقع | Tahmini Toplam Kâr:</strong> <span id="totalExpectedProfit">0</span> <span class="dollar">$</span></p>
                                     </div>
                                 </div>
                             </div>
@@ -1439,9 +1532,7 @@
                                     <th>#</th>
                                     <th>العميل | Müşteri</th>
                                     <th>الكمية | Miktar</th>
-                                    <th>متوسط سعر الشراء | Ort. Alış Fiyatı</th>
                                     <th>سعر البيع | Satış Fiyatı</th>
-                                    <th>متوسط ربح القطعة | Ort. Parça Kârı</th>
                                     <th>الإجمالي | Toplam</th>
                                     <th>المدفوع | Ödenen</th>
                                     <th>المتبقي | Kalan</th>
@@ -1457,8 +1548,6 @@
                                 <tr>
                                     <td colspan="2">إجمالي اليوم | Günlük Toplam</td>
                                     <td id="totalSalesQuantity">0 كغ</td>
-                                    <td></td>
-                                    <td></td>
                                     <td></td>
                                     <td id="totalSalesAmount">0 <span class="dollar">$</span></td>
                                     <td id="totalPaidAmount">0 <span class="dollar">$</span></td>
@@ -1682,7 +1771,8 @@
                     id: purchase.id,
                     quantity: defaultQuantity,
                     price: purchase.price,
-                    purchaseDate: purchase.date
+                    purchaseDate: purchase.date,
+                    purchaseTotal: defaultQuantity * purchase.price
                 });
             } else {
                 // إزالة المصدر
@@ -1710,6 +1800,7 @@
             const source = selectedSources.find(s => s.id === purchaseId);
             if (source) {
                 source.quantity = quantityNum;
+                source.purchaseTotal = quantityNum * source.price;
                 updateSelectedSourcesDisplay();
             }
         }
@@ -1736,14 +1827,18 @@
             }
             
             let totalSelectedQuantity = 0;
-            let totalWeightedPrice = 0;
+            let totalPurchaseCost = 0;
+            const salePrice = parseFloat(document.getElementById('salePrice').value) || 0;
             
             selectedSources.forEach((source, index) => {
                 const purchase = purchases.find(p => p.id === source.id);
                 if (!purchase) return;
                 
                 totalSelectedQuantity += source.quantity;
-                totalWeightedPrice += source.quantity * source.price;
+                totalPurchaseCost += source.purchaseTotal;
+                
+                const profitPerUnit = salePrice - source.price;
+                const sourceProfit = profitPerUnit * source.quantity;
                 
                 const sourceItem = document.createElement('div');
                 sourceItem.className = 'selected-source-item';
@@ -1752,8 +1847,11 @@
                     <div class="selected-source-info">
                         <strong>مصدر #${source.id}</strong>
                         <div>الكمية: ${source.quantity.toFixed(2)} كغ من ${purchase.remaining.toFixed(2)} كغ</div>
-                        <div>السعر: ${source.price.toFixed(2)}$ للكغ</div>
-                        <div>الإجمالي: ${(source.quantity * source.price).toFixed(2)}$</div>
+                        <div>سعر الشراء: ${source.price.toFixed(2)}$ للكغ</div>
+                        <div>إجمالي الشراء: ${source.purchaseTotal.toFixed(2)}$</div>
+                        ${salePrice > 0 ? `
+                            <div>ربح المصدر: <strong>${sourceProfit.toFixed(2)}$</strong></div>
+                        ` : ''}
                     </div>
                     <div class="selected-source-actions">
                         <button class="btn-remove-source" onclick="removeSelectedSource(${index})" title="حذف المصدر | Kaynağı Sil">
@@ -1765,12 +1863,12 @@
             });
             
             // تحديث الملخص
-            const avgPurchasePrice = totalSelectedQuantity > 0 ? totalWeightedPrice / totalSelectedQuantity : 0;
+            const totalExpectedProfit = salePrice > 0 ? (salePrice * totalSelectedQuantity) - totalPurchaseCost : 0;
             
             document.getElementById('totalSelectedQuantity').textContent = totalSelectedQuantity.toFixed(2);
             document.getElementById('totalSelectedSources').textContent = selectedSources.length;
-            document.getElementById('avgPurchasePrice').textContent = avgPurchasePrice.toFixed(2);
-            document.getElementById('totalPurchaseCost').textContent = totalWeightedPrice.toFixed(2);
+            document.getElementById('totalPurchaseCost').textContent = totalPurchaseCost.toFixed(2);
+            document.getElementById('totalExpectedProfit').textContent = totalExpectedProfit.toFixed(2);
             
             summaryDiv.style.display = 'block';
             
@@ -1805,13 +1903,13 @@
                 return;
             }
             
-            // حساب إجمالي الكمية المختارة ومتوسط سعر الشراء
+            // حساب إجمالي الكمية المختارة
             let totalSelectedQuantity = 0;
-            let totalWeightedPrice = 0;
+            let totalPurchaseCost = 0;
             
             selectedSources.forEach(source => {
                 totalSelectedQuantity += source.quantity;
-                totalWeightedPrice += source.quantity * source.price;
+                totalPurchaseCost += source.purchaseTotal;
             });
             
             if (Math.abs(saleQuantity - totalSelectedQuantity) > 0.01) {
@@ -1819,19 +1917,18 @@
                 return;
             }
             
-            const avgPurchasePrice = totalSelectedQuantity > 0 ? totalWeightedPrice / totalSelectedQuantity : 0;
-            const avgProfitPerUnit = salePrice - avgPurchasePrice;
+            const totalRevenue = saleQuantity * salePrice;
+            const totalProfit = totalRevenue - totalPurchaseCost;
             
             // حفظ بيانات البيع الحالية لعرضها في نموذج الدفع
             currentSaleData = {
                 customerName: customerName,
                 quantity: saleQuantity,
                 price: salePrice,
-                avgPurchasePrice: avgPurchasePrice,
-                avgProfitPerUnit: avgProfitPerUnit,
-                total: saleQuantity * salePrice,
+                totalRevenue: totalRevenue,
+                totalPurchaseCost: totalPurchaseCost,
+                totalProfit: totalProfit,
                 selectedSources: JSON.parse(JSON.stringify(selectedSources)), // نسخة عميقة
-                profit: avgProfitPerUnit * saleQuantity,
                 date: currentViewDate // استخدام تاريخ العرض الحالي
             };
             
@@ -1845,13 +1942,44 @@
             
             document.getElementById('modalCustomerName').textContent = currentSaleData.customerName;
             document.getElementById('modalSaleQuantity').textContent = currentSaleData.quantity.toFixed(2) + ' كغ';
-            document.getElementById('modalAvgPurchasePrice').innerHTML = currentSaleData.avgPurchasePrice.toFixed(2) + ' <span class="dollar">$</span>';
             document.getElementById('modalSalePrice').innerHTML = currentSaleData.price.toFixed(2) + ' <span class="dollar">$</span>';
-            document.getElementById('modalAvgProfitPerUnit').innerHTML = currentSaleData.avgProfitPerUnit.toFixed(2) + ' <span class="dollar">$</span>';
-            document.getElementById('modalTotalAmount').innerHTML = currentSaleData.total.toFixed(2) + ' <span class="dollar">$</span>';
+            document.getElementById('modalTotalAmount').innerHTML = currentSaleData.totalRevenue.toFixed(2) + ' <span class="dollar">$</span>';
             
             // تعيين تاريخ اليوم
             document.getElementById('paymentDate').textContent = currentViewDate;
+            
+            // عرض تفاصيل المصادر
+            const modalSourcesList = document.getElementById('modalSourcesList');
+            const modalSourcesDetails = document.getElementById('modalSourcesDetails');
+            
+            modalSourcesList.innerHTML = '';
+            
+            if (currentSaleData.selectedSources && currentSaleData.selectedSources.length > 0) {
+                currentSaleData.selectedSources.forEach((source, index) => {
+                    const purchase = purchases.find(p => p.id === source.id);
+                    if (!purchase) return;
+                    
+                    const profitPerUnit = currentSaleData.price - source.price;
+                    const sourceProfit = profitPerUnit * source.quantity;
+                    
+                    const sourceItem = document.createElement('div');
+                    sourceItem.className = 'source-detail-item';
+                    sourceItem.innerHTML = `
+                        <div class="source-info">
+                            <span class="source-number">${index + 1}</span>
+                            <span>مصدر #${source.id}: ${source.quantity.toFixed(2)} كغ × ${source.price.toFixed(2)}$ = ${source.purchaseTotal.toFixed(2)}$</span>
+                        </div>
+                        <div>
+                            ربح المصدر: <strong>${sourceProfit.toFixed(2)}$</strong>
+                        </div>
+                    `;
+                    modalSourcesList.appendChild(sourceItem);
+                });
+                
+                modalSourcesDetails.style.display = 'block';
+            } else {
+                modalSourcesDetails.style.display = 'none';
+            }
             
             // إعادة تعيين حقل المبلغ المدفوع
             document.getElementById('amountPaid').value = '0';
@@ -1874,7 +2002,7 @@
             if (!currentSaleData) return;
             
             const amountPaid = parseFloat(this.value) || 0;
-            const remainingAmount = currentSaleData.total - amountPaid;
+            const remainingAmount = currentSaleData.totalRevenue - amountPaid;
             
             document.getElementById('remainingAmount').innerHTML = remainingAmount.toFixed(2) + ' <span class="dollar">$</span>';
             document.getElementById('actualAmount').innerHTML = amountPaid.toFixed(2) + ' <span class="dollar">$</span>';
@@ -1891,14 +2019,14 @@
             if (!currentSaleData) return;
             
             const amountPaid = parseFloat(document.getElementById('amountPaid').value) || 0;
-            const remainingAmount = currentSaleData.total - amountPaid;
+            const remainingAmount = currentSaleData.totalRevenue - amountPaid;
             
             if (amountPaid < 0) {
                 alert('المبلغ المدفوع يجب أن يكون أكبر من أو يساوي صفر | Ödenen tutar sıfırdan büyük veya eşit olmalıdır');
                 return;
             }
             
-            if (amountPaid > currentSaleData.total) {
+            if (amountPaid > currentSaleData.totalRevenue) {
                 alert('المبلغ المدفوع لا يمكن أن يتجاوز المبلغ الإجمالي | Ödenen tutar toplam tutarı aşamaz');
                 return;
             }
@@ -1918,12 +2046,11 @@
                 customerName: currentSaleData.customerName,
                 quantity: currentSaleData.quantity,
                 price: currentSaleData.price,
-                avgPurchasePrice: currentSaleData.avgPurchasePrice,
-                avgProfitPerUnit: currentSaleData.avgProfitPerUnit,
-                total: currentSaleData.total,
+                totalRevenue: currentSaleData.totalRevenue,
+                totalPurchaseCost: currentSaleData.totalPurchaseCost,
+                totalProfit: currentSaleData.totalProfit,
                 paid: amountPaid,
                 remaining: remainingAmount,
-                profit: currentSaleData.profit,
                 selectedSources: currentSaleData.selectedSources,
                 date: currentViewDate,
                 status: remainingAmount > 0 ? 'pending' : 'completed'
@@ -1956,7 +2083,7 @@
             
             document.getElementById('receiveCustomerName').textContent = sale.customerName;
             document.getElementById('receiveSaleQuantity').textContent = sale.quantity.toFixed(2) + ' كغ';
-            document.getElementById('receiveTotalAmount').innerHTML = sale.total.toFixed(2) + ' <span class="dollar">$</span>';
+            document.getElementById('receiveTotalAmount').innerHTML = sale.totalRevenue.toFixed(2) + ' <span class="dollar">$</span>';
             document.getElementById('receivePaidAmount').innerHTML = sale.paid.toFixed(2) + ' <span class="dollar">$</span>';
             document.getElementById('receiveRemainingAmount').innerHTML = sale.remaining.toFixed(2) + ' <span class="dollar">$</span>';
             
@@ -2006,7 +2133,7 @@
             
             // تحديث بيانات البيع
             currentSaleForReceive.paid += receiveAmount;
-            currentSaleForReceive.remaining = currentSaleForReceive.total - currentSaleForReceive.paid;
+            currentSaleForReceive.remaining = currentSaleForReceive.totalRevenue - currentSaleForReceive.paid;
             currentSaleForReceive.status = currentSaleForReceive.remaining > 0 ? 'pending' : 'completed';
             
             // إضافة سجل الدفعة
@@ -2206,7 +2333,6 @@
             let totalPaidAmount = 0;
             let totalRemainingAmount = 0;
             let totalProfit = 0;
-            let totalProfitPerUnit = 0;
             let totalPurchaseCost = 0;
             let hasSales = false;
             
@@ -2233,30 +2359,53 @@
                 if (showSale) {
                     hasSales = true;
                     totalSalesQuantity += sale.quantity;
-                    totalSalesAmount += sale.total;
+                    totalSalesAmount += sale.totalRevenue;
                     totalPaidAmount += sale.paid;
                     totalRemainingAmount += sale.remaining;
-                    totalProfit += sale.profit;
-                    totalProfitPerUnit += sale.avgProfitPerUnit;
-                    totalPurchaseCost += (sale.quantity * sale.avgPurchasePrice);
+                    totalProfit += sale.totalProfit;
+                    totalPurchaseCost += sale.totalPurchaseCost;
                     
-                    const profitClass = sale.profit >= 0 ? 'badge-sale' : 'badge-purchase';
-                    const profitSign = sale.profit >= 0 ? '+' : '';
+                    const profitClass = sale.totalProfit >= 0 ? 'badge-sale' : 'badge-purchase';
+                    const profitSign = sale.totalProfit >= 0 ? '+' : '';
                     const remainingColor = sale.remaining > 0 ? 'color: #e74c3c; font-weight: bold;' : 'color: #27ae60; font-weight: bold;';
                     const statusText = sale.remaining > 0 ? `<span style="color: #e74c3c;">${sale.remaining.toFixed(2)}$</span>` : '<span style="color: #27ae60;">مكتمل</span>';
+                    
+                    // إنشاء تفاصيل المصادر
+                    let sourcesDetailsHTML = '';
+                    if (sale.selectedSources && sale.selectedSources.length > 0) {
+                        sourcesDetailsHTML = '<div class="sources-details">';
+                        sale.selectedSources.forEach((source, idx) => {
+                            const profitPerUnit = sale.price - source.price;
+                            const sourceProfit = profitPerUnit * source.quantity;
+                            
+                            sourcesDetailsHTML += `
+                                <div class="source-detail-item">
+                                    <div class="source-info">
+                                        <span class="source-number">${idx + 1}</span>
+                                        <span>مصدر #${source.id}: ${source.quantity.toFixed(2)} كغ × ${source.price.toFixed(2)}$ = ${source.purchaseTotal.toFixed(2)}$</span>
+                                    </div>
+                                    <div>
+                                        ربح المصدر: <strong>${sourceProfit.toFixed(2)}$</strong>
+                                    </div>
+                                </div>
+                            `;
+                        });
+                        sourcesDetailsHTML += '</div>';
+                    }
                     
                     const row = document.createElement('tr');
                     row.innerHTML = `
                         <td>${index + 1}</td>
-                        <td>${sale.customerName}</td>
+                        <td>
+                            <div>${sale.customerName}</div>
+                            ${sourcesDetailsHTML}
+                        </td>
                         <td>${sale.quantity.toFixed(2)} كغ</td>
-                        <td><span class="dollar">$</span> ${sale.avgPurchasePrice.toFixed(2)}</td>
                         <td><span class="dollar">$</span> ${sale.price.toFixed(2)}</td>
-                        <td><span class="dollar">$</span> ${sale.avgProfitPerUnit.toFixed(2)}</td>
-                        <td><span class="dollar">$</span> ${sale.total.toFixed(2)}</td>
+                        <td><span class="dollar">$</span> ${sale.totalRevenue.toFixed(2)}</td>
                         <td><span class="dollar">$</span> ${sale.paid.toFixed(2)}</td>
                         <td style="${remainingColor}"><span class="dollar">$</span> ${sale.remaining.toFixed(2)}</td>
-                        <td><span class="badge ${profitClass}"><span class="dollar">$</span> ${profitSign}${sale.profit.toFixed(2)}</span></td>
+                        <td><span class="badge ${profitClass}"><span class="dollar">$</span> ${profitSign}${sale.totalProfit.toFixed(2)}</span></td>
                         <td>${sale.date}</td>
                         <td>
                             <button class="btn btn-sm btn-warning" onclick="editSale(${sale.id})" title="تعديل | Düzenle">
@@ -2306,7 +2455,7 @@
             
             // إجمالي مبيعات اليوم المحدد فقط
             const totalTodaySalesQuantity = todaySales.reduce((sum, sale) => sum + sale.quantity, 0);
-            const totalTodaySalesAmount = todaySales.reduce((sum, sale) => sum + sale.total, 0);
+            const totalTodaySalesAmount = todaySales.reduce((sum, sale) => sum + sale.totalRevenue, 0);
             
             // إجمالي المشتريات والمبيعات الكلية للمخزون (جميع الأيام)
             const totalPurchasesAll = purchases.reduce((sum, purchase) => sum + purchase.quantity, 0);
@@ -2315,7 +2464,7 @@
             const currentInventoryValue = purchases.reduce((sum, purchase) => sum + (purchase.remaining * purchase.price), 0);
             
             // إجمالي الربح والمبلغ المستحق لليوم المحدد فقط
-            const totalTodayProfit = todaySales.reduce((sum, sale) => sum + sale.profit, 0);
+            const totalTodayProfit = todaySales.reduce((sum, sale) => sum + sale.totalProfit, 0);
             const totalTodayRemaining = todaySales.reduce((sum, sale) => sum + sale.remaining, 0);
             
             document.getElementById('total-purchases').textContent = totalActivePurchasesQuantity.toFixed(2) + ' كغ';
@@ -2418,8 +2567,8 @@
             const totalActivePurchasesQuantity = activePurchases.reduce((sum, purchase) => sum + purchase.quantity, 0);
             const totalActivePurchasesAmount = activePurchases.reduce((sum, purchase) => sum + purchase.total, 0);
             const totalTodaySalesQuantity = todaySales.reduce((sum, sale) => sum + sale.quantity, 0);
-            const totalTodaySalesAmount = todaySales.reduce((sum, sale) => sum + sale.total, 0);
-            const totalTodayProfit = todaySales.reduce((sum, sale) => sum + sale.profit, 0);
+            const totalTodaySalesAmount = todaySales.reduce((sum, sale) => sum + sale.totalRevenue, 0);
+            const totalTodayProfit = todaySales.reduce((sum, sale) => sum + sale.totalProfit, 0);
             const totalTodayRemaining = todaySales.reduce((sum, sale) => sum + sale.remaining, 0);
             
             // حساب المخزون الحالي (جميع الأيام)
@@ -2495,36 +2644,60 @@
             
             // إحصائيات التقرير للتاريخ المحدد فقط
             const totalQuantity = dateSales.reduce((sum, sale) => sum + sale.quantity, 0);
-            const totalRevenue = dateSales.reduce((sum, sale) => sum + sale.total, 0);
-            const totalProfit = dateSales.reduce((sum, sale) => sum + sale.profit, 0);
+            const totalRevenue = dateSales.reduce((sum, sale) => sum + sale.totalRevenue, 0);
+            const totalProfit = dateSales.reduce((sum, sale) => sum + sale.totalProfit, 0);
             const totalPaid = dateSales.reduce((sum, sale) => sum + sale.paid, 0);
             const totalRemaining = dateSales.reduce((sum, sale) => sum + sale.remaining, 0);
             
             // حساب إجمالي تكلفة الشراء للتاريخ المحدد
             let totalPurchaseCost = 0;
             dateSales.forEach(sale => {
-                totalPurchaseCost += sale.quantity * sale.avgPurchasePrice;
+                totalPurchaseCost += sale.totalPurchaseCost;
             });
             
             // إنشاء جدول المبيعات للتقرير مع إضافة سعر الشراء وربح القطعة
             let salesTableHTML = '';
             dateSales.forEach((sale, index) => {
-                const profitClass = sale.profit >= 0 ? 'profit-positive' : 'profit-negative';
+                const profitClass = sale.totalProfit >= 0 ? 'profit-positive' : 'profit-negative';
                 const remainingColor = sale.remaining > 0 ? 'color: #e74c3c; font-weight: bold;' : 'color: #27ae60; font-weight: bold;';
                 const statusText = sale.remaining > 0 ? `<span style="color: #e74c3c;">${sale.remaining.toFixed(2)}$</span>` : '<span style="color: #27ae60;">مكتمل</span>';
+                
+                // تفاصيل المصادر
+                let sourcesDetailsHTML = '';
+                if (sale.selectedSources && sale.selectedSources.length > 0) {
+                    sourcesDetailsHTML = '<div class="sources-details" style="margin-top: 10px;">';
+                    sale.selectedSources.forEach((source, idx) => {
+                        const profitPerUnit = sale.price - source.price;
+                        const sourceProfit = profitPerUnit * source.quantity;
+                        
+                        sourcesDetailsHTML += `
+                            <div class="source-detail-item">
+                                <div class="source-info">
+                                    <span class="source-number">${idx + 1}</span>
+                                    <span>مصدر #${source.id}: ${source.quantity.toFixed(2)} كغ × ${source.price.toFixed(2)}$ = ${source.purchaseTotal.toFixed(2)}$</span>
+                                </div>
+                                <div>
+                                    ربح المصدر: <strong>${sourceProfit.toFixed(2)}$</strong>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    sourcesDetailsHTML += '</div>';
+                }
                 
                 salesTableHTML += `
                     <tr>
                         <td>${index + 1}</td>
-                        <td>${sale.customerName}</td>
+                        <td>
+                            <div>${sale.customerName}</div>
+                            ${sourcesDetailsHTML}
+                        </td>
                         <td>${sale.quantity.toFixed(2)} كغ</td>
-                        <td><span class="dollar">$</span> ${sale.avgPurchasePrice.toFixed(2)}</td>
                         <td><span class="dollar">$</span> ${sale.price.toFixed(2)}</td>
-                        <td><span class="dollar">$</span> ${sale.avgProfitPerUnit.toFixed(2)}</td>
-                        <td><span class="dollar">$</span> ${sale.total.toFixed(2)}</td>
+                        <td><span class="dollar">$</span> ${sale.totalRevenue.toFixed(2)}</td>
                         <td><span class="dollar">$</span> ${sale.paid.toFixed(2)}</td>
                         <td style="${remainingColor}"><span class="dollar">$</span> ${sale.remaining.toFixed(2)}</td>
-                        <td class="${profitClass}"><span class="dollar">$</span> ${sale.profit.toFixed(2)}</td>
+                        <td class="${profitClass}"><span class="dollar">$</span> ${sale.totalProfit.toFixed(2)}</td>
                         <td>${statusText}</td>
                     </tr>
                 `;
@@ -2561,9 +2734,7 @@
                                 <th>#</th>
                                 <th>اسم العميل | Müşteri Adı</th>
                                 <th>الكمية | Miktar</th>
-                                <th>متوسط سعر الشراء | Ort. Alış Fiyatı</th>
                                 <th>سعر البيع | Satış Fiyatı</th>
-                                <th>متوسط ربح القطعة | Ort. Parça Kârı</th>
                                 <th>الإجمالي | Toplam</th>
                                 <th>المدفوع | Ödenen</th>
                                 <th>المتبقي | Kalan</th>
@@ -2578,8 +2749,6 @@
                             <tr>
                                 <td colspan="2">إجمالي اليوم | Günlük Toplam</td>
                                 <td>${totalQuantity.toFixed(2)} كغ</td>
-                                <td><span class="dollar">$</span> ${totalPurchaseCost.toFixed(2)}</td>
-                                <td></td>
                                 <td></td>
                                 <td><span class="dollar">$</span> ${totalRevenue.toFixed(2)}</td>
                                 <td><span class="dollar">$</span> ${totalPaid.toFixed(2)}</td>
@@ -2627,22 +2796,46 @@
             // إنشاء جدول المبيعات للتقرير القابل للطباعة
             let salesTableHTML = '';
             dateSales.forEach((sale, index) => {
-                const profitClass = sale.profit >= 0 ? 'profit-positive' : 'profit-negative';
+                const profitClass = sale.totalProfit >= 0 ? 'profit-positive' : 'profit-negative';
                 const remainingColor = sale.remaining > 0 ? 'remaining-red' : 'paid-green';
                 const statusText = sale.remaining > 0 ? `<span class="remaining-red">${sale.remaining.toFixed(2)}$</span>` : '<span class="paid-green">مكتمل</span>';
+                
+                // تفاصيل المصادر للطباعة
+                let sourcesDetailsHTML = '';
+                if (sale.selectedSources && sale.selectedSources.length > 0) {
+                    sourcesDetailsHTML = '<div class="print-sources-details">';
+                    sale.selectedSources.forEach((source, idx) => {
+                        const profitPerUnit = sale.price - source.price;
+                        const sourceProfit = profitPerUnit * source.quantity;
+                        
+                        sourcesDetailsHTML += `
+                            <div class="print-source-item">
+                                <div>
+                                    <span class="print-source-number">${idx + 1}</span>
+                                    مصدر #${source.id}: ${source.quantity.toFixed(2)} كغ × ${source.price.toFixed(2)}$ = ${source.purchaseTotal.toFixed(2)}$
+                                </div>
+                                <div>
+                                    ربح: <strong>${sourceProfit.toFixed(2)}$</strong>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    sourcesDetailsHTML += '</div>';
+                }
                 
                 salesTableHTML += `
                     <tr>
                         <td>${index + 1}</td>
-                        <td>${sale.customerName}</td>
+                        <td>
+                            ${sale.customerName}
+                            ${sourcesDetailsHTML}
+                        </td>
                         <td class="number-cell">${sale.quantity.toFixed(2)} كغ</td>
-                        <td class="number-cell"><span class="dollar-print">$</span> ${sale.avgPurchasePrice.toFixed(2)}</td>
                         <td class="number-cell"><span class="dollar-print">$</span> ${sale.price.toFixed(2)}</td>
-                        <td class="number-cell"><span class="dollar-print">$</span> ${sale.avgProfitPerUnit.toFixed(2)}</td>
-                        <td class="number-cell"><span class="dollar-print">$</span> ${sale.total.toFixed(2)}</td>
+                        <td class="number-cell"><span class="dollar-print">$</span> ${sale.totalRevenue.toFixed(2)}</td>
                         <td class="number-cell"><span class="dollar-print">$</span> ${sale.paid.toFixed(2)}</td>
                         <td class="number-cell ${remainingColor}"><span class="dollar-print">$</span> ${sale.remaining.toFixed(2)}</td>
-                        <td class="number-cell ${profitClass}"><span class="dollar-print">$</span> ${sale.profit.toFixed(2)}</td>
+                        <td class="number-cell ${profitClass}"><span class="dollar-print">$</span> ${sale.totalProfit.toFixed(2)}</td>
                         <td>${statusText}</td>
                     </tr>
                 `;
@@ -2650,7 +2843,10 @@
             
             const printableReportHTML = `
                 <div class="print-header">
-                    <h1>ALANHAR SILVER</h1>
+                    <div class="print-header-logo">
+                        <i class="fas fa-gem" style="font-size: 24pt; color: #f1c40f;"></i>
+                        <h1>ALANHAR SILVER</h1>
+                    </div>
                     <h2>تقرير المبيعات اليومي | Günlük Satış Raporu</h2>
                     <div class="print-header-info">
                         <div>
@@ -2692,11 +2888,9 @@
                         <thead>
                             <tr>
                                 <th width="4%">#</th>
-                                <th width="12%">اسم العميل<br>Müşteri Adı</th>
+                                <th width="20%">اسم العميل<br>Müşteri Adı</th>
                                 <th width="8%">الكمية<br>Miktar</th>
-                                <th width="9%">متوسط سعر الشراء<br>Ort. Alış Fiyatı</th>
                                 <th width="9%">سعر البيع<br>Satış Fiyatı</th>
-                                <th width="9%">متوسط ربح القطعة<br>Ort. Parça Kârı</th>
                                 <th width="9%">الإجمالي<br>Toplam</th>
                                 <th width="9%">المدفوع<br>Ödenen</th>
                                 <th width="9%">المتبقي<br>Kalan</th>
@@ -2711,8 +2905,6 @@
                             <tr style="background-color: #e8f5e9 !important; font-weight: bold;">
                                 <td colspan="2">إجمالي اليوم | Günlük Toplam</td>
                                 <td class="number-cell">${totalQuantity.toFixed(2)} كغ</td>
-                                <td class="number-cell"><span class="dollar-print">$</span> ${totalPurchaseCost.toFixed(2)}</td>
-                                <td></td>
                                 <td></td>
                                 <td class="number-cell"><span class="dollar-print">$</span> ${totalRevenue.toFixed(2)}</td>
                                 <td class="number-cell"><span class="dollar-print">$</span> ${totalPaid.toFixed(2)}</td>
@@ -2730,11 +2922,11 @@
                         <div>
                             <p><strong>عدد المعاملات | İşlem Sayısı:</strong> ${dateSales.length}</p>
                             <p><strong>إجمالي الكمية المباعة | Toplam Satılan Miktar:</strong> ${totalQuantity.toFixed(2)} كغ</p>
-                            <p><strong>متوسط سعر الشراء | Ortalama Alış Fiyatı:</strong> <span class="dollar-print">$</span> ${(totalPurchaseCost / totalQuantity || 0).toFixed(2)}</p>
+                            <p><strong>متوسط سعر البيع | Ortalama Satış Fiyatı:</strong> <span class="dollar-print">$</span> ${(totalRevenue / totalQuantity || 0).toFixed(2)}</p>
                         </div>
                         <div>
-                            <p><strong>متوسط سعر البيع | Ortalama Satış Fiyatı:</strong> <span class="dollar-print">$</span> ${(totalRevenue / totalQuantity || 0).toFixed(2)}</p>
-                            <p><strong>متوسط ربح القطعة | Ortalama Parça Kârı:</strong> <span class="dollar-print">$</span> ${(totalProfit / totalQuantity || 0).toFixed(2)}</p>
+                            <p><strong>إجمالي تكلفة الشراء | Toplam Alış Maliyeti:</strong> <span class="dollar-print">$</span> ${totalPurchaseCost.toFixed(2)}</p>
+                            <p><strong>متوسط ربح الكيلو | Ortalama Kilo Başı Kâr:</strong> <span class="dollar-print">$</span> ${(totalProfit / totalQuantity || 0).toFixed(2)}</p>
                             <p><strong>نسبة الربحية | Kârlılık Oranı:</strong> ${((totalProfit / totalPurchaseCost) * 100 || 0).toFixed(2)}%</p>
                         </div>
                     </div>
