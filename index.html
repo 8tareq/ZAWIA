@@ -2415,7 +2415,7 @@
             updateDashboardStats();
             
             document.getElementById('reportDate').value = today;
-            generateTodayReport();
+            generateDetailedReport();
         }
         
         function showPreviousDay() {
@@ -2528,22 +2528,27 @@
                 return;
             }
             
+            // الحصول على جميع المبيعات للتاريخ المحدد
             const dateSales = sales.filter(sale => sale.date === selectedDate);
             
-            if (dateSales.length === 0) {
+            // الحصول على جميع المشتريات للتاريخ المحدد
+            const datePurchases = purchases.filter(purchase => purchase.date === selectedDate);
+            
+            if (dateSales.length === 0 && datePurchases.length === 0) {
                 document.getElementById('reportContent').innerHTML = `
                     <div style="text-align: center; padding: 40px; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: var(--border-radius);">
                         <i class="fas fa-exclamation-circle" style="font-size: 3.5rem; color: #e74c3c; margin-bottom: 20px;"></i>
-                        <h3 style="color: #e74c3c; margin-bottom: 15px;">لا توجد مبيعات في التاريخ المحدد | Seçilen tarihte satış yok</h3>
+                        <h3 style="color: #e74c3c; margin-bottom: 15px;">لا توجد معاملات في التاريخ المحدد | Seçilen tarihte işlem yok</h3>
                         <p style="font-size: 1.1rem; color: #666;">${selectedDate}</p>
-                        <p style="margin-top: 10px;">الرجاء اختيار تاريخ آخر أو إضافة مبيعات جديدة | Lütfen başka bir tarih seçin veya yeni satışlar ekleyin</p>
+                        <p style="margin-top: 10px;">الرجاء اختيار تاريخ آخر أو إضافة معاملات جديدة | Lütfen başka bir tarih seçin veya yeni işlemler ekleyin</p>
                     </div>
                 `;
                 
-                updatePrintableReport(selectedDate, {}, 0, 0, 0, 0, 0, 0);
+                updatePrintableReport(selectedDate, {}, [], 0, 0, 0, 0, 0);
                 return;
             }
             
+            // تجميع المبيعات حسب parentSaleId
             const groupedSales = {};
             dateSales.forEach(sale => {
                 if (!groupedSales[sale.parentSaleId]) {
@@ -2556,6 +2561,7 @@
                 groupedSales[sale.parentSaleId].sources.push(sale);
             });
             
+            // إحصائيات المبيعات للتاريخ المحدد
             const totalQuantity = dateSales.reduce((sum, sale) => sum + sale.quantity, 0);
             const totalRevenue = dateSales.reduce((sum, sale) => sum + sale.total, 0);
             const totalProfit = dateSales.reduce((sum, sale) => sum + sale.profit, 0);
@@ -2567,6 +2573,27 @@
                 totalPurchaseCost += sale.quantity * sale.purchasePrice;
             });
             
+            // إحصائيات المشتريات للتاريخ المحدد
+            const totalPurchasesQuantity = datePurchases.reduce((sum, purchase) => sum + purchase.quantity, 0);
+            const totalPurchasesAmount = datePurchases.reduce((sum, purchase) => sum + purchase.total, 0);
+            const totalPurchasesRemaining = datePurchases.reduce((sum, purchase) => sum + purchase.remaining, 0);
+            
+            // حساب المستحقات لكل عميل
+            const customerBalances = {};
+            dateSales.forEach(sale => {
+                if (!customerBalances[sale.customerName]) {
+                    customerBalances[sale.customerName] = {
+                        total: 0,
+                        paid: 0,
+                        remaining: 0
+                    };
+                }
+                customerBalances[sale.customerName].total += sale.total;
+                customerBalances[sale.customerName].paid += sale.paid;
+                customerBalances[sale.customerName].remaining += sale.remaining;
+            });
+            
+            // إنشاء جدول المبيعات للتقرير
             let salesTableHTML = '';
             let saleIndex = 1;
             
@@ -2589,11 +2616,57 @@
                                 <td><span class="dollar">$</span> ${sale.profitPerUnit.toFixed(2)}</td>
                                 <td class="${profitClass}"><span class="dollar">$</span> ${profitSign}${sale.profit.toFixed(2)}</td>
                                 <td><span class="dollar">$</span> ${sale.total.toFixed(2)}</td>
+                                <td><span class="dollar" style="color: #27ae60;">$</span> ${sale.paid.toFixed(2)}</td>
+                                <td style="color: #e74c3c; font-weight: bold;"><span class="dollar">$</span> ${sale.remaining.toFixed(2)}</td>
                             </tr>
                         `;
                     });
                     
                     saleIndex++;
+                }
+            });
+            
+            // إنشاء جدول المشتريات للتقرير
+            let purchasesTableHTML = '';
+            let purchaseIndex = 1;
+            
+            datePurchases.forEach((purchase, index) => {
+                const remainingPercentage = (purchase.remaining / purchase.originalQuantity) * 100;
+                let remainingClass = 'remaining-high';
+                if (remainingPercentage === 0) remainingClass = 'remaining-zero';
+                else if (remainingPercentage < 30) remainingClass = 'remaining-low';
+                else if (remainingPercentage < 60) remainingClass = 'remaining-medium';
+                
+                purchasesTableHTML += `
+                    <tr>
+                        <td>${purchaseIndex}</td>
+                        <td>${purchase.quantity.toFixed(2)} كغ</td>
+                        <td><span class="dollar">$</span> ${purchase.price.toFixed(2)}</td>
+                        <td><span class="dollar">$</span> ${purchase.total.toFixed(2)}</td>
+                        <td>${purchase.date}</td>
+                        <td><span class="remaining-quantity ${remainingClass}">${purchase.remaining.toFixed(2)} كغ</span></td>
+                    </tr>
+                `;
+                purchaseIndex++;
+            });
+            
+            // إنشاء جدول المستحقات للعملاء
+            let customerBalancesHTML = '';
+            let customerIndex = 1;
+            
+            Object.keys(customerBalances).forEach(customerName => {
+                const balance = customerBalances[customerName];
+                if (balance.remaining > 0) {
+                    customerBalancesHTML += `
+                        <tr>
+                            <td>${customerIndex}</td>
+                            <td>${customerName}</td>
+                            <td><span class="dollar">$</span> ${balance.total.toFixed(2)}</td>
+                            <td><span class="dollar" style="color: #27ae60;">$</span> ${balance.paid.toFixed(2)}</td>
+                            <td style="color: #e74c3c; font-weight: bold;"><span class="dollar">$</span> ${balance.remaining.toFixed(2)}</td>
+                        </tr>
+                    `;
+                    customerIndex++;
                 }
             });
             
@@ -2603,11 +2676,11 @@
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
                         <div style="text-align: center; padding: 15px; background: white; border-radius: 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.05);">
                             <h4 style="color: var(--primary-color); margin-bottom: 10px;">عدد المعاملات | İşlem Sayısı</h4>
-                            <p style="font-size: 1.8rem; font-weight: bold; color: var(--secondary-color);">${Object.keys(groupedSales).length}</p>
+                            <p style="font-size: 1.8rem; font-weight: bold; color: var(--secondary-color);">${Object.keys(groupedSales).length + datePurchases.length}</p>
                         </div>
                         <div style="text-align: center; padding: 15px; background: white; border-radius: 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.05);">
-                            <h4 style="color: var(--primary-color); margin-bottom: 10px;">إجمالي الكمية المباعة | Toplam Satılan Miktar</h4>
-                            <p style="font-size: 1.8rem; font-weight: bold; color: var(--accent-color);">${totalQuantity.toFixed(2)} كغ</p>
+                            <h4 style="color: var(--primary-color); margin-bottom: 10px;">إجمالي الكمية | Toplam Miktar</h4>
+                            <p style="font-size: 1.8rem; font-weight: bold; color: var(--accent-color);">${(totalQuantity + totalPurchasesQuantity).toFixed(2)} كغ</p>
                         </div>
                         <div style="text-align: center; padding: 15px; background: white; border-radius: 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.05);">
                             <h4 style="color: var(--primary-color); margin-bottom: 10px;">إجمالي الربح | Toplam Kâr</h4>
@@ -2619,54 +2692,144 @@
                         </div>
                     </div>
                 </div>
-                
-                <h3 style="color: var(--primary-color); margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid var(--light-color);">تفاصيل المبيعات | Satış Detayları</h3>
-                <div class="table-container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>اسم العميل | Müşteri Adı</th>
-                                <th>المصدر | Kaynak</th>
-                                <th>الكمية | Miktar</th>
-                                <th>سعر الشراء | Alış Fiyatı</th>
-                                <th>سعر البيع | Satış Fiyatı</th>
-                                <th>ربح القطعة | Parça Kârı</th>
-                                <th>الربح | Kâr</th>
-                                <th>الإجمالي | Toplam</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${salesTableHTML}
-                        </tbody>
-                        <tfoot style="font-weight: bold; background-color: #f8f9fa;">
-                            <tr>
-                                <td colspan="3">إجمالي اليوم | Günlük Toplam</td>
-                                <td>${totalQuantity.toFixed(2)} كغ</td>
-                                <td><span class="dollar">$</span> ${totalPurchaseCost.toFixed(2)}</td>
-                                <td></td>
-                                <td></td>
-                                <td><span class="dollar">$</span> ${totalProfit.toFixed(2)}</td>
-                                <td><span class="dollar">$</span> ${totalRevenue.toFixed(2)}</td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
-                
+            `;
+            
+            // إضافة قسم المشتريات إذا كان هناك مشتريات
+            if (datePurchases.length > 0) {
+                reportHTML += `
+                    <h3 style="color: var(--primary-color); margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid var(--light-color);">المشتريات | Alımlar</h3>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>الكمية | Miktar</th>
+                                    <th>سعر الشراء | Alış Fiyatı</th>
+                                    <th>الإجمالي | Toplam</th>
+                                    <th>التاريخ | Tarih</th>
+                                    <th>المتبقي | Kalan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${purchasesTableHTML}
+                            </tbody>
+                            <tfoot style="font-weight: bold; background-color: #f8f9fa;">
+                                <tr>
+                                    <td colspan="1">إجمالي اليوم | Günlük Toplam</td>
+                                    <td>${totalPurchasesQuantity.toFixed(2)} كغ</td>
+                                    <td></td>
+                                    <td><span class="dollar">$</span> ${totalPurchasesAmount.toFixed(2)}</td>
+                                    <td></td>
+                                    <td>${totalPurchasesRemaining.toFixed(2)} كغ</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                `;
+            }
+            
+            // إضافة قسم المبيعات إذا كان هناك مبيعات
+            if (dateSales.length > 0) {
+                reportHTML += `
+                    <h3 style="color: var(--primary-color); margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid var(--light-color); margin-top: 30px;">المبيعات | Satışlar</h3>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>اسم العميل | Müşteri Adı</th>
+                                    <th>المصدر | Kaynak</th>
+                                    <th>الكمية | Miktar</th>
+                                    <th>سعر الشراء | Alış Fiyatı</th>
+                                    <th>سعر البيع | Satış Fiyatı</th>
+                                    <th>ربح القطعة | Parça Kârı</th>
+                                    <th>الربح | Kâr</th>
+                                    <th>الإجمالي | Toplam</th>
+                                    <th>المدفوع | Ödenen</th>
+                                    <th>المتبقي | Kalan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${salesTableHTML}
+                            </tbody>
+                            <tfoot style="font-weight: bold; background-color: #f8f9fa;">
+                                <tr>
+                                    <td colspan="3">إجمالي اليوم | Günlük Toplam</td>
+                                    <td>${totalQuantity.toFixed(2)} كغ</td>
+                                    <td><span class="dollar">$</span> ${totalPurchaseCost.toFixed(2)}</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td><span class="dollar">$</span> ${totalProfit.toFixed(2)}</td>
+                                    <td><span class="dollar">$</span> ${totalRevenue.toFixed(2)}</td>
+                                    <td><span class="dollar" style="color: #27ae60;">$</span> ${totalPaid.toFixed(2)}</td>
+                                    <td style="color: #e74c3c;"><span class="dollar">$</span> ${totalRemaining.toFixed(2)}</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                `;
+            }
+            
+            // إضافة قسم المستحقات إذا كان هناك مستحقات
+            if (customerIndex > 1) {
+                reportHTML += `
+                    <h3 style="color: var(--primary-color); margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid var(--light-color); margin-top: 30px;">المستحقات على العملاء | Müşteri Alacakları</h3>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>اسم العميل | Müşteri Adı</th>
+                                    <th>الإجمالي | Toplam</th>
+                                    <th>المدفوع | Ödenen</th>
+                                    <th>المتبقي | Kalan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${customerBalancesHTML}
+                            </tbody>
+                            <tfoot style="font-weight: bold; background-color: #f8f9fa;">
+                                <tr>
+                                    <td colspan="2">إجمالي المستحقات | Toplam Alacaklar</td>
+                                    <td><span class="dollar">$</span> ${totalRevenue.toFixed(2)}</td>
+                                    <td><span class="dollar" style="color: #27ae60;">$</span> ${totalPaid.toFixed(2)}</td>
+                                    <td style="color: #e74c3c;"><span class="dollar">$</span> ${totalRemaining.toFixed(2)}</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                `;
+            }
+            
+            reportHTML += `
                 <div style="margin-top: 30px; background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); padding: 25px; border-radius: var(--border-radius);">
                     <h3 style="color: var(--primary-color); margin-bottom: 20px; text-align: center;">الإجماليات النهائية | Nihai Toplamlar</h3>
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
                         <div style="text-align: center; padding: 15px; background: white; border-radius: 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.05);">
-                            <h4 style="color: var(--primary-color); margin-bottom: 10px;">إجمالي تكلفة الشراء | Toplam Alış Maliyeti</h4>
-                            <p style="font-size: 1.5rem; font-weight: bold; color: var(--secondary-color);"><span class="dollar">$</span> ${totalPurchaseCost.toFixed(2)}</p>
+                            <h4 style="color: var(--primary-color); margin-bottom: 10px;">إجمالي المشتريات | Toplam Alımlar</h4>
+                            <p style="font-size: 1.5rem; font-weight: bold; color: var(--secondary-color);"><span class="dollar">$</span> ${totalPurchasesAmount.toFixed(2)}</p>
+                        </div>
+                        <div style="text-align: center; padding: 15px; background: white; border-radius: 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.05);">
+                            <h4 style="color: var(--primary-color); margin-bottom: 10px;">إجمالي تكلفة الشراء للبيع | Satışların Alış Maliyeti</h4>
+                            <p style="font-size: 1.5rem; font-weight: bold; color: var(--accent-color);"><span class="dollar">$</span> ${totalPurchaseCost.toFixed(2)}</p>
                         </div>
                         <div style="text-align: center; padding: 15px; background: white; border-radius: 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.05);">
                             <h4 style="color: var(--primary-color); margin-bottom: 10px;">إجمالي إيرادات البيع | Toplam Satış Geliri</h4>
-                            <p style="font-size: 1.5rem; font-weight: bold; color: var(--accent-color);"><span class="dollar">$</span> ${totalRevenue.toFixed(2)}</p>
+                            <p style="font-size: 1.5rem; font-weight: bold; color: #3498db;"><span class="dollar">$</span> ${totalRevenue.toFixed(2)}</p>
                         </div>
                         <div style="text-align: center; padding: 15px; background: white; border-radius: 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.05);">
                             <h4 style="color: var(--primary-color); margin-bottom: 10px;">إجمالي الربح الصافي | Toplam Net Kâr</h4>
                             <p style="font-size: 1.5rem; font-weight: bold; color: var(--success-color);"><span class="dollar">$</span> ${totalProfit.toFixed(2)}</p>
+                        </div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 20px;">
+                        <div style="text-align: center; padding: 15px; background: white; border-radius: 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.05);">
+                            <h4 style="color: var(--primary-color); margin-bottom: 10px;">المبلغ المدفوع | Toplam Ödenen</h4>
+                            <p style="font-size: 1.5rem; font-weight: bold; color: #27ae60;"><span class="dollar">$</span> ${totalPaid.toFixed(2)}</p>
+                        </div>
+                        <div style="text-align: center; padding: 15px; background: white; border-radius: 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.05);">
+                            <h4 style="color: var(--primary-color); margin-bottom: 10px;">المبلغ المتبقي | Toplam Kalan</h4>
+                            <p style="font-size: 1.5rem; font-weight: bold; color: #e74c3c;"><span class="dollar">$</span> ${totalRemaining.toFixed(2)}</p>
                         </div>
                     </div>
                 </div>
@@ -2674,15 +2837,20 @@
             
             document.getElementById('reportContent').innerHTML = reportHTML;
             
-            updatePrintableReport(selectedDate, groupedSales, totalQuantity, totalPurchaseCost, totalRevenue, totalProfit, totalPaid, totalRemaining);
+            updatePrintableReport(selectedDate, groupedSales, datePurchases, customerBalances, totalQuantity, totalPurchaseCost, totalRevenue, totalProfit, totalPaid, totalRemaining);
         }
         
-        function updatePrintableReport(selectedDate, groupedSales, totalQuantity, totalPurchaseCost, totalRevenue, totalProfit, totalPaid, totalRemaining) {
+        function updatePrintableReport(selectedDate, groupedSales, datePurchases, customerBalances, totalQuantity, totalPurchaseCost, totalRevenue, totalProfit, totalPaid, totalRemaining) {
             const printDate = new Date().toLocaleDateString('ar-EG', {
                 year: 'numeric',
                 month: 'long',
                 day: 'numeric'
             });
+            
+            // إحصائيات المشتريات للتاريخ المحدد
+            const totalPurchasesQuantity = datePurchases.reduce((sum, purchase) => sum + purchase.quantity, 0);
+            const totalPurchasesAmount = datePurchases.reduce((sum, purchase) => sum + purchase.total, 0);
+            const totalPurchasesRemaining = datePurchases.reduce((sum, purchase) => sum + purchase.remaining, 0);
             
             let salesTableHTML = '';
             let saleIndex = 1;
@@ -2706,11 +2874,51 @@
                                 <td class="number-cell"><span class="dollar-print">$</span> ${sale.profitPerUnit.toFixed(2)}</td>
                                 <td class="number-cell ${profitClass}"><span class="dollar-print">$</span> ${profitSign}${sale.profit.toFixed(2)}</td>
                                 <td class="number-cell"><span class="dollar-print">$</span> ${sale.total.toFixed(2)}</td>
+                                <td class="number-cell paid-green"><span class="dollar-print">$</span> ${sale.paid.toFixed(2)}</td>
+                                <td class="number-cell remaining-red"><span class="dollar-print">$</span> ${sale.remaining.toFixed(2)}</td>
                             </tr>
                         `;
                     });
                     
                     saleIndex++;
+                }
+            });
+            
+            // إنشاء جدول المشتريات للطباعة
+            let purchasesTableHTML = '';
+            let purchaseIndex = 1;
+            
+            datePurchases.forEach((purchase, index) => {
+                purchasesTableHTML += `
+                    <tr>
+                        <td>${purchaseIndex}</td>
+                        <td class="number-cell">${purchase.quantity.toFixed(2)} كغ</td>
+                        <td class="number-cell"><span class="dollar-print">$</span> ${purchase.price.toFixed(2)}</td>
+                        <td class="number-cell"><span class="dollar-print">$</span> ${purchase.total.toFixed(2)}</td>
+                        <td>${purchase.date}</td>
+                        <td class="number-cell">${purchase.remaining.toFixed(2)} كغ</td>
+                    </tr>
+                `;
+                purchaseIndex++;
+            });
+            
+            // إنشاء جدول المستحقات للعملاء للطباعة
+            let customerBalancesHTML = '';
+            let customerIndex = 1;
+            
+            Object.keys(customerBalances).forEach(customerName => {
+                const balance = customerBalances[customerName];
+                if (balance.remaining > 0) {
+                    customerBalancesHTML += `
+                        <tr>
+                            <td>${customerIndex}</td>
+                            <td>${customerName}</td>
+                            <td class="number-cell"><span class="dollar-print">$</span> ${balance.total.toFixed(2)}</td>
+                            <td class="number-cell paid-green"><span class="dollar-print">$</span> ${balance.paid.toFixed(2)}</td>
+                            <td class="number-cell remaining-red"><span class="dollar-print">$</span> ${balance.remaining.toFixed(2)}</td>
+                        </tr>
+                    `;
+                    customerIndex++;
                 }
             });
             
@@ -2721,7 +2929,7 @@
                     <div class="print-header-info">
                         <div>
                             <p><strong>تاريخ التقرير | Rapor Tarihi:</strong> ${selectedDate}</p>
-                            <p><strong>عدد المعاملات | İşlem Sayısı:</strong> ${Object.keys(groupedSales).length}</p>
+                            <p><strong>عدد المعاملات | İşlem Sayısı:</strong> ${Object.keys(groupedSales).length + datePurchases.length}</p>
                         </div>
                         <div>
                             <p><strong>تاريخ الإنشاء | Oluşturma Tarihi:</strong> ${printDate}</p>
@@ -2735,11 +2943,11 @@
                     <div class="print-summary-grid">
                         <div class="print-summary-item">
                             <h4>عدد المعاملات<br>İşlem Sayısı</h4>
-                            <p>${Object.keys(groupedSales).length}</p>
+                            <p>${Object.keys(groupedSales).length + datePurchases.length}</p>
                         </div>
                         <div class="print-summary-item">
                             <h4>إجمالي الكمية<br>Toplam Miktar</h4>
-                            <p>${totalQuantity.toFixed(2)} كغ</p>
+                            <p>${(totalQuantity + totalPurchasesQuantity).toFixed(2)} كغ</p>
                         </div>
                         <div class="print-summary-item">
                             <h4>إجمالي الإيرادات<br>Toplam Gelir</h4>
@@ -2751,45 +2959,121 @@
                         </div>
                     </div>
                 </div>
-                
-                <div class="print-table-container">
-                    <h3 style="text-align: center; margin: 15px 0; font-size: 13pt;">تفاصيل المبيعات | Satış Detayları</h3>
-                    <table class="print-table">
-                        <thead>
-                            <tr>
-                                <th width="4%">#</th>
-                                <th width="12%">اسم العميل<br>Müşteri Adı</th>
-                                <th width="8%">المصدر<br>Kaynak</th>
-                                <th width="8%">الكمية<br>Miktar</th>
-                                <th width="9%">سعر الشراء<br>Alış Fiyatı</th>
-                                <th width="9%">سعر البيع<br>Satış Fiyatı</th>
-                                <th width="9%">ربح القطعة<br>Parça Kârı</th>
-                                <th width="9%">الربح<br>Kâr</th>
-                                <th width="9%">الإجمالي<br>Toplam</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${salesTableHTML}
-                        </tbody>
-                        <tfoot>
-                            <tr style="background-color: #e8f5e9 !important; font-weight: bold;">
-                                <td colspan="3">إجمالي اليوم | Günlük Toplam</td>
-                                <td class="number-cell">${totalQuantity.toFixed(2)} كغ</td>
-                                <td class="number-cell"><span class="dollar-print">$</span> ${totalPurchaseCost.toFixed(2)}</td>
-                                <td></td>
-                                <td></td>
-                                <td class="number-cell"><span class="dollar-print">$</span> ${totalProfit.toFixed(2)}</td>
-                                <td class="number-cell"><span class="dollar-print">$</span> ${totalRevenue.toFixed(2)}</td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
-                
+            `;
+            
+            // إضافة قسم المشتريات إذا كان هناك مشتريات
+            if (datePurchases.length > 0) {
+                printableReportHTML += `
+                    <div class="print-table-container">
+                        <h3 style="text-align: center; margin: 15px 0; font-size: 13pt;">المشتريات | Alımlar</h3>
+                        <table class="print-table">
+                            <thead>
+                                <tr>
+                                    <th width="4%">#</th>
+                                    <th width="10%">الكمية<br>Miktar</th>
+                                    <th width="10%">سعر الشراء<br>Alış Fiyatı</th>
+                                    <th width="10%">الإجمالي<br>Toplam</th>
+                                    <th width="10%">التاريخ<br>Tarih</th>
+                                    <th width="10%">المتبقي<br>Kalan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${purchasesTableHTML}
+                            </tbody>
+                            <tfoot>
+                                <tr style="background-color: #e8f5e9 !important; font-weight: bold;">
+                                    <td colspan="1">إجمالي اليوم | Günlük Toplam</td>
+                                    <td class="number-cell">${totalPurchasesQuantity.toFixed(2)} كغ</td>
+                                    <td></td>
+                                    <td class="number-cell"><span class="dollar-print">$</span> ${totalPurchasesAmount.toFixed(2)}</td>
+                                    <td></td>
+                                    <td class="number-cell">${totalPurchasesRemaining.toFixed(2)} كغ</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                `;
+            }
+            
+            // إضافة قسم المبيعات إذا كان هناك مبيعات
+            if (Object.keys(groupedSales).length > 0) {
+                printableReportHTML += `
+                    <div class="print-table-container">
+                        <h3 style="text-align: center; margin: 15px 0; font-size: 13pt;">المبيعات | Satışlar</h3>
+                        <table class="print-table">
+                            <thead>
+                                <tr>
+                                    <th width="4%">#</th>
+                                    <th width="12%">اسم العميل<br>Müşteri Adı</th>
+                                    <th width="8%">المصدر<br>Kaynak</th>
+                                    <th width="7%">الكمية<br>Miktar</th>
+                                    <th width="8%">سعر الشراء<br>Alış Fiyatı</th>
+                                    <th width="8%">سعر البيع<br>Satış Fiyatı</th>
+                                    <th width="8%">ربح القطعة<br>Parça Kârı</th>
+                                    <th width="8%">الربح<br>Kâr</th>
+                                    <th width="8%">الإجمالي<br>Toplam</th>
+                                    <th width="8%">المدفوع<br>Ödenen</th>
+                                    <th width="8%">المتبقي<br>Kalan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${salesTableHTML}
+                            </tbody>
+                            <tfoot>
+                                <tr style="background-color: #e8f5e9 !important; font-weight: bold;">
+                                    <td colspan="3">إجمالي اليوم | Günlük Toplam</td>
+                                    <td class="number-cell">${totalQuantity.toFixed(2)} كغ</td>
+                                    <td class="number-cell"><span class="dollar-print">$</span> ${totalPurchaseCost.toFixed(2)}</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="number-cell"><span class="dollar-print">$</span> ${totalProfit.toFixed(2)}</td>
+                                    <td class="number-cell"><span class="dollar-print">$</span> ${totalRevenue.toFixed(2)}</td>
+                                    <td class="number-cell paid-green"><span class="dollar-print">$</span> ${totalPaid.toFixed(2)}</td>
+                                    <td class="number-cell remaining-red"><span class="dollar-print">$</span> ${totalRemaining.toFixed(2)}</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                `;
+            }
+            
+            // إضافة قسم المستحقات إذا كان هناك مستحقات
+            if (customerIndex > 1) {
+                printableReportHTML += `
+                    <div class="print-table-container">
+                        <h3 style="text-align: center; margin: 15px 0; font-size: 13pt;">المستحقات على العملاء | Müşteri Alacakları</h3>
+                        <table class="print-table">
+                            <thead>
+                                <tr>
+                                    <th width="4%">#</th>
+                                    <th width="20%">اسم العميل<br>Müşteri Adı</th>
+                                    <th width="15%">الإجمالي<br>Toplam</th>
+                                    <th width="15%">المدفوع<br>Ödenen</th>
+                                    <th width="15%">المتبقي<br>Kalan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${customerBalancesHTML}
+                            </tbody>
+                            <tfoot>
+                                <tr style="background-color: #e8f5e9 !important; font-weight: bold;">
+                                    <td colspan="2">إجمالي المستحقات | Toplam Alacaklar</td>
+                                    <td class="number-cell"><span class="dollar-print">$</span> ${totalRevenue.toFixed(2)}</td>
+                                    <td class="number-cell paid-green"><span class="dollar-print">$</span> ${totalPaid.toFixed(2)}</td>
+                                    <td class="number-cell remaining-red"><span class="dollar-print">$</span> ${totalRemaining.toFixed(2)}</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                `;
+            }
+            
+            printableReportHTML += `
                 <div class="print-totals">
                     <h3 style="text-align: center; margin-bottom: 15px; font-size: 13pt;">إحصائيات المبيعات | Satış İstatistikleri</h3>
                     <div class="print-totals-grid">
                         <div>
-                            <p><strong>عدد المعاملات | İşlem Sayısı:</strong> ${Object.keys(groupedSales).length}</p>
+                            <p><strong>عدد المعاملات | İşlem Sayısı:</strong> ${Object.keys(groupedSales).length + datePurchases.length}</p>
                             <p><strong>إجمالي الكمية المباعة | Toplam Satılan Miktar:</strong> ${totalQuantity.toFixed(2)} كغ</p>
                             <p><strong>متوسط سعر الشراء | Ortalama Alış Fiyatı:</strong> <span class="dollar-print">$</span> ${(totalPurchaseCost / totalQuantity || 0).toFixed(2)}</p>
                         </div>
@@ -2805,11 +3089,13 @@
                     <h3 style="text-align: center; margin-bottom: 15px; font-size: 13pt;">الإجماليات النهائية | Nihai Toplamlar</h3>
                     <div class="print-totals-grid">
                         <div>
-                            <p><strong>إجمالي تكلفة الشراء | Toplam Alış Maliyeti:</strong> <span class="dollar-print">$</span> ${totalPurchaseCost.toFixed(2)}</p>
+                            <p><strong>إجمالي المشتريات | Toplam Alımlar:</strong> <span class="dollar-print">$</span> ${totalPurchasesAmount.toFixed(2)}</p>
+                            <p><strong>إجمالي تكلفة الشراء للبيع | Satışların Alış Maliyeti:</strong> <span class="dollar-print">$</span> ${totalPurchaseCost.toFixed(2)}</p>
                             <p><strong>إجمالي إيرادات البيع | Toplam Satış Geliri:</strong> <span class="dollar-print">$</span> ${totalRevenue.toFixed(2)}</p>
                         </div>
                         <div>
                             <p><strong>إجمالي الربح الصافي | Toplam Net Kâr:</strong> <span class="dollar-print">$</span> ${totalProfit.toFixed(2)}</p>
+                            <p><strong>إجمالي المبلغ المدفوع | Toplam Ödenen Tutar:</strong> <span class="dollar-print">$</span> ${totalPaid.toFixed(2)}</p>
                             <p><strong>إجمالي المبلغ المتبقي | Toplam Kalan Tutar:</strong> <span class="dollar-print">$</span> ${totalRemaining.toFixed(2)}</p>
                         </div>
                     </div>
