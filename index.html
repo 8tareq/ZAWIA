@@ -1516,6 +1516,7 @@
                                     <th>#</th>
                                     <th>الكمية | Miktar</th>
                                     <th>سعر الشراء | Alış Fiyatı</th>
+                                    <th>السعر الحقيقي | Gerçek Fiyat</th>
                                     <th>الإجمالي | Toplam</th>
                                     <th>التاريخ | Tarih</th>
                                     <th>المتبقي | Kalan</th>
@@ -1529,6 +1530,7 @@
                                 <tr>
                                     <td colspan="2">إجمالي اليوم | Günlük Toplam</td>
                                     <td></td>
+                                    <td id="averagePurchasePriceFooter">0 <span class="dollar">$</span></td>
                                     <td id="totalPurchasesFooter">0 <span class="dollar">$</span></td>
                                     <td colspan="3"></td>
                                 </tr>
@@ -1598,8 +1600,8 @@
                                         <p><strong>عدد المصادر | Kaynak Sayısı:</strong> <span id="totalSelectedSources">0</span></p>
                                     </div>
                                     <div>
-                                        <p><strong>إجمالي الشراء | Toplam Alış Tutarı:</strong> <span id="totalPurchaseCost">0</span> <span class="dollar">$</span></p>
-                                        <p><strong>إجمالي البيع | Toplam Satış Tutarı:</strong> <span id="totalSaleCost">0</span> <span class="dollar">$</span></p>
+                                        <p><strong>متوسط سعر الشراء | Ortalama Alış Fiyatı:</strong> <span id="averagePurchasePrice">0</span> <span class="dollar">$</span></p>
+                                        <p><strong>إجمالي الربح المتوقع | Beklenen Toplam Kâr:</strong> <span id="expectedProfit">0</span> <span class="dollar">$</span></p>
                                     </div>
                                 </div>
                             </div>
@@ -1621,7 +1623,7 @@
                                     <th>العميل | Müşteri</th>
                                     <th>المصادر والتفاصيل | Kaynaklar ve Detaylar</th>
                                     <th>الكمية | Miktar</th>
-                                    <th>سعر الشراء | Alış Fiyatı</th>
+                                    <th>متوسط الشراء | Ort. Alış</th>
                                     <th>سعر البيع | Satış Fiyatı</th>
                                     <th>ربح القطعة | Parça Kârı</th>
                                     <th>الربح | Kâr</th>
@@ -1637,7 +1639,7 @@
                                 <tr>
                                     <td colspan="3">إجمالي اليوم | Günlük Toplam</td>
                                     <td id="totalSalesQuantity">0 كغ</td>
-                                    <td></td>
+                                    <td id="totalAvgPurchase">0 <span class="dollar">$</span></td>
                                     <td></td>
                                     <td></td>
                                     <td id="totalProfitFooter">0 <span class="dollar">$</span></td>
@@ -1717,7 +1719,7 @@
             }
             
             if (localStorage.getItem('alanharSales')) {
-                sales = JSON.parse(localStorage.getItem('alanharSales'));
+                sales = JSON.parse(lStorage.getItem('alanharSales'));
             }
             
             updatePurchasesTable();
@@ -1729,6 +1731,9 @@
             
             document.getElementById('amountPaid').addEventListener('input', updatePaymentRemaining);
             document.getElementById('receiveAmount').addEventListener('input', updateReceiveAmount);
+            
+            // تحديث متوسط الشراء والربح المتوقع عند تغيير السعر
+            document.getElementById('salePrice').addEventListener('input', updateExpectedProfit);
         });
         
         function updateDateDisplay() {
@@ -1838,6 +1843,7 @@
             }
             
             updateSelectedSourcesDisplay();
+            updateExpectedProfit();
         }
         
         function toggleSourceSelection(purchaseId) {
@@ -1880,6 +1886,7 @@
             if (source) {
                 source.quantity = quantityNum;
                 updateSelectedSourcesDisplay();
+                updateExpectedProfit();
             }
         }
         
@@ -1937,13 +1944,11 @@
                 selectedSourcesList.appendChild(sourceItem);
             });
             
-            const salePrice = parseFloat(document.getElementById('salePrice').value) || 0;
-            const totalSaleCost = totalSelectedQuantity * salePrice;
+            const averagePurchasePrice = totalSelectedQuantity > 0 ? (totalPurchaseCost / totalSelectedQuantity) : 0;
             
             document.getElementById('totalSelectedQuantity').textContent = totalSelectedQuantity.toFixed(2);
             document.getElementById('totalSelectedSources').textContent = selectedSources.length;
-            document.getElementById('totalPurchaseCost').textContent = totalPurchaseCost.toFixed(2);
-            document.getElementById('totalSaleCost').textContent = totalSaleCost.toFixed(2);
+            document.getElementById('averagePurchasePrice').textContent = averagePurchasePrice.toFixed(2);
             
             summaryDiv.style.display = 'block';
             
@@ -1951,6 +1956,24 @@
             if (!saleQuantityInput.value || parseFloat(saleQuantityInput.value) !== totalSelectedQuantity) {
                 saleQuantityInput.value = totalSelectedQuantity.toFixed(2);
             }
+        }
+        
+        function updateExpectedProfit() {
+            if (selectedSources.length === 0) return;
+            
+            let totalSelectedQuantity = 0;
+            let totalPurchaseCost = 0;
+            
+            selectedSources.forEach(source => {
+                totalSelectedQuantity += source.quantity;
+                totalPurchaseCost += source.quantity * source.price;
+            });
+            
+            const salePrice = parseFloat(document.getElementById('salePrice').value) || 0;
+            const averagePurchasePrice = totalSelectedQuantity > 0 ? (totalPurchaseCost / totalSelectedQuantity) : 0;
+            const expectedProfit = (salePrice - averagePurchasePrice) * totalSelectedQuantity;
+            
+            document.getElementById('expectedProfit').textContent = expectedProfit.toFixed(2);
         }
         
         function removeSelectedSource(index) {
@@ -1989,15 +2012,18 @@
             }
             
             const totalSaleAmount = saleQuantity * salePrice;
+            const averagePurchasePrice = totalSelectedQuantity > 0 ? (totalPurchaseCost / totalSelectedQuantity) : 0;
+            const expectedProfit = totalSaleAmount - totalPurchaseCost;
             
             currentSaleData = {
                 customerName: customerName,
                 quantity: saleQuantity,
                 price: salePrice,
                 totalPurchaseCost: totalPurchaseCost,
+                averagePurchasePrice: averagePurchasePrice,
                 total: totalSaleAmount,
                 selectedSources: JSON.parse(JSON.stringify(selectedSources)),
-                profit: totalSaleAmount - totalPurchaseCost,
+                profit: expectedProfit,
                 date: currentViewDate
             };
             
@@ -2079,6 +2105,9 @@
                 paid: amountPaid,
                 remaining: remainingAmount,
                 selectedSources: currentSaleData.selectedSources,
+                averagePurchasePrice: currentSaleData.averagePurchasePrice,
+                totalPurchaseCost: currentSaleData.totalPurchaseCost,
+                profit: currentSaleData.profit,
                 date: currentViewDate,
                 status: remainingAmount > 0 ? 'pending' : 'completed',
                 payments: amountPaid > 0 ? [{
@@ -2267,6 +2296,7 @@
             
             let totalPurchasesAmount = 0;
             let totalPurchasesQuantity = 0;
+            let totalRemainingValue = 0;
             let hasPurchases = false;
             
             const filterType = document.getElementById('purchaseFilter').value;
@@ -2285,6 +2315,7 @@
                     hasPurchases = true;
                     totalPurchasesAmount += purchase.total;
                     totalPurchasesQuantity += purchase.quantity;
+                    totalRemainingValue += purchase.remaining * purchase.price;
                     
                     const remainingPercentage = (purchase.remaining / purchase.originalQuantity) * 100;
                     let remainingClass = 'remaining-high';
@@ -2296,6 +2327,7 @@
                     row.innerHTML = `
                         <td>${index + 1}</td>
                         <td>${purchase.quantity.toFixed(2)} كغ</td>
+                        <td><span class="dollar">$</span> ${purchase.price.toFixed(2)}</td>
                         <td><span class="dollar">$</span> ${purchase.price.toFixed(2)}</td>
                         <td><span class="dollar">$</span> ${purchase.total.toFixed(2)}</td>
                         <td>${purchase.date}</td>
@@ -2321,7 +2353,10 @@
                 document.getElementById('purchasesTableContainer').style.display = 'none';
             }
             
+            const averagePrice = totalPurchasesQuantity > 0 ? (totalPurchasesAmount / totalPurchasesQuantity) : 0;
+            
             document.getElementById('totalPurchasesFooter').innerHTML = totalPurchasesAmount.toFixed(2) + ' <span class="dollar">$</span>';
+            document.getElementById('averagePurchasePriceFooter').innerHTML = averagePrice.toFixed(2) + ' <span class="dollar">$</span>';
         }
         
         function updateSalesTable() {
@@ -2331,6 +2366,7 @@
             let totalSalesQuantity = 0;
             let totalSalesAmount = 0;
             let totalProfit = 0;
+            let totalAvgPurchase = 0;
             let hasSales = false;
             
             const filterType = document.getElementById('salesFilter').value;
@@ -2353,7 +2389,7 @@
                     // حساب الربح الإجمالي والعرض
                     let totalProfitFromSources = 0;
                     let totalPurchaseCost = 0;
-                    let avgPurchasePrice = 0;
+                    let avgPurchasePrice = sale.averagePurchasePrice || 0;
                     
                     if (sale.selectedSources && sale.selectedSources.length > 0) {
                         sale.selectedSources.forEach(source => {
@@ -2456,6 +2492,7 @@
                     totalSalesQuantity += sale.quantity;
                     totalSalesAmount += sale.total;
                     totalProfit += totalProfitFromSources;
+                    totalAvgPurchase += avgPurchasePrice;
                 }
             });
             
@@ -2467,9 +2504,12 @@
                 document.getElementById('salesTableContainer').style.display = 'none';
             }
             
+            const avgPurchaseTotal = hasSales ? (totalAvgPurchase / filteredSales.length) : 0;
+            
             document.getElementById('totalSalesQuantity').textContent = totalSalesQuantity.toFixed(2) + ' كغ';
             document.getElementById('totalProfitFooter').innerHTML = totalProfit.toFixed(2) + ' <span class="dollar">$</span>';
             document.getElementById('totalSalesAmount').innerHTML = totalSalesAmount.toFixed(2) + ' <span class="dollar">$</span>';
+            document.getElementById('totalAvgPurchase').innerHTML = avgPurchaseTotal.toFixed(2) + ' <span class="dollar">$</span>';
         }
         
         function toggleSourceDetails(saleId) {
