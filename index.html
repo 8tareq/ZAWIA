@@ -762,18 +762,18 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
         }
         
-        /* Print Styles - A4 كامل وصحيح */
+        /* تحسينات الطباعة - خطوط أكبر وأوضح */
         @media print {
             @page {
                 size: A4 portrait;
-                margin: 10mm;
+                margin: 12mm;
             }
             
             body {
                 background: white !important;
                 color: black !important;
-                font-size: 11pt !important;
-                line-height: 1.5 !important;
+                font-size: 13pt !important; /* زيادة من 11pt إلى 13pt */
+                line-height: 1.6 !important;
                 font-family: 'Arial', 'Helvetica', sans-serif !important;
                 margin: 0 !important;
                 padding: 0 !important;
@@ -790,148 +790,199 @@
                 background: white !important;
                 padding: 0 !important;
                 margin: 0 !important;
-                font-size: 11pt !important;
-                line-height: 1.5 !important;
+                font-size: 13pt !important; /* زيادة من 11pt إلى 13pt */
+                line-height: 1.6 !important;
                 font-family: 'Arial', 'Helvetica', sans-serif !important;
                 color: black !important;
             }
             
             .print-header {
                 text-align: center;
-                margin-bottom: 15px;
-                padding-bottom: 15px;
+                margin-bottom: 20px;
+                padding-bottom: 20px;
                 border-bottom: 2px solid #2c3e50;
                 page-break-after: avoid;
             }
             
             .print-header h1 {
                 color: #2c3e50 !important;
-                font-size: 22pt !important;
-                margin-bottom: 8px !important;
+                font-size: 26pt !important; /* زيادة من 22pt إلى 26pt */
+                margin-bottom: 10px !important;
                 font-weight: bold !important;
             }
             
             .print-header h2 {
                 color: #e67e22 !important;
-                font-size: 16pt !important;
-                margin-bottom: 10px !important;
+                font-size: 20pt !important; /* زيادة من 16pt إلى 20pt */
+                margin-bottom: 15px !important;
                 font-weight: bold !important;
             }
             
             .print-header-info {
                 display: flex;
                 justify-content: space-between;
-                font-size: 10pt !important;
-                margin-top: 10px !important;
-                padding: 8px !important;
+                font-size: 12pt !important; /* زيادة من 10pt إلى 12pt */
+                margin-top: 15px !important;
+                padding: 12px !important;
                 background: #f8f9fa !important;
-                border-radius: 5px !important;
+                border-radius: 6px !important;
+                font-weight: bold !important;
             }
             
             .print-summary {
                 background: #f8f9fa !important;
-                padding: 15px !important;
+                padding: 18px !important;
                 border-radius: 8px !important;
-                margin-bottom: 15px !important;
-                border: 1px solid #ddd !important;
+                margin-bottom: 20px !important;
+                border: 2px solid #ddd !important; /* زيادة سماكة الحدود */
                 page-break-inside: avoid !important;
+            }
+            
+            .print-summary h3 {
+                font-size: 16pt !important; /* زيادة حجم الخط */
+                margin-bottom: 15px !important;
+                font-weight: bold !important;
             }
             
             .print-summary-grid {
                 display: grid !important;
                 grid-template-columns: repeat(4, 1fr) !important;
-                gap: 10px !important;
+                gap: 12px !important;
                 text-align: center !important;
             }
             
             .print-summary-item {
-                padding: 8px !important;
+                padding: 12px !important; /* زيادة padding */
                 background: white !important;
-                border-radius: 6px !important;
-                border: 1px solid #eee !important;
+                border-radius: 8px !important;
+                border: 2px solid #eee !important; /* زيادة سماكة الحدود */
             }
             
             .print-summary-item h4 {
-                font-size: 10pt !important;
-                margin-bottom: 5px !important;
+                font-size: 12pt !important; /* زيادة من 10pt إلى 12pt */
+                margin-bottom: 8px !important;
                 color: #2c3e50 !important;
+                font-weight: bold !important;
             }
             
             .print-summary-item p {
-                font-size: 12pt !important;
+                font-size: 16pt !important; /* زيادة من 12pt إلى 16pt */
                 font-weight: bold !important;
                 margin: 0 !important;
             }
             
             .print-table-container {
                 page-break-inside: avoid !important;
+                margin: 20px 0 !important; /* زيادة الهامش */
+            }
+            
+            .print-table-container h3 {
+                font-size: 16pt !important; /* زيادة حجم الخط */
                 margin: 15px 0 !important;
+                font-weight: bold !important;
             }
             
             .print-table {
                 width: 100% !important;
                 border-collapse: collapse !important;
-                font-size: 9pt !important;
+                font-size: 11pt !important; /* زيادة من 9pt إلى 11pt */
                 page-break-inside: auto !important;
+                border: 2px solid #2c3e50 !important; /* إضافة حدود للجدول */
             }
             
             .print-table th {
                 background: #2c3e50 !important;
                 color: white !important;
-                padding: 8px 5px !important;
+                padding: 12px 8px !important; /* زيادة padding */
                 text-align: center !important;
-                border: 1px solid #1a2530 !important;
+                border: 2px solid #1a2530 !important; /* زيادة سماكة الحدود */
                 font-weight: bold !important;
-                font-size: 9pt !important;
+                font-size: 12pt !important; /* زيادة من 9pt إلى 12pt */
+                line-height: 1.4 !important;
             }
             
             .print-table td {
-                padding: 6px 4px !important;
+                padding: 10px 6px !important; /* زيادة padding */
                 text-align: center !important;
                 border: 1px solid #ddd !important;
-                font-size: 9pt !important;
+                font-size: 11pt !important; /* زيادة من 9pt إلى 11pt */
+                line-height: 1.4 !important;
             }
             
             .print-table tr:nth-child(even) {
                 background-color: #f9f9f9 !important;
             }
             
+            .print-table tfoot tr {
+                background-color: #e8f5e9 !important;
+                font-weight: bold !important;
+                font-size: 12pt !important; /* زيادة حجم الخط */
+            }
+            
+            .print-table tfoot td {
+                border-top: 2px solid #2c3e50 !important;
+                border-bottom: 2px solid #2c3e50 !important;
+                font-weight: bold !important;
+            }
+            
             .print-totals {
                 background: #e8f5e9 !important;
-                padding: 15px !important;
+                padding: 18px !important;
                 border-radius: 8px !important;
-                margin: 15px 0 !important;
-                border: 1px solid #c8e6c9 !important;
+                margin: 18px 0 !important;
+                border: 2px solid #c8e6c9 !important; /* زيادة سماكة الحدود */
                 page-break-inside: avoid !important;
+            }
+            
+            .print-totals h3 {
+                font-size: 16pt !important;
+                margin-bottom: 15px !important;
+                font-weight: bold !important;
             }
             
             .print-totals-grid {
                 display: grid !important;
                 grid-template-columns: repeat(2, 1fr) !important;
-                gap: 15px !important;
+                gap: 18px !important; /* زيادة الجاب */
+            }
+            
+            .print-totals-grid p {
+                font-size: 13pt !important; /* زيادة حجم الخط */
+                margin-bottom: 10px !important;
+                line-height: 1.6 !important;
+            }
+            
+            .print-totals-grid strong {
+                font-size: 13pt !important;
             }
             
             .print-final-totals {
                 background: #fff3e0 !important;
-                padding: 15px !important;
+                padding: 18px !important;
                 border-radius: 8px !important;
-                margin: 15px 0 !important;
-                border: 2px solid #ffb74d !important;
+                margin: 18px 0 !important;
+                border: 3px solid #ffb74d !important; /* زيادة سماكة الحدود */
                 page-break-inside: avoid !important;
             }
             
+            .print-final-totals h3 {
+                font-size: 16pt !important;
+                margin-bottom: 15px !important;
+                font-weight: bold !important;
+            }
+            
             .print-signature {
-                margin-top: 20px !important;
-                padding-top: 15px !important;
-                border-top: 1px solid #2c3e50 !important;
+                margin-top: 25px !important;
+                padding-top: 20px !important;
+                border-top: 2px solid #2c3e50 !important; /* زيادة سماكة الحدود */
                 page-break-inside: avoid !important;
-                font-size: 10pt !important;
+                font-size: 12pt !important; /* زيادة من 10pt إلى 12pt */
             }
             
             .signature-area {
                 display: flex !important;
                 justify-content: space-between !important;
-                margin-top: 30px !important;
+                margin-top: 40px !important;
             }
             
             .signature-box {
@@ -940,34 +991,45 @@
             }
             
             .signature-line {
-                border-top: 1px solid #000 !important;
+                border-top: 2px solid #000 !important; /* زيادة سماكة الخط */
                 width: 80% !important;
-                margin: 40px auto 5px auto !important;
+                margin: 50px auto 8px auto !important; /* زيادة الهامش */
+            }
+            
+            .signature-box p {
+                font-size: 12pt !important; /* زيادة حجم الخط */
+                margin: 5px 0 !important;
+                font-weight: bold !important;
             }
             
             .profit-positive {
                 color: #27ae60 !important;
                 font-weight: bold !important;
+                font-size: 12pt !important; /* زيادة حجم الخط */
             }
             
             .profit-negative {
                 color: #e74c3c !important;
                 font-weight: bold !important;
+                font-size: 12pt !important; /* زيادة حجم الخط */
             }
             
             .remaining-red {
                 color: #e74c3c !important;
                 font-weight: bold !important;
+                font-size: 12pt !important; /* زيادة حجم الخط */
             }
             
             .paid-green {
                 color: #27ae60 !important;
                 font-weight: bold !important;
+                font-size: 12pt !important; /* زيادة حجم الخط */
             }
             
             .dollar-print {
                 color: #f39c12 !important;
                 font-weight: bold !important;
+                font-size: 12pt !important; /* زيادة حجم الخط */
             }
             
             /* إخفاء جميع العناصر الأخرى */
@@ -993,14 +1055,17 @@
             /* تنسيق للأرقام */
             .number-cell {
                 text-align: right !important;
-                font-family: 'Courier New', monospace !important;
+                font-family: 'Arial', sans-serif !important;
+                font-weight: bold !important;
+                font-size: 12pt !important; /* زيادة حجم الخط */
             }
             
             /* تنسيق تفاصيل المصادر في الطباعة */
             .source-details-print {
-                margin: 5px 0 !important;
-                padding: 3px 0 !important;
-                border-bottom: 1px dashed #ddd !important;
+                margin: 8px 0 !important;
+                padding: 5px 0 !important;
+                border-bottom: 2px dashed #ddd !important; /* زيادة سماكة الخط */
+                font-size: 11pt !important;
             }
             
             .source-details-print:last-child {
@@ -1010,10 +1075,28 @@
             /* خلية تفاصيل المصادر الموسعة */
             .expanded-source-details {
                 background: #f0f7ff !important;
-                padding: 8px !important;
-                margin: 5px 0 !important;
-                border-radius: 4px !important;
-                border: 1px solid #bbdefb !important;
+                padding: 10px !important; /* زيادة padding */
+                margin: 8px 0 !important;
+                border-radius: 5px !important;
+                border: 2px solid #bbdefb !important; /* زيادة سماكة الحدود */
+                font-size: 11pt !important;
+            }
+            
+            /* إضافة هامش للفواصل */
+            .print-table-container, .print-totals, .print-final-totals {
+                margin-bottom: 25px !important;
+            }
+            
+            /* تحسين قراءة النص */
+            p, span, td, th {
+                font-weight: normal !important;
+                letter-spacing: 0.5px !important;
+            }
+            
+            /* جعل العناوين أكثر بروزاً */
+            h1, h2, h3, h4 {
+                text-shadow: none !important;
+                letter-spacing: 1px !important;
             }
         }
         
