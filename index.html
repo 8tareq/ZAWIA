@@ -683,7 +683,7 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 700px;
+            min-width: 800px;
         }
         
         table thead {
@@ -760,6 +760,125 @@
             border-radius: var(--border-radius);
             padding: 25px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        /* Customer Remaining Section */
+        .customer-remaining-section {
+            margin-top: 40px;
+            background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            border: 2px solid #ffb74d;
+        }
+        
+        .customer-remaining-section h3 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .customer-remaining-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+        }
+        
+        .customer-remaining-item {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            border-left: 4px solid #e74c3c;
+            transition: all 0.3s;
+        }
+        
+        .customer-remaining-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .customer-remaining-item.paid {
+            border-left-color: #27ae60;
+        }
+        
+        .customer-remaining-item.partial {
+            border-left-color: #f39c12;
+        }
+        
+        .customer-remaining-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed #ddd;
+        }
+        
+        .customer-name {
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: var(--primary-color);
+        }
+        
+        .customer-status {
+            font-size: 0.85rem;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-weight: bold;
+        }
+        
+        .status-pending {
+            background-color: #ffeaa7;
+            color: #e17055;
+        }
+        
+        .status-partial {
+            background-color: #a29bfe;
+            color: white;
+        }
+        
+        .status-paid {
+            background-color: #55efc4;
+            color: #00b894;
+        }
+        
+        .customer-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            font-size: 0.95rem;
+        }
+        
+        .customer-detail-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+        }
+        
+        .customer-detail-label {
+            color: #666;
+            font-weight: 500;
+        }
+        
+        .customer-detail-value {
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        .customer-detail-value.remaining {
+            color: #e74c3c;
+        }
+        
+        .customer-detail-value.paid {
+            color: #27ae60;
+        }
+        
+        .customer-actions {
+            margin-top: 15px;
+            display: flex;
+            gap: 8px;
         }
         
         /* تحسينات الطباعة - خطوط أكبر وأوضح */
@@ -1261,6 +1380,10 @@
             .source-selection-grid {
                 grid-template-columns: 1fr !important;
             }
+            
+            .customer-remaining-list {
+                grid-template-columns: 1fr !important;
+            }
         }
         
         /* Scrollbar Styling */
@@ -1457,6 +1580,19 @@
             </div>
         </div>
         
+        <!-- Customer Remaining Amounts Section -->
+        <div class="customer-remaining-section">
+            <h3><i class="fas fa-users"></i> المبالغ المتبقية على العملاء | Müşterilere Kalan Tutarlar</h3>
+            <div id="customerRemainingList" class="customer-remaining-list">
+                <!-- سيتم ملؤها بواسطة JavaScript -->
+            </div>
+            <div id="noCustomerRemaining" class="empty-state" style="display: none; padding: 20px;">
+                <i class="fas fa-check-circle" style="color: #27ae60;"></i>
+                <h3>لا توجد مبالغ متبقية على العملاء | Müşterilere kalan tutar yok</h3>
+                <p>جميع العملاء سددوا مبالغهم بالكامل | Tüm müşteriler ödemelerini tamamladı</p>
+            </div>
+        </div>
+        
         <!-- Main Content -->
         <div class="content-wrapper">
             <!-- Purchase Section -->
@@ -1615,6 +1751,7 @@
                                     <th>ربح القطعة | Parça Kârı</th>
                                     <th>الربح | Kâr</th>
                                     <th>الإجمالي | Toplam</th>
+                                    <th>المتبقي | Kalan</th>
                                     <th>التاريخ | Tarih</th>
                                     <th>التحكم | Kontrol</th>
                                 </tr>
@@ -1631,6 +1768,7 @@
                                     <td></td>
                                     <td id="totalProfitFooter">0 <span class="dollar">$</span></td>
                                     <td id="totalSalesAmount">0 <span class="dollar">$</span></td>
+                                    <td id="totalRemainingFooter">0 <span class="dollar">$</span></td>
                                     <td colspan="2"></td>
                                 </tr>
                             </tfoot>
@@ -1713,6 +1851,7 @@
             updateSalesTable();
             updateDashboardStats();
             updatePurchaseSourcesList();
+            updateCustomerRemainingList();
             
             generateTodayReport();
             
@@ -1730,6 +1869,255 @@
                 day: 'numeric'
             });
             displayElement.textContent = `عرض بيانات: ${formattedDate} | Veriler gösteriliyor: ${currentViewDate}`;
+        }
+        
+        // تحديث قائمة المتبقي على العملاء
+        function updateCustomerRemainingList() {
+            const customerRemainingList = document.getElementById('customerRemainingList');
+            const noCustomerRemaining = document.getElementById('noCustomerRemaining');
+            
+            // تجميع المبيعات حسب العميل
+            const customerSales = {};
+            
+            sales.forEach(sale => {
+                if (!customerSales[sale.customerName]) {
+                    customerSales[sale.customerName] = {
+                        totalAmount: 0,
+                        totalPaid: 0,
+                        totalRemaining: 0,
+                        lastSaleDate: sale.date,
+                        salesCount: 0
+                    };
+                }
+                
+                customerSales[sale.customerName].totalAmount += sale.total;
+                customerSales[sale.customerName].totalPaid += sale.paid;
+                customerSales[sale.customerName].totalRemaining += sale.remaining;
+                customerSales[sale.customerName].salesCount += 1;
+                
+                // تحديث آخر تاريخ بيع
+                if (new Date(sale.date) > new Date(customerSales[sale.customerName].lastSaleDate)) {
+                    customerSales[sale.customerName].lastSaleDate = sale.date;
+                }
+            });
+            
+            // تصفية العملاء الذين لديهم مبالغ متبقية فقط
+            const customersWithRemaining = Object.keys(customerSales).filter(customer => 
+                customerSales[customer].totalRemaining > 0
+            );
+            
+            if (customersWithRemaining.length === 0) {
+                customerRemainingList.innerHTML = '';
+                noCustomerRemaining.style.display = 'block';
+                return;
+            }
+            
+            noCustomerRemaining.style.display = 'none';
+            customerRemainingList.innerHTML = '';
+            
+            // ترتيب العملاء حسب المبلغ المتبقي (من الأعلى للأقل)
+            customersWithRemaining.sort((a, b) => 
+                customerSales[b].totalRemaining - customerSales[a].totalRemaining
+            );
+            
+            customersWithRemaining.forEach(customerName => {
+                const customerData = customerSales[customerName];
+                const paidPercentage = (customerData.totalPaid / customerData.totalAmount) * 100;
+                
+                let statusClass = 'status-pending';
+                let itemClass = '';
+                
+                if (paidPercentage === 100) {
+                    statusClass = 'status-paid';
+                    itemClass = 'paid';
+                } else if (paidPercentage > 0) {
+                    statusClass = 'status-partial';
+                    itemClass = 'partial';
+                }
+                
+                const customerItem = document.createElement('div');
+                customerItem.className = `customer-remaining-item ${itemClass}`;
+                customerItem.innerHTML = `
+                    <div class="customer-remaining-header">
+                        <div class="customer-name">${customerName}</div>
+                        <div class="customer-status ${statusClass}">
+                            ${paidPercentage === 100 ? 'مدفوع بالكامل' : 
+                              paidPercentage > 0 ? 'مدفوع جزئياً' : 'غير مدفوع'}
+                        </div>
+                    </div>
+                    <div class="customer-details">
+                        <div class="customer-detail-item">
+                            <span class="customer-detail-label">عدد المعاملات:</span>
+                            <span class="customer-detail-value">${customerData.salesCount}</span>
+                        </div>
+                        <div class="customer-detail-item">
+                            <span class="customer-detail-label">الإجمالي:</span>
+                            <span class="customer-detail-value">${customerData.totalAmount.toFixed(2)} <span class="dollar">$</span></span>
+                        </div>
+                        <div class="customer-detail-item">
+                            <span class="customer-detail-label">المدفوع:</span>
+                            <span class="customer-detail-value paid">${customerData.totalPaid.toFixed(2)} <span class="dollar">$</span></span>
+                        </div>
+                        <div class="customer-detail-item">
+                            <span class="customer-detail-label">المتبقي:</span>
+                            <span class="customer-detail-value remaining">${customerData.totalRemaining.toFixed(2)} <span class="dollar">$</span></span>
+                        </div>
+                    </div>
+                    <div class="customer-actions">
+                        <button class="btn-receive" onclick="receivePaymentFromCustomer('${customerName}')">
+                            <i class="fas fa-money-bill-wave"></i> استلام دفعة
+                        </button>
+                        <button class="btn btn-sm btn-info" onclick="viewCustomerDetails('${customerName}')">
+                            <i class="fas fa-eye"></i> التفاصيل
+                        </button>
+                    </div>
+                `;
+                customerRemainingList.appendChild(customerItem);
+            });
+        }
+        
+        function receivePaymentFromCustomer(customerName) {
+            // الحصول على جميع مبيعات العميل
+            const customerSales = sales.filter(sale => sale.customerName === customerName && sale.remaining > 0);
+            
+            if (customerSales.length === 0) {
+                alert('لا توجد مبالغ متبقية لهذا العميل | Bu müşteri için kalan tutar yok');
+                return;
+            }
+            
+            // تجميع المبيعات حسب parentSaleId
+            const groupedSales = {};
+            customerSales.forEach(sale => {
+                if (!groupedSales[sale.parentSaleId]) {
+                    groupedSales[sale.parentSaleId] = {
+                        customerName: sale.customerName,
+                        sources: []
+                    };
+                }
+                groupedSales[sale.parentSaleId].sources.push(sale);
+            });
+            
+            // اختيار أول مجموعة
+            const firstGroupId = Object.keys(groupedSales)[0];
+            const firstGroup = groupedSales[firstGroupId];
+            
+            if (firstGroup && firstGroup.sources.length > 0) {
+                openReceivePaymentModal(firstGroup.sources[0].id);
+            }
+        }
+        
+        function viewCustomerDetails(customerName) {
+            // الحصول على جميع مبيعات العميل
+            const customerSales = sales.filter(sale => sale.customerName === customerName);
+            
+            let totalAmount = 0;
+            let totalPaid = 0;
+            let totalRemaining = 0;
+            let salesDetails = '';
+            
+            customerSales.forEach((sale, index) => {
+                totalAmount += sale.total;
+                totalPaid += sale.paid;
+                totalRemaining += sale.remaining;
+                
+                salesDetails += `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${sale.date}</td>
+                        <td>${sale.quantity.toFixed(2)} كغ</td>
+                        <td>${sale.salePrice.toFixed(2)} <span class="dollar">$</span></td>
+                        <td>${sale.total.toFixed(2)} <span class="dollar">$</span></td>
+                        <td>${sale.paid.toFixed(2)} <span class="dollar">$</span></td>
+                        <td>${sale.remaining.toFixed(2)} <span class="dollar">$</span></td>
+                    </tr>
+                `;
+            });
+            
+            const paidPercentage = (totalPaid / totalAmount) * 100;
+            
+            const detailsHTML = `
+                <div style="background: white; padding: 25px; border-radius: var(--border-radius); margin-top: 20px;">
+                    <h3 style="color: var(--primary-color); margin-bottom: 20px; text-align: center;">
+                        <i class="fas fa-user"></i> تفاصيل العميل: ${customerName}
+                    </h3>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 25px;">
+                        <div style="text-align: center; padding: 15px; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 10px;">
+                            <h4 style="color: var(--primary-color); margin-bottom: 10px;">عدد المعاملات</h4>
+                            <p style="font-size: 1.5rem; font-weight: bold; color: var(--secondary-color);">${customerSales.length}</p>
+                        </div>
+                        <div style="text-align: center; padding: 15px; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 10px;">
+                            <h4 style="color: var(--primary-color); margin-bottom: 10px;">الإجمالي</h4>
+                            <p style="font-size: 1.5rem; font-weight: bold; color: var(--accent-color);">${totalAmount.toFixed(2)} <span class="dollar">$</span></p>
+                        </div>
+                        <div style="text-align: center; padding: 15px; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 10px;">
+                            <h4 style="color: var(--primary-color); margin-bottom: 10px;">المدفوع</h4>
+                            <p style="font-size: 1.5rem; font-weight: bold; color: #27ae60;">${totalPaid.toFixed(2)} <span class="dollar">$</span></p>
+                        </div>
+                        <div style="text-align: center; padding: 15px; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 10px;">
+                            <h4 style="color: var(--primary-color); margin-bottom: 10px;">المتبقي</h4>
+                            <p style="font-size: 1.5rem; font-weight: bold; color: #e74c3c;">${totalRemaining.toFixed(2)} <span class="dollar">$</span></p>
+                        </div>
+                    </div>
+                    
+                    <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+                        <h4 style="color: var(--primary-color); margin-bottom: 10px;">نسبة السداد</h4>
+                        <div style="background: #e9ecef; height: 20px; border-radius: 10px; overflow: hidden;">
+                            <div style="background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%); height: 100%; width: ${paidPercentage}%; border-radius: 10px;"></div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-top: 5px;">
+                            <span>0%</span>
+                            <span style="font-weight: bold;">${paidPercentage.toFixed(1)}%</span>
+                            <span>100%</span>
+                        </div>
+                    </div>
+                    
+                    <h4 style="color: var(--primary-color); margin-bottom: 15px;">تفاصيل المعاملات</h4>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>التاريخ</th>
+                                    <th>الكمية</th>
+                                    <th>سعر البيع</th>
+                                    <th>الإجمالي</th>
+                                    <th>المدفوع</th>
+                                    <th>المتبقي</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${salesDetails}
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div style="text-align: center; margin-top: 20px;">
+                        <button class="btn btn-warning" onclick="receivePaymentFromCustomer('${customerName}')">
+                            <i class="fas fa-money-bill-wave"></i> استلام دفعة جديدة من هذا العميل
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            // إنشاء نافذة عرض
+            const modal = document.createElement('div');
+            modal.className = 'payment-modal active';
+            modal.innerHTML = `
+                <div class="modal-content" style="max-width: 900px;">
+                    <div class="modal-header">
+                        <h3>تفاصيل العميل | Müşteri Detayları</h3>
+                        <button class="close-modal" onclick="this.parentElement.parentElement.remove()">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        ${detailsHTML}
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
         }
         
         document.getElementById('purchaseForm').addEventListener('submit', function(e) {
@@ -2098,6 +2486,7 @@
             updateSalesTable();
             updateDashboardStats();
             updatePurchaseSourcesList();
+            updateCustomerRemainingList();
             
             document.getElementById('saleForm').reset();
             selectedSources = [];
@@ -2211,6 +2600,7 @@
             saveData();
             updateSalesTable();
             updateDashboardStats();
+            updateCustomerRemainingList();
             
             closeReceivePaymentModal();
             
@@ -2245,6 +2635,7 @@
                 updateSalesTable();
                 updateDashboardStats();
                 updatePurchaseSourcesList();
+                updateCustomerRemainingList();
                 alert('تم حذف عملية البيع بنجاح | Satış başarıyla silindi');
             }
         }
@@ -2369,6 +2760,7 @@
             let totalSalesQuantity = 0;
             let totalSalesAmount = 0;
             let totalProfit = 0;
+            let totalRemaining = 0;
             let hasSales = false;
             
             const filterType = document.getElementById('salesFilter').value;
@@ -2409,6 +2801,20 @@
                     const profitClass = firstSale.profit >= 0 ? 'badge-sale' : 'badge-purchase';
                     const profitSign = firstSale.profit >= 0 ? '+' : '';
                     
+                    // حساب إجماليات المجموعة
+                    let groupTotalAmount = 0;
+                    let groupTotalRemaining = 0;
+                    
+                    group.sources.forEach(sale => {
+                        groupTotalAmount += sale.total;
+                        groupTotalRemaining += sale.remaining;
+                    });
+                    
+                    let remainingClass = 'remaining-high';
+                    if (groupTotalRemaining === 0) remainingClass = 'remaining-zero';
+                    else if (groupTotalRemaining < groupTotalAmount * 0.3) remainingClass = 'remaining-low';
+                    else if (groupTotalRemaining < groupTotalAmount * 0.6) remainingClass = 'remaining-medium';
+                    
                     const headerRow = document.createElement('tr');
                     headerRow.className = 'sales-source-header';
                     headerRow.innerHTML = `
@@ -2421,6 +2827,9 @@
                         <td><span class="dollar">$</span> ${firstSale.profitPerUnit.toFixed(2)}</td>
                         <td><span class="badge ${profitClass}"><span class="dollar">$</span> ${profitSign}${firstSale.profit.toFixed(2)}</span></td>
                         <td><span class="dollar">$</span> ${firstSale.total.toFixed(2)}</td>
+                        <td rowspan="${group.sources.length}">
+                            <span class="remaining-quantity ${remainingClass}"><strong>${groupTotalRemaining.toFixed(2)} <span class="dollar">$</span></strong></span>
+                        </td>
                         <td rowspan="${group.sources.length}">${firstSale.date}</td>
                         <td rowspan="${group.sources.length}">
                             <button class="btn btn-sm btn-warning" onclick="editSale(${firstSale.id})" title="تعديل | Düzenle">
@@ -2441,6 +2850,7 @@
                     totalSalesQuantity += firstSale.quantity;
                     totalSalesAmount += firstSale.total;
                     totalProfit += firstSale.profit;
+                    totalRemaining += groupTotalRemaining;
                     
                     for (let i = 1; i < group.sources.length; i++) {
                         const sale = group.sources[i];
@@ -2457,6 +2867,7 @@
                             <td><span class="dollar">$</span> ${sale.profitPerUnit.toFixed(2)}</td>
                             <td><span class="badge ${sourceProfitClass}"><span class="dollar">$</span> ${sourceProfitSign}${sale.profit.toFixed(2)}</span></td>
                             <td><span class="dollar">$</span> ${sale.total.toFixed(2)}</td>
+                            <td></td>
                         `;
                         tableBody.appendChild(sourceRow);
                         
@@ -2480,6 +2891,7 @@
             document.getElementById('totalSalesQuantity').textContent = totalSalesQuantity.toFixed(2) + ' كغ';
             document.getElementById('totalProfitFooter').innerHTML = totalProfit.toFixed(2) + ' <span class="dollar">$</span>';
             document.getElementById('totalSalesAmount').innerHTML = totalSalesAmount.toFixed(2) + ' <span class="dollar">$</span>';
+            document.getElementById('totalRemainingFooter').innerHTML = totalRemaining.toFixed(2) + ' <span class="dollar">$</span>';
         }
         
         function updateDashboardStats() {
@@ -2523,6 +2935,7 @@
             updatePurchasesTable();
             updateSalesTable();
             updateDashboardStats();
+            updateCustomerRemainingList();
             
             document.getElementById('reportDate').value = today;
             generateTodayReport();
@@ -2543,6 +2956,7 @@
             updatePurchasesTable();
             updateSalesTable();
             updateDashboardStats();
+            updateCustomerRemainingList();
             
             document.getElementById('reportDate').value = previousDay;
             generateDetailedReport();
@@ -2569,6 +2983,7 @@
             updatePurchasesTable();
             updateSalesTable();
             updateDashboardStats();
+            updateCustomerRemainingList();
             
             document.getElementById('reportDate').value = nextDay;
             generateDetailedReport();
@@ -2580,6 +2995,7 @@
             
             updatePurchasesTable();
             updateSalesTable();
+            updateCustomerRemainingList();
             
             const todaySales = sales.filter(sale => sale.date === currentViewDate);
             const todayPurchases = purchases.filter(purchase => purchase.date === currentViewDate);
@@ -2617,6 +3033,7 @@
             updatePurchasesTable();
             updateSalesTable();
             updateDashboardStats();
+            updateCustomerRemainingList();
             
             document.getElementById('reportDate').value = currentViewDate;
             generateDetailedReport();
@@ -2684,6 +3101,12 @@
                 const group = groupedSales[parentSaleId];
                 
                 if (group.sources.length > 0) {
+                    // حساب إجماليات المجموعة
+                    let groupTotalRemaining = 0;
+                    group.sources.forEach(sale => {
+                        groupTotalRemaining += sale.remaining;
+                    });
+                    
                     group.sources.forEach((sale, sourceIndex) => {
                         const profitClass = sale.profit >= 0 ? 'profit-positive' : 'profit-negative';
                         const profitSign = sale.profit >= 0 ? '+' : '';
@@ -2699,6 +3122,7 @@
                                 <td><span class="dollar">$</span> ${sale.profitPerUnit.toFixed(2)}</td>
                                 <td class="${profitClass}"><span class="dollar">$</span> ${profitSign}${sale.profit.toFixed(2)}</td>
                                 <td><span class="dollar">$</span> ${sale.total.toFixed(2)}</td>
+                                <td>${groupTotalRemaining.toFixed(2)} <span class="dollar">$</span></td>
                             </tr>
                         `;
                     });
@@ -2744,6 +3168,7 @@
                                 <th>ربح القطعة | Parça Kârı</th>
                                 <th>الربح | Kâr</th>
                                 <th>الإجمالي | Toplam</th>
+                                <th>المتبقي | Kalan</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -2758,6 +3183,7 @@
                                 <td></td>
                                 <td><span class="dollar">$</span> ${totalProfit.toFixed(2)}</td>
                                 <td><span class="dollar">$</span> ${totalRevenue.toFixed(2)}</td>
+                                <td><span class="dollar">$</span> ${totalRemaining.toFixed(2)}</td>
                             </tr>
                         </tfoot>
                     </table>
@@ -2801,6 +3227,12 @@
                 const group = groupedSales[parentSaleId];
                 
                 if (group.sources.length > 0) {
+                    // حساب إجماليات المجموعة
+                    let groupTotalRemaining = 0;
+                    group.sources.forEach(sale => {
+                        groupTotalRemaining += sale.remaining;
+                    });
+                    
                     group.sources.forEach((sale, sourceIndex) => {
                         const profitClass = sale.profit >= 0 ? 'profit-positive' : 'profit-negative';
                         const profitSign = sale.profit >= 0 ? '+' : '';
@@ -2816,6 +3248,7 @@
                                 <td class="number-cell"><span class="dollar-print">$</span> ${sale.profitPerUnit.toFixed(2)}</td>
                                 <td class="number-cell ${profitClass}"><span class="dollar-print">$</span> ${profitSign}${sale.profit.toFixed(2)}</td>
                                 <td class="number-cell"><span class="dollar-print">$</span> ${sale.total.toFixed(2)}</td>
+                                <td class="number-cell">${groupTotalRemaining.toFixed(2)} <span class="dollar-print">$</span></td>
                             </tr>
                         `;
                     });
@@ -2876,6 +3309,7 @@
                                 <th width="9%">ربح القطعة<br>Parça Kârı</th>
                                 <th width="9%">الربح<br>Kâr</th>
                                 <th width="9%">الإجمالي<br>Toplam</th>
+                                <th width="9%">المتبقي<br>Kalan</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -2890,6 +3324,7 @@
                                 <td></td>
                                 <td class="number-cell"><span class="dollar-print">$</span> ${totalProfit.toFixed(2)}</td>
                                 <td class="number-cell"><span class="dollar-print">$</span> ${totalRevenue.toFixed(2)}</td>
+                                <td class="number-cell"><span class="dollar-print">$</span> ${totalRemaining.toFixed(2)}</td>
                             </tr>
                         </tfoot>
                     </table>
@@ -2992,6 +3427,7 @@
                 updateSalesTable();
                 updateDashboardStats();
                 updatePurchaseSourcesList();
+                updateCustomerRemainingList();
                 document.getElementById('reportContent').innerHTML = '';
                 
                 alert('تم حذف جميع البيانات بنجاح | Tüm veriler başarıyla silindi');
@@ -3043,6 +3479,7 @@
                         updateSalesTable();
                         updateDashboardStats();
                         updatePurchaseSourcesList();
+                        updateCustomerRemainingList();
                         generateTodayReport();
                         
                         alert('تم استيراد البيانات بنجاح | Veriler başarıyla içe aktarıldı');
