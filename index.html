@@ -1208,6 +1208,28 @@
                 text-shadow: none !important;
                 letter-spacing: 1px !important;
             }
+            
+            /* إضافات جديدة للصفحة الثانية */
+            .page-break {
+                page-break-before: always !important;
+                margin-top: 30px !important;
+            }
+            
+            .remaining-section {
+                margin-top: 30px !important;
+                padding: 20px !important;
+                background: #f8f9fa !important;
+                border-radius: 8px !important;
+                border: 2px solid #ddd !important;
+            }
+            
+            .remaining-section h3 {
+                text-align: center !important;
+                font-size: 16pt !important;
+                margin-bottom: 15px !important;
+                color: #2c3e50 !important;
+                font-weight: bold !important;
+            }
         }
         
         /* Footer */
@@ -3220,6 +3242,29 @@
                 day: 'numeric'
             });
             
+            // حساب الكمية المتبقية وتكلفتها
+            const remainingPurchases = purchases.filter(purchase => purchase.remaining > 0);
+            let totalRemainingQuantity = 0;
+            let totalRemainingValue = 0;
+            let remainingDetailsHTML = '';
+            
+            if (remainingPurchases.length > 0) {
+                remainingPurchases.forEach((purchase, index) => {
+                    totalRemainingQuantity += purchase.remaining;
+                    totalRemainingValue += purchase.remaining * purchase.price;
+                    
+                    remainingDetailsHTML += `
+                        <tr>
+                            <td>${index + 1}</td>
+                            <td>${purchase.date}</td>
+                            <td class="number-cell">${purchase.remaining.toFixed(2)} كغ</td>
+                            <td class="number-cell"><span class="dollar-print">$</span> ${purchase.price.toFixed(2)}</td>
+                            <td class="number-cell"><span class="dollar-print">$</span> ${(purchase.remaining * purchase.price).toFixed(2)}</td>
+                        </tr>
+                    `;
+                });
+            }
+            
             let salesTableHTML = '';
             let saleIndex = 1;
             
@@ -3330,6 +3375,58 @@
                     </table>
                 </div>
                 
+                <!-- الصفحة الثانية: الكمية المتبقية وتكلفتها -->
+                <div class="page-break">
+                    <div class="remaining-section">
+                        <h3>الكمية المتبقية في المخزون وتكلفتها | Stokta Kalan Miktar ve Maliyeti</h3>
+                        
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-bottom: 20px;">
+                            <div style="text-align: center; padding: 15px; background: white; border-radius: 8px; border: 2px solid #e0e0e0;">
+                                <h4 style="color: var(--primary-color); margin-bottom: 10px;">إجمالي الكمية المتبقية<br>Toplam Kalan Miktar</h4>
+                                <p style="font-size: 1.5rem; font-weight: bold; color: var(--secondary-color);">${totalRemainingQuantity.toFixed(2)} كغ</p>
+                            </div>
+                            <div style="text-align: center; padding: 15px; background: white; border-radius: 8px; border: 2px solid #e0e0e0;">
+                                <h4 style="color: var(--primary-color); margin-bottom: 10px;">إجمالي قيمة المتبقي<br>Toplam Kalan Değer</h4>
+                                <p style="font-size: 1.5rem; font-weight: bold; color: var(--accent-color);"><span class="dollar-print">$</span> ${totalRemainingValue.toFixed(2)}</p>
+                            </div>
+                            <div style="text-align: center; padding: 15px; background: white; border-radius: 8px; border: 2px solid #e0e0e0;">
+                                <h4 style="color: var(--primary-color); margin-bottom: 10px;">متوسط سعر الكيلو<br>Kilo Başına Ortalama Fiyat</h4>
+                                <p style="font-size: 1.5rem; font-weight: bold; color: var(--success-color);"><span class="dollar-print">$</span> ${(totalRemainingQuantity > 0 ? totalRemainingValue / totalRemainingQuantity : 0).toFixed(2)}</p>
+                            </div>
+                        </div>
+                        
+                        ${remainingPurchases.length > 0 ? `
+                            <h4 style="text-align: center; margin: 20px 0 15px 0; font-size: 13pt;">تفاصيل الكمية المتبقية | Kalan Miktar Detayları</h4>
+                            <table class="print-table">
+                                <thead>
+                                    <tr>
+                                        <th width="5%">#</th>
+                                        <th width="15%">تاريخ الشراء<br>Alış Tarihi</th>
+                                        <th width="15%">الكمية المتبقية<br>Kalan Miktar</th>
+                                        <th width="15%">سعر الشراء<br>Alış Fiyatı</th>
+                                        <th width="15%">قيمة المتبقي<br>Kalan Değer</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${remainingDetailsHTML}
+                                </tbody>
+                                <tfoot>
+                                    <tr style="background-color: #e8f5e9 !important; font-weight: bold;">
+                                        <td colspan="2">الإجمالي | Toplam</td>
+                                        <td class="number-cell">${totalRemainingQuantity.toFixed(2)} كغ</td>
+                                        <td></td>
+                                        <td class="number-cell"><span class="dollar-print">$</span> ${totalRemainingValue.toFixed(2)}</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        ` : `
+                            <div style="text-align: center; padding: 20px; background: #f8f9fa; border-radius: 8px; margin: 20px 0;">
+                                <p style="font-size: 12pt; color: #666;">لا توجد كمية متبقية في المخزون | Stokta kalan miktar yok</p>
+                            </div>
+                        `}
+                    </div>
+                </div>
+                
                 <div class="print-totals">
                     <h3 style="text-align: center; margin-bottom: 15px; font-size: 13pt;">إحصائيات المبيعات | Satış İstatistikleri</h3>
                     <div class="print-totals-grid">
@@ -3352,10 +3449,12 @@
                         <div>
                             <p><strong>إجمالي تكلفة الشراء | Toplam Alış Maliyeti:</strong> <span class="dollar-print">$</span> ${totalPurchaseCost.toFixed(2)}</p>
                             <p><strong>إجمالي إيرادات البيع | Toplam Satış Geliri:</strong> <span class="dollar-print">$</span> ${totalRevenue.toFixed(2)}</p>
+                            <p><strong>إجمالي الكمية المتبقية | Toplam Kalan Miktar:</strong> ${totalRemainingQuantity.toFixed(2)} كغ</p>
                         </div>
                         <div>
                             <p><strong>إجمالي الربح الصافي | Toplam Net Kâr:</strong> <span class="dollar-print">$</span> ${totalProfit.toFixed(2)}</p>
                             <p><strong>إجمالي المبلغ المتبقي | Toplam Kalan Tutar:</strong> <span class="dollar-print">$</span> ${totalRemaining.toFixed(2)}</p>
+                            <p><strong>إجمالي قيمة المخزون | Toplam Stok Değeri:</strong> <span class="dollar-print">$</span> ${totalRemainingValue.toFixed(2)}</p>
                         </div>
                     </div>
                 </div>
