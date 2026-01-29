@@ -2369,7 +2369,7 @@
                     <tr>
                         <td>${index + 1}</td>
                         <td>${sale.date}</td>
-                        <td>${sale.quantity.toFixed(2)} ${unitBadge}</td>
+                        <td>${sale.displayQuantity ? sale.displayQuantity.toFixed(2) : convertFromKg(sale.quantity, sale.unit).toFixed(2)} ${unitBadge}</td>
                         <td>${sale.salePrice.toFixed(2)} <span class="dollar">$</span></td>
                         <td>${sale.total.toFixed(2)} <span class="dollar">$</span></td>
                         <td>${sale.paid.toFixed(2)} <span class="dollar">$</span></td>
@@ -2500,8 +2500,11 @@
             updateDashboardStats();
             updatePurchaseSourcesList();
             
+            // Reset form and set default values
             document.getElementById('purchaseForm').reset();
             document.getElementById('purchaseDate').value = new Date().toISOString().split('T')[0];
+            document.getElementById('purchaseQuantity').value = '';
+            document.getElementById('purchasePrice').value = '';
             
             alert('تم تسجيل عملية الشراء بنجاح! | Alım başarıyla kaydedildi!');
         });
@@ -2510,7 +2513,19 @@
             const sourcesList = document.getElementById('sourcesList');
             sourcesList.innerHTML = '';
             
+            // تصفية المشتريات التي لديها كمية متبقية فقط
             const activePurchases = purchases.filter(purchase => purchase.remaining > 0);
+            
+            if (activePurchases.length === 0) {
+                sourcesList.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 20px; color: #666;">
+                        <i class="fas fa-box-open" style="font-size: 2rem; margin-bottom: 10px;"></i>
+                        <p>لا توجد مشتريات متاحة للبيع | Satış için mevcut alım yok</p>
+                        <p style="margin-top: 10px; font-size: 0.9rem;">جميع الكميات تم بيعها أو لم يتم إضافة مشتريات بعد | Tüm miktarlar satıldı veya henüz alım eklenmedi</p>
+                    </div>
+                `;
+                return;
+            }
             
             activePurchases.forEach(purchase => {
                 const isSelected = selectedSources.find(s => s.id === purchase.id);
@@ -2527,8 +2542,6 @@
                 const sourceItem = document.createElement('div');
                 sourceItem.className = `source-checkbox-item ${isSelected ? 'selected' : ''}`;
                 sourceItem.innerHTML = `
-                    <input type="checkbox" id="source_${purchase.id}" ${isSelected ? 'checked' : ''} 
-                           style="display: none;" onchange="toggleSourceSelection(${purchase.id})">
                     <div class="source-checkbox-content">
                         <h5>مصدر #${purchase.id} ${getUnitBadge(purchase.unit)}</h5>
                         <p>الكمية المتبقية: <span class="remaining-quantity ${remainingClass}"><strong>${displayRemaining.toFixed(2)} ${getUnitBadge(purchase.unit)}</strong></span></p>
@@ -2550,7 +2563,9 @@
                     ${isSelected ? `<div class="source-order">${selectedSources.findIndex(s => s.id === purchase.id) + 1}</div>` : ''}
                 `;
                 
+                // Add click handler for the entire item
                 sourceItem.onclick = function(e) {
+                    // Don't trigger if clicking on input or button
                     if (!e.target.classList.contains('source-quantity-input') && 
                         !e.target.classList.contains('btn-full-quantity')) {
                         toggleSourceSelection(purchase.id);
@@ -2559,16 +2574,6 @@
                 
                 sourcesList.appendChild(sourceItem);
             });
-            
-            if (sourcesList.children.length === 0) {
-                sourcesList.innerHTML = `
-                    <div style="grid-column: 1 / -1; text-align: center; padding: 20px; color: #666;">
-                        <i class="fas fa-box-open" style="font-size: 2rem; margin-bottom: 10px;"></i>
-                        <p>لا توجد مشتريات متاحة للبيع | Satış için mevcut alım yok</p>
-                        <p style="margin-top: 10px; font-size: 0.9rem;">جميع الكميات تم بيعها أو لم يتم إضافة مشتريات بعد | Tüm miktarlar satıldı veya henüz alım eklenmedi</p>
-                    </div>
-                `;
-            }
             
             updateSelectedSourcesDisplay();
         }
@@ -2615,7 +2620,7 @@
                 const displayRemaining = convertFromKg(purchase.remaining, purchase.unit);
                 alert(`الكمية المطلوبة (${quantityNum.toFixed(2)} ${getUnitDisplayText(purchase.unit)}) تتجاوز الكمية المتبقية في المصدر (${displayRemaining.toFixed(2)} ${getUnitDisplayText(purchase.unit)}) | İstenen miktar (${quantityNum.toFixed(2)} ${getUnitDisplayText(purchase.unit)}) kaynaktaki kalan miktarı (${displayRemaining.toFixed(2)} ${getUnitDisplayText(purchase.unit)}) aşıyor`);
                 document.getElementById(`source_qty_${purchaseId}`).value = displayRemaining.toFixed(2);
-                quantityNum = displayRemaining;
+                return;
             }
             
             const source = selectedSources.find(s => s.id === purchaseId);
@@ -2699,10 +2704,9 @@
             
             summaryDiv.style.display = 'block';
             
+            // Update sale quantity input
             const saleQuantityInput = document.getElementById('saleQuantity');
-            if (!saleQuantityInput.value || Math.abs(parseFloat(saleQuantityInput.value) - totalSelectedQuantity) > 0.01) {
-                saleQuantityInput.value = totalSelectedQuantity.toFixed(2);
-            }
+            saleQuantityInput.value = totalSelectedQuantity.toFixed(2);
         }
         
         function removeSelectedSource(index) {
@@ -2737,6 +2741,7 @@
                 totalPurchaseCost += source.quantityInKg * source.price;
             });
             
+            // Allow small rounding differences
             if (Math.abs(saleQuantity - totalSelectedQuantityInSaleUnit) > 0.01) {
                 alert(`كمية البيع (${saleQuantity.toFixed(2)} ${getUnitDisplayText(selectedSaleUnit)}) لا تطابق إجمالي الكمية المختارة من المصادر (${totalSelectedQuantityInSaleUnit.toFixed(2)} ${getUnitDisplayText(selectedSaleUnit)}) | Satış miktarı (${saleQuantity.toFixed(2)} ${getUnitDisplayText(selectedSaleUnit)}) seçilen kaynakların toplam miktarıyla (${totalSelectedQuantityInSaleUnit.toFixed(2)} ${getUnitDisplayText(selectedSaleUnit)}) eşleşmiyor`);
                 return;
@@ -2875,9 +2880,13 @@
             updatePurchaseSourcesList();
             updateCustomerRemainingList();
             
+            // Reset sale form completely
             document.getElementById('saleForm').reset();
             selectedSources = [];
             updateSelectedSourcesDisplay();
+            
+            // Reset unit selection to default
+            selectSaleUnit('kg');
             
             closePaymentModal();
             
