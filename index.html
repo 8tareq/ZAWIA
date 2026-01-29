@@ -302,62 +302,6 @@
             box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
         }
         
-        /* Unit Selection */
-        .unit-selection {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 20px;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: var(--border-radius);
-            border: 1px solid #dee2e6;
-        }
-        
-        .unit-option {
-            flex: 1;
-            text-align: center;
-            padding: 15px;
-            border: 2px solid #dee2e6;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s;
-            background: white;
-        }
-        
-        .unit-option:hover {
-            border-color: var(--secondary-color);
-            background: #f0f7ff;
-        }
-        
-        .unit-option.selected {
-            border-color: var(--success-color);
-            background: #e8f5e9;
-            box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.1);
-        }
-        
-        .unit-option i {
-            font-size: 1.8rem;
-            margin-bottom: 10px;
-            display: block;
-            color: var(--primary-color);
-        }
-        
-        .unit-option.selected i {
-            color: var(--success-color);
-        }
-        
-        .unit-option h4 {
-            color: var(--primary-color);
-            margin-bottom: 5px;
-            font-size: 1.1rem;
-        }
-        
-        .unit-option p {
-            color: #666;
-            font-size: 0.9rem;
-            margin: 0;
-        }
-        
         /* Sales Payment Modal */
         .payment-modal {
             display: none;
@@ -1207,32 +1151,6 @@
                 font-size: 12pt !important;
             }
             
-            .unit-badge {
-                display: inline-block;
-                padding: 2px 8px;
-                border-radius: 4px;
-                font-size: 9pt;
-                font-weight: bold;
-                margin-left: 5px;
-                background: #e3f2fd;
-                color: #1565c0;
-            }
-            
-            .unit-badge-kg {
-                background: #e8f5e9;
-                color: #2e7d32;
-            }
-            
-            .unit-badge-100g {
-                background: #fff3e0;
-                color: #e65100;
-            }
-            
-            .unit-badge-50g {
-                background: #f3e5f5;
-                color: #7b1fa2;
-            }
-            
             body > *:not(#printable-report) {
                 display: none !important;
             }
@@ -1414,31 +1332,6 @@
             text-decoration: line-through;
         }
         
-        /* Unit Badge */
-        .unit-badge {
-            display: inline-block;
-            padding: 3px 10px;
-            border-radius: 12px;
-            font-size: 0.75rem;
-            font-weight: bold;
-            margin-right: 5px;
-        }
-        
-        .unit-badge-kg {
-            background-color: #e8f5e9;
-            color: #2e7d32;
-        }
-        
-        .unit-badge-100g {
-            background-color: #fff3e0;
-            color: #e65100;
-        }
-        
-        .unit-badge-50g {
-            background-color: #f3e5f5;
-            color: #7b1fa2;
-        }
-        
         /* Sales Source Row Style */
         .sales-source-row {
             background-color: #f8fafc !important;
@@ -1513,10 +1406,6 @@
             .customer-remaining-list {
                 grid-template-columns: 1fr !important;
             }
-            
-            .unit-selection {
-                flex-direction: column;
-            }
         }
         
         /* Scrollbar Styling */
@@ -1559,7 +1448,7 @@
                     </div>
                     <div class="payment-item">
                         <span>الكمية المباعة | Satılan Miktar:</span>
-                        <span id="modalSaleQuantity">0</span>
+                        <span id="modalSaleQuantity">0 كغ</span>
                     </div>
                     <div class="payment-item">
                         <span>سعر البيع | Satış Fiyatı:</span>
@@ -1616,7 +1505,7 @@
                     </div>
                     <div class="payment-item">
                         <span>الكمية المباعة | Satılan Miktar:</span>
-                        <span id="receiveSaleQuantity">0</span>
+                        <span id="receiveSaleQuantity">0 كغ</span>
                     </div>
                     <div class="payment-item">
                         <span>المبلغ الإجمالي | Toplam Tutar:</span>
@@ -1689,19 +1578,19 @@
         <div class="stats-container">
             <div class="stat-card purchase">
                 <i class="fas fa-shopping-cart"></i>
-                <h3 id="total-purchases">0</h3>
+                <h3 id="total-purchases">0 كغ</h3>
                 <p>المشتريات النشطة | Aktif Alımlar</p>
                 <div id="purchases-total" style="font-size: 1.5rem; margin-top: 10px; font-weight: bold; color: var(--secondary-color);">0 <span class="dollar">$</span></div>
             </div>
             <div class="stat-card sales">
                 <i class="fas fa-chart-line"></i>
-                <h3 id="total-sales">0</h3>
+                <h3 id="total-sales">0 كغ</h3>
                 <p>مبيعات اليوم | Günün Satışları</p>
                 <div id="sales-total" style="font-size: 1.5rem; margin-top: 10px; font-weight: bold; color: var(--success-color);">0 <span class="dollar">$</span></div>
             </div>
             <div class="stat-card inventory">
                 <i class="fas fa-boxes"></i>
-                <h3 id="current-inventory">0</h3>
+                <h3 id="current-inventory">0 كغ</h3>
                 <p>المخزون الحالي | Mevcut Stok</p>
                 <div id="inventory-total" style="font-size: 1.5rem; margin-top: 10px; font-weight: bold; color: var(--accent-color);">0 <span class="dollar">$</span></div>
             </div>
@@ -1747,31 +1636,9 @@
                 <div style="background: #f8f9fa; padding: 20px; border-radius: var(--border-radius); margin-bottom: 25px;">
                     <h3 style="color: var(--primary-color); margin-bottom: 15px;">إضافة شراء جديد | Yeni Alım Ekle</h3>
                     <form id="purchaseForm">
-                        <!-- Unit Selection -->
-                        <div class="unit-selection">
-                            <div class="unit-option selected" data-unit="kg" onclick="selectUnit('kg')">
-                                <i class="fas fa-weight-hanging"></i>
-                                <h4>كيلوغرام | Kilogram</h4>
-                                <p>وحدة القياس الأساسية</p>
-                            </div>
-                            <div class="unit-option" data-unit="100g" onclick="selectUnit('100g')">
-                                <i class="fas fa-weight"></i>
-                                <h4>100 جرام | 100 Gram</h4>
-                                <p>100 جرام لكل وحدة</p>
-                            </div>
-                            <div class="unit-option" data-unit="50g" onclick="selectUnit('50g')">
-                                <i class="fas fa-weight"></i>
-                                <h4>50 جرام | 50 Gram</h4>
-                                <p>50 جرام لكل وحدة</p>
-                            </div>
-                        </div>
-                        
                         <div class="form-group">
-                            <label for="purchaseQuantity">الكمية | Miktar</label>
+                            <label for="purchaseQuantity">الكمية (كيلوغرام) | Miktar (kg)</label>
                             <input type="number" id="purchaseQuantity" class="form-control" step="0.01" min="0" required>
-                            <div id="unitDisplay" style="margin-top: 5px; font-size: 0.9rem; color: #666;">
-                                الوحدة: <span id="currentUnit">كيلوغرام</span> | Birim: <span id="currentUnitTr">Kilogram</span>
-                            </div>
                         </div>
                         <div class="form-group">
                             <label for="purchasePrice">سعر الشراء (لكل كيلو) | Alış Fiyatı (kg başına) <span class="dollar">$</span></label>
@@ -1795,7 +1662,6 @@
                                 <tr>
                                     <th>#</th>
                                     <th>الكمية | Miktar</th>
-                                    <th>الوحدة | Birim</th>
                                     <th>سعر الشراء | Alış Fiyatı</th>
                                     <th>الإجمالي | Toplam</th>
                                     <th>التاريخ | Tarih</th>
@@ -1809,7 +1675,6 @@
                             <tfoot style="font-weight: bold; background-color: #f8f9fa;">
                                 <tr>
                                     <td colspan="2">إجمالي اليوم | Günlük Toplam</td>
-                                    <td></td>
                                     <td></td>
                                     <td id="totalPurchasesFooter">0 <span class="dollar">$</span></td>
                                     <td colspan="3"></td>
@@ -1850,32 +1715,9 @@
                             <label for="customerName">اسم العميل | Müşteri Adı</label>
                             <input type="text" id="customerName" class="form-control" required>
                         </div>
-                        
-                        <!-- Sale Unit Selection -->
-                        <div class="unit-selection" style="margin-bottom: 20px;">
-                            <div class="unit-option selected" data-unit="kg" onclick="selectSaleUnit('kg')">
-                                <i class="fas fa-weight-hanging"></i>
-                                <h4>كيلوغرام | Kilogram</h4>
-                                <p>وحدة القياس الأساسية</p>
-                            </div>
-                            <div class="unit-option" data-unit="100g" onclick="selectSaleUnit('100g')">
-                                <i class="fas fa-weight"></i>
-                                <h4>100 جرام | 100 Gram</h4>
-                                <p>100 جرام لكل وحدة</p>
-                            </div>
-                            <div class="unit-option" data-unit="50g" onclick="selectSaleUnit('50g')">
-                                <i class="fas fa-weight"></i>
-                                <h4>50 جرام | 50 Gram</h4>
-                                <p>50 جرام لكل وحدة</p>
-                            </div>
-                        </div>
-                        
                         <div class="form-group">
-                            <label for="saleQuantity">كمية البيع | Satış Miktarı</label>
+                            <label for="saleQuantity">كمية البيع (كغ) | Satış Miktarı (kg)</label>
                             <input type="number" id="saleQuantity" class="form-control" step="0.01" min="0" required>
-                            <div id="saleUnitDisplay" style="margin-top: 5px; font-size: 0.9rem; color: #666;">
-                                الوحدة: <span id="saleCurrentUnit">كيلوغرام</span> | Birim: <span id="saleCurrentUnitTr">Kilogram</span>
-                            </div>
                         </div>
                         <div class="form-group">
                             <label for="salePrice">سعر البيع (لكل كغ) | Satış Fiyatı (kg başına) <span class="dollar">$</span></label>
@@ -1899,7 +1741,7 @@
                                 <h5 style="color: var(--primary-color); margin-bottom: 10px;">ملخص المصادر المختارة | Seçilen Kaynaklar Özeti:</h5>
                                 <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
                                     <div>
-                                        <p><strong>إجمالي الكمية المختارة | Seçilen Toplam Miktar:</strong> <span id="totalSelectedQuantity">0</span> <span id="selectedSourcesUnit">كغ</span></p>
+                                        <p><strong>إجمالي الكمية المختارة | Seçilen Toplam Miktar:</strong> <span id="totalSelectedQuantity">0</span> كغ</p>
                                         <p><strong>عدد المصادر | Kaynak Sayısı:</strong> <span id="totalSelectedSources">0</span></p>
                                     </div>
                                     <div>
@@ -1926,7 +1768,6 @@
                                     <th>العميل | Müşteri</th>
                                     <th>المصدر | Kaynak</th>
                                     <th>الكمية | Miktar</th>
-                                    <th>الوحدة | Birim</th>
                                     <th>سعر الشراء | Alış Fiyatı</th>
                                     <th>سعر البيع | Satış Fiyatı</th>
                                     <th>ربح القطعة | Parça Kârı</th>
@@ -1943,15 +1784,14 @@
                             <tfoot style="font-weight: bold; background-color: #f8f9fa;">
                                 <tr>
                                     <td colspan="3">إجمالي اليوم | Günlük Toplam</td>
-                                    <td id="totalSalesQuantity">0</td>
-                                    <td></td>
+                                    <td id="totalSalesQuantity">0 كغ</td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
                                     <td id="totalProfitFooter">0 <span class="dollar">$</span></td>
                                     <td id="totalSalesAmount">0 <span class="dollar">$</span></td>
                                     <td id="totalRemainingFooter">0 <span class="dollar">$</span></td>
-                                    <td colspan="3"></td>
+                                    <td colspan="2"></td>
                                 </tr>
                             </tfoot>
                         </table>
@@ -2009,8 +1849,6 @@
         let currentSaleForReceive = null;
         let selectedSources = [];
         let currentViewDate = new Date().toISOString().split('T')[0];
-        let selectedUnit = 'kg'; // Default unit
-        let selectedSaleUnit = 'kg'; // Default sale unit
         
         // تحميل البيانات من localStorage إذا كانت موجودة
         document.addEventListener('DOMContentLoaded', function() {
@@ -2022,8 +1860,6 @@
             currentViewDate = today;
             
             updateDateDisplay();
-            updateUnitDisplay();
-            updateSaleUnitDisplay();
             
             if (localStorage.getItem('alanharPurchases')) {
                 purchases = JSON.parse(localStorage.getItem('alanharPurchases'));
@@ -2044,163 +1880,6 @@
             document.getElementById('amountPaid').addEventListener('input', updatePaymentRemaining);
             document.getElementById('receiveAmount').addEventListener('input', updateReceiveAmount);
         });
-        
-        function selectUnit(unit) {
-            selectedUnit = unit;
-            
-            // Update UI
-            document.querySelectorAll('.unit-option').forEach(option => {
-                option.classList.remove('selected');
-            });
-            document.querySelector(`.unit-option[data-unit="${unit}"]`).classList.add('selected');
-            
-            updateUnitDisplay();
-        }
-        
-        function selectSaleUnit(unit) {
-            selectedSaleUnit = unit;
-            
-            // Update UI
-            const saleUnitOptions = document.querySelectorAll('#saleForm .unit-option');
-            saleUnitOptions.forEach(option => {
-                option.classList.remove('selected');
-            });
-            document.querySelector(`#saleForm .unit-option[data-unit="${unit}"]`).classList.add('selected');
-            
-            updateSaleUnitDisplay();
-        }
-        
-        function updateUnitDisplay() {
-            let unitText = '';
-            let unitTextTr = '';
-            
-            switch(selectedUnit) {
-                case 'kg':
-                    unitText = 'كيلوغرام';
-                    unitTextTr = 'Kilogram';
-                    break;
-                case '100g':
-                    unitText = '100 جرام';
-                    unitTextTr = '100 Gram';
-                    break;
-                case '50g':
-                    unitText = '50 جرام';
-                    unitTextTr = '50 Gram';
-                    break;
-            }
-            
-            document.getElementById('currentUnit').textContent = unitText;
-            document.getElementById('currentUnitTr').textContent = unitTextTr;
-        }
-        
-        function updateSaleUnitDisplay() {
-            let unitText = '';
-            let unitTextTr = '';
-            
-            switch(selectedSaleUnit) {
-                case 'kg':
-                    unitText = 'كيلوغرام';
-                    unitTextTr = 'Kilogram';
-                    break;
-                case '100g':
-                    unitText = '100 جرام';
-                    unitTextTr = '100 Gram';
-                    break;
-                case '50g':
-                    unitText = '50 جرام';
-                    unitTextTr = '50 Gram';
-                    break;
-            }
-            
-            document.getElementById('saleCurrentUnit').textContent = unitText;
-            document.getElementById('saleCurrentUnitTr').textContent = unitTextTr;
-            
-            // Update selected sources unit display
-            const unitElement = document.getElementById('selectedSourcesUnit');
-            if (unitElement) {
-                switch(selectedSaleUnit) {
-                    case 'kg':
-                        unitElement.textContent = 'كغ';
-                        break;
-                    case '100g':
-                        unitElement.textContent = '100g';
-                        break;
-                    case '50g':
-                        unitElement.textContent = '50g';
-                        break;
-                }
-            }
-        }
-        
-        function getUnitBadge(unit) {
-            let badgeClass = '';
-            let badgeText = '';
-            
-            switch(unit) {
-                case 'kg':
-                    badgeClass = 'unit-badge-kg';
-                    badgeText = 'كغ';
-                    break;
-                case '100g':
-                    badgeClass = 'unit-badge-100g';
-                    badgeText = '100g';
-                    break;
-                case '50g':
-                    badgeClass = 'unit-badge-50g';
-                    badgeText = '50g';
-                    break;
-                default:
-                    badgeClass = 'unit-badge-kg';
-                    badgeText = 'كغ';
-            }
-            
-            return `<span class="unit-badge ${badgeClass}">${badgeText}</span>`;
-        }
-        
-        function getUnitDisplayText(unit) {
-            switch(unit) {
-                case 'kg':
-                    return 'كغ';
-                case '100g':
-                    return '100 جرام';
-                case '50g':
-                    return '50 جرام';
-                default:
-                    return 'كغ';
-            }
-        }
-        
-        function convertToKg(quantity, unit) {
-            switch(unit) {
-                case 'kg':
-                    return quantity;
-                case '100g':
-                    return quantity * 0.1; // 100g = 0.1kg
-                case '50g':
-                    return quantity * 0.05; // 50g = 0.05kg
-                default:
-                    return quantity;
-            }
-        }
-        
-        function convertFromKg(quantity, unit) {
-            switch(unit) {
-                case 'kg':
-                    return quantity;
-                case '100g':
-                    return quantity * 10; // 1kg = 10 * 100g
-                case '50g':
-                    return quantity * 20; // 1kg = 20 * 50g
-                default:
-                    return quantity;
-            }
-        }
-        
-        function formatQuantityDisplay(quantity, unit) {
-            const unitDisplay = getUnitDisplayText(unit);
-            const badge = getUnitBadge(unit);
-            return `${quantity.toFixed(2)} ${badge}`;
-        }
         
         function updateDateDisplay() {
             const displayElement = document.getElementById('currentDateDisplay');
@@ -2363,13 +2042,11 @@
                 totalPaid += sale.paid;
                 totalRemaining += sale.remaining;
                 
-                const unitBadge = getUnitBadge(sale.unit);
-                
                 salesDetails += `
                     <tr>
                         <td>${index + 1}</td>
                         <td>${sale.date}</td>
-                        <td>${sale.displayQuantity ? sale.displayQuantity.toFixed(2) : convertFromKg(sale.quantity, sale.unit).toFixed(2)} ${unitBadge}</td>
+                        <td>${sale.quantity.toFixed(2)} كغ</td>
                         <td>${sale.salePrice.toFixed(2)} <span class="dollar">$</span></td>
                         <td>${sale.total.toFixed(2)} <span class="dollar">$</span></td>
                         <td>${sale.paid.toFixed(2)} <span class="dollar">$</span></td>
@@ -2477,21 +2154,14 @@
                 return;
             }
             
-            // Convert quantity to kg for storage
-            const quantityInKg = convertToKg(quantity, selectedUnit);
-            const total = quantityInKg * price;
-            
             const purchase = {
                 id: Date.now(),
-                quantity: quantityInKg,
-                displayQuantity: quantity,
-                unit: selectedUnit,
+                quantity: quantity,
                 price: price,
-                total: total,
+                total: quantity * price,
                 date: date,
-                remaining: quantityInKg,
-                originalQuantity: quantityInKg,
-                displayOriginalQuantity: quantity
+                remaining: quantity,
+                originalQuantity: quantity
             };
             
             purchases.push(purchase);
@@ -2500,11 +2170,8 @@
             updateDashboardStats();
             updatePurchaseSourcesList();
             
-            // Reset form and set default values
             document.getElementById('purchaseForm').reset();
             document.getElementById('purchaseDate').value = new Date().toISOString().split('T')[0];
-            document.getElementById('purchaseQuantity').value = '';
-            document.getElementById('purchasePrice').value = '';
             
             alert('تم تسجيل عملية الشراء بنجاح! | Alım başarıyla kaydedildi!');
         });
@@ -2513,19 +2180,7 @@
             const sourcesList = document.getElementById('sourcesList');
             sourcesList.innerHTML = '';
             
-            // تصفية المشتريات التي لديها كمية متبقية فقط
             const activePurchases = purchases.filter(purchase => purchase.remaining > 0);
-            
-            if (activePurchases.length === 0) {
-                sourcesList.innerHTML = `
-                    <div style="grid-column: 1 / -1; text-align: center; padding: 20px; color: #666;">
-                        <i class="fas fa-box-open" style="font-size: 2rem; margin-bottom: 10px;"></i>
-                        <p>لا توجد مشتريات متاحة للبيع | Satış için mevcut alım yok</p>
-                        <p style="margin-top: 10px; font-size: 0.9rem;">جميع الكميات تم بيعها أو لم يتم إضافة مشتريات بعد | Tüm miktarlar satıldı veya henüz alım eklenmedi</p>
-                    </div>
-                `;
-                return;
-            }
             
             activePurchases.forEach(purchase => {
                 const isSelected = selectedSources.find(s => s.id === purchase.id);
@@ -2535,24 +2190,22 @@
                 if (remainingPercentage < 30) remainingClass = 'remaining-low';
                 else if (remainingPercentage < 60) remainingClass = 'remaining-medium';
                 
-                // Convert remaining to display unit
-                const displayRemaining = convertFromKg(purchase.remaining, purchase.unit);
-                const displayOriginal = purchase.displayOriginalQuantity;
-                
                 const sourceItem = document.createElement('div');
                 sourceItem.className = `source-checkbox-item ${isSelected ? 'selected' : ''}`;
                 sourceItem.innerHTML = `
+                    <input type="checkbox" id="source_${purchase.id}" ${isSelected ? 'checked' : ''} 
+                           style="display: none;" onchange="toggleSourceSelection(${purchase.id})">
                     <div class="source-checkbox-content">
-                        <h5>مصدر #${purchase.id} ${getUnitBadge(purchase.unit)}</h5>
-                        <p>الكمية المتبقية: <span class="remaining-quantity ${remainingClass}"><strong>${displayRemaining.toFixed(2)} ${getUnitBadge(purchase.unit)}</strong></span></p>
-                        <p>الكمية الأصلية: ${displayOriginal.toFixed(2)} ${getUnitBadge(purchase.unit)}</p>
+                        <h5>مصدر #${purchase.id}</h5>
+                        <p>الكمية المتبقية: <span class="remaining-quantity ${remainingClass}"><strong>${purchase.remaining.toFixed(2)} كغ</strong></span></p>
+                        <p>الكمية الأصلية: ${purchase.originalQuantity.toFixed(2)} كغ</p>
                         <p>سعر الشراء: <strong>${purchase.price.toFixed(2)}$ للكغ</strong></p>
                         <p>تاريخ الشراء: ${purchase.date}</p>
                         ${isSelected ? `
                             <div style="margin-top: 8px;">
-                                <label>الكمية المطلوبة (${getUnitDisplayText(purchase.unit)}):</label>
+                                <label>الكمية المطلوبة:</label>
                                 <input type="number" class="source-quantity-input" id="source_qty_${purchase.id}" 
-                                       value="${isSelected.quantity}" step="0.01" min="0.01" max="${displayRemaining}" 
+                                       value="${isSelected.quantity}" step="0.01" min="0.01" max="${purchase.remaining}" 
                                        onchange="updateSourceQuantity(${purchase.id}, this.value)">
                                 <button class="btn-full-quantity" onclick="setFullQuantity(${purchase.id})" title="الكمية الكاملة | Tam Miktar">
                                     <i class="fas fa-check"></i> الكمية الكاملة
@@ -2563,9 +2216,7 @@
                     ${isSelected ? `<div class="source-order">${selectedSources.findIndex(s => s.id === purchase.id) + 1}</div>` : ''}
                 `;
                 
-                // Add click handler for the entire item
                 sourceItem.onclick = function(e) {
-                    // Don't trigger if clicking on input or button
                     if (!e.target.classList.contains('source-quantity-input') && 
                         !e.target.classList.contains('btn-full-quantity')) {
                         toggleSourceSelection(purchase.id);
@@ -2574,6 +2225,16 @@
                 
                 sourcesList.appendChild(sourceItem);
             });
+            
+            if (sourcesList.children.length === 0) {
+                sourcesList.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 20px; color: #666;">
+                        <i class="fas fa-box-open" style="font-size: 2rem; margin-bottom: 10px;"></i>
+                        <p>لا توجد مشتريات متاحة للبيع | Satış için mevcut alım yok</p>
+                        <p style="margin-top: 10px; font-size: 0.9rem;">جميع الكميات تم بيعها أو لم يتم إضافة مشتريات بعد | Tüm miktarlar satıldı veya henüz alım eklenmedi</p>
+                    </div>
+                `;
+            }
             
             updateSelectedSourcesDisplay();
         }
@@ -2585,18 +2246,13 @@
             const index = selectedSources.findIndex(s => s.id === purchaseId);
             
             if (index === -1) {
-                // Convert the remaining quantity to the selected sale unit for display
-                const displayRemaining = convertFromKg(purchase.remaining, purchase.unit);
-                const defaultQuantity = displayRemaining;
+                const defaultQuantity = purchase.remaining;
                 selectedSources.push({
                     id: purchase.id,
-                    quantity: defaultQuantity, // Display quantity
-                    quantityInKg: purchase.remaining, // Actual quantity in kg
-                    unit: purchase.unit,
+                    quantity: defaultQuantity,
                     price: purchase.price,
                     purchaseDate: purchase.date,
-                    remaining: purchase.remaining,
-                    displayRemaining: displayRemaining
+                    remaining: purchase.remaining
                 });
             } else {
                 selectedSources.splice(index, 1);
@@ -2613,20 +2269,15 @@
                 return;
             }
             
-            // Convert input quantity to kg for validation
-            const quantityInKg = convertToKg(quantityNum, purchase.unit);
-            
-            if (quantityInKg > purchase.remaining) {
-                const displayRemaining = convertFromKg(purchase.remaining, purchase.unit);
-                alert(`الكمية المطلوبة (${quantityNum.toFixed(2)} ${getUnitDisplayText(purchase.unit)}) تتجاوز الكمية المتبقية في المصدر (${displayRemaining.toFixed(2)} ${getUnitDisplayText(purchase.unit)}) | İstenen miktar (${quantityNum.toFixed(2)} ${getUnitDisplayText(purchase.unit)}) kaynaktaki kalan miktarı (${displayRemaining.toFixed(2)} ${getUnitDisplayText(purchase.unit)}) aşıyor`);
-                document.getElementById(`source_qty_${purchaseId}`).value = displayRemaining.toFixed(2);
-                return;
+            if (quantityNum > purchase.remaining) {
+                alert(`الكمية المطلوبة (${quantityNum.toFixed(2)} كغ) تتجاوز الكمية المتبقية في المصدر (${purchase.remaining.toFixed(2)} كغ) | İstenen miktar (${quantityNum.toFixed(2)} kg) kaynaktaki kalan miktarı (${purchase.remaining.toFixed(2)} kg) aşıyor`);
+                document.getElementById(`source_qty_${purchaseId}`).value = purchase.remaining.toFixed(2);
+                quantityNum = purchase.remaining;
             }
             
             const source = selectedSources.find(s => s.id === purchaseId);
             if (source) {
                 source.quantity = quantityNum;
-                source.quantityInKg = convertToKg(quantityNum, purchase.unit);
                 updateSelectedSourcesDisplay();
             }
         }
@@ -2635,9 +2286,8 @@
             const purchase = purchases.find(p => p.id === purchaseId);
             if (!purchase) return;
             
-            const displayRemaining = convertFromKg(purchase.remaining, purchase.unit);
-            document.getElementById(`source_qty_${purchaseId}`).value = displayRemaining.toFixed(2);
-            updateSourceQuantity(purchaseId, displayRemaining);
+            document.getElementById(`source_qty_${purchaseId}`).value = purchase.remaining.toFixed(2);
+            updateSourceQuantity(purchaseId, purchase.remaining);
         }
         
         function updateSelectedSourcesDisplay() {
@@ -2651,39 +2301,31 @@
                 return;
             }
             
-            let totalSelectedQuantity = 0; // In display units (sale unit)
-            let totalSelectedQuantityInKg = 0; // In kg for calculations
+            let totalSelectedQuantity = 0;
             let totalPurchaseCost = 0;
             
             selectedSources.forEach((source, index) => {
                 const purchase = purchases.find(p => p.id === source.id);
                 if (!purchase) return;
                 
-                // Convert source quantity to sale unit for display
-                const sourceQuantityInSaleUnit = convertFromKg(source.quantityInKg, selectedSaleUnit);
-                totalSelectedQuantity += sourceQuantityInSaleUnit;
-                totalSelectedQuantityInKg += source.quantityInKg;
-                totalPurchaseCost += source.quantityInKg * source.price;
+                totalSelectedQuantity += source.quantity;
+                totalPurchaseCost += source.quantity * source.price;
                 
-                const percentage = (source.quantityInKg / purchase.remaining) * 100;
+                const percentage = (source.quantity / purchase.remaining) * 100;
                 let remainingClass = 'remaining-high';
                 if (percentage > 80) remainingClass = 'remaining-high';
                 else if (percentage > 50) remainingClass = 'remaining-medium';
                 else remainingClass = 'remaining-low';
-                
-                // Convert for display
-                const displayQuantity = source.quantity;
-                const displayRemaining = convertFromKg(purchase.remaining, purchase.unit);
                 
                 const sourceItem = document.createElement('div');
                 sourceItem.className = 'selected-source-item';
                 sourceItem.innerHTML = `
                     <div class="source-order-badge">${index + 1}</div>
                     <div class="selected-source-info">
-                        <strong>مصدر #${source.id} ${getUnitBadge(source.unit)}</strong>
-                        <div>الكمية: <span class="remaining-quantity ${remainingClass}">${displayQuantity.toFixed(2)} ${getUnitBadge(source.unit)}</span> من ${displayRemaining.toFixed(2)} ${getUnitBadge(source.unit)}</div>
+                        <strong>مصدر #${source.id}</strong>
+                        <div>الكمية: <span class="remaining-quantity ${remainingClass}">${source.quantity.toFixed(2)} كغ</span> من ${purchase.remaining.toFixed(2)} كغ</div>
                         <div>السعر: ${source.price.toFixed(2)}$ للكغ</div>
-                        <div>الإجمالي الشرائي: ${(source.quantityInKg * source.price).toFixed(2)}$</div>
+                        <div>الإجمالي الشرائي: ${(source.quantity * source.price).toFixed(2)}$</div>
                     </div>
                     <div class="selected-source-actions">
                         <button class="btn-remove-source" onclick="removeSelectedSource(${index})" title="حذف المصدر | Kaynağı Sil">
@@ -2695,7 +2337,7 @@
             });
             
             const salePrice = parseFloat(document.getElementById('salePrice').value) || 0;
-            const totalSaleCost = totalSelectedQuantityInKg * salePrice;
+            const totalSaleCost = totalSelectedQuantity * salePrice;
             
             document.getElementById('totalSelectedQuantity').textContent = totalSelectedQuantity.toFixed(2);
             document.getElementById('totalSelectedSources').textContent = selectedSources.length;
@@ -2704,9 +2346,10 @@
             
             summaryDiv.style.display = 'block';
             
-            // Update sale quantity input
             const saleQuantityInput = document.getElementById('saleQuantity');
-            saleQuantityInput.value = totalSelectedQuantity.toFixed(2);
+            if (!saleQuantityInput.value || parseFloat(saleQuantityInput.value) !== totalSelectedQuantity) {
+                saleQuantityInput.value = totalSelectedQuantity.toFixed(2);
+            }
         }
         
         function removeSelectedSource(index) {
@@ -2731,29 +2374,24 @@
                 return;
             }
             
-            let totalSelectedQuantityInKg = 0;
-            let totalSelectedQuantityInSaleUnit = 0;
+            let totalSelectedQuantity = 0;
             let totalPurchaseCost = 0;
             
             selectedSources.forEach(source => {
-                totalSelectedQuantityInKg += source.quantityInKg;
-                totalSelectedQuantityInSaleUnit += convertFromKg(source.quantityInKg, selectedSaleUnit);
-                totalPurchaseCost += source.quantityInKg * source.price;
+                totalSelectedQuantity += source.quantity;
+                totalPurchaseCost += source.quantity * source.price;
             });
             
-            // Allow small rounding differences
-            if (Math.abs(saleQuantity - totalSelectedQuantityInSaleUnit) > 0.01) {
-                alert(`كمية البيع (${saleQuantity.toFixed(2)} ${getUnitDisplayText(selectedSaleUnit)}) لا تطابق إجمالي الكمية المختارة من المصادر (${totalSelectedQuantityInSaleUnit.toFixed(2)} ${getUnitDisplayText(selectedSaleUnit)}) | Satış miktarı (${saleQuantity.toFixed(2)} ${getUnitDisplayText(selectedSaleUnit)}) seçilen kaynakların toplam miktarıyla (${totalSelectedQuantityInSaleUnit.toFixed(2)} ${getUnitDisplayText(selectedSaleUnit)}) eşleşmiyor`);
+            if (Math.abs(saleQuantity - totalSelectedQuantity) > 0.01) {
+                alert(`كمية البيع (${saleQuantity.toFixed(2)} كغ) لا تطابق إجمالي الكمية المختارة من المصادر (${totalSelectedQuantity.toFixed(2)} كغ) | Satış miktarı (${saleQuantity.toFixed(2)} kg) seçilen kaynakların toplam miktarıyla (${totalSelectedQuantity.toFixed(2)} kg) eşleşmiyor`);
                 return;
             }
             
-            const totalSaleAmount = totalSelectedQuantityInKg * salePrice;
+            const totalSaleAmount = saleQuantity * salePrice;
             
             currentSaleData = {
                 customerName: customerName,
-                quantity: totalSelectedQuantityInKg, // Store in kg for calculations
-                displayQuantity: saleQuantity, // Store display quantity
-                unit: selectedSaleUnit, // Store sale unit
+                quantity: saleQuantity,
                 price: salePrice,
                 totalPurchaseCost: totalPurchaseCost,
                 total: totalSaleAmount,
@@ -2769,11 +2407,8 @@
         function openPaymentModal() {
             if (!currentSaleData) return;
             
-            const unitDisplay = getUnitDisplayText(currentSaleData.unit);
-            const unitBadge = getUnitBadge(currentSaleData.unit);
-            
             document.getElementById('modalCustomerName').textContent = currentSaleData.customerName;
-            document.getElementById('modalSaleQuantity').innerHTML = currentSaleData.displayQuantity.toFixed(2) + ' ' + unitBadge;
+            document.getElementById('modalSaleQuantity').textContent = currentSaleData.quantity.toFixed(2) + ' كغ';
             document.getElementById('modalSalePrice').innerHTML = currentSaleData.price.toFixed(2) + ' <span class="dollar">$</span>';
             document.getElementById('modalTotalAmount').innerHTML = currentSaleData.total.toFixed(2) + ' <span class="dollar">$</span>';
             
@@ -2827,7 +2462,7 @@
             currentSaleData.selectedSources.forEach(source => {
                 const purchase = purchases.find(p => p.id === source.id);
                 if (purchase) {
-                    purchase.remaining -= source.quantityInKg;
+                    purchase.remaining -= source.quantity;
                     if (purchase.remaining < 0) purchase.remaining = 0;
                 }
             });
@@ -2837,25 +2472,20 @@
                 const purchase = purchases.find(p => p.id === source.id);
                 if (!purchase) return;
                 
-                const sourceProfit = (currentSaleData.price - source.price) * source.quantityInKg;
-                const sourceTotal = source.quantityInKg * currentSaleData.price;
+                const sourceProfit = (currentSaleData.price - source.price) * source.quantity;
+                const sourceTotal = source.quantity * currentSaleData.price;
                 
                 // توزيع المبلغ المدفوع على المصادر حسب نسبة كل مصدر
-                const sourceRatio = source.quantityInKg / currentSaleData.quantity;
+                const sourceRatio = source.quantity / currentSaleData.quantity;
                 const sourcePaid = amountPaid * sourceRatio;
                 const sourceRemaining = sourceTotal - sourcePaid;
-                
-                // Convert quantity to display unit
-                const displayQuantity = convertFromKg(source.quantityInKg, currentSaleData.unit);
                 
                 const sale = {
                     id: Date.now() + index,
                     customerName: currentSaleData.customerName,
                     sourceId: source.id,
                     sourceIndex: index + 1,
-                    quantity: source.quantityInKg, // Store in kg
-                    displayQuantity: displayQuantity, // Display quantity
-                    unit: currentSaleData.unit, // Sale unit
+                    quantity: source.quantity,
                     purchasePrice: source.price,
                     salePrice: currentSaleData.price,
                     profitPerUnit: currentSaleData.price - source.price,
@@ -2880,13 +2510,9 @@
             updatePurchaseSourcesList();
             updateCustomerRemainingList();
             
-            // Reset sale form completely
             document.getElementById('saleForm').reset();
             selectedSources = [];
             updateSelectedSourcesDisplay();
-            
-            // Reset unit selection to default
-            selectSaleUnit('kg');
             
             closePaymentModal();
             
@@ -2922,11 +2548,8 @@
                 totalRemaining += sourceSale.remaining;
             });
             
-            const unitBadge = getUnitBadge(sale.unit);
-            const displayTotalQuantity = convertFromKg(totalQuantity, sale.unit);
-            
             document.getElementById('receiveCustomerName').textContent = sale.customerName;
-            document.getElementById('receiveSaleQuantity').innerHTML = displayTotalQuantity.toFixed(2) + ' ' + unitBadge;
+            document.getElementById('receiveSaleQuantity').textContent = totalQuantity.toFixed(2) + ' كغ';
             document.getElementById('receiveTotalAmount').innerHTML = totalAmount.toFixed(2) + ' <span class="dollar">$</span>';
             document.getElementById('receivePaidAmount').innerHTML = totalPaid.toFixed(2) + ' <span class="dollar">$</span>';
             document.getElementById('receiveRemainingAmount').innerHTML = totalRemaining.toFixed(2) + ' <span class="dollar">$</span>';
@@ -3024,7 +2647,7 @@
                     sale.selectedSources.forEach(source => {
                         const purchase = purchases.find(p => p.id === source.id);
                         if (purchase) {
-                            purchase.remaining += source.quantityInKg;
+                            purchase.remaining += source.quantity;
                         }
                     });
                 }
@@ -3043,28 +2666,20 @@
             const purchase = purchases.find(p => p.id === purchaseId);
             if (!purchase) return;
             
-            const displayQuantity = purchase.displayQuantity || convertFromKg(purchase.quantity, purchase.unit);
-            
-            const newQuantity = prompt(`الكمية الجديدة (${getUnitDisplayText(purchase.unit)}) | Yeni miktar (${getUnitDisplayText(purchase.unit)}):`, displayQuantity);
+            const newQuantity = prompt(`الكمية الجديدة (كغ) | Yeni miktar (kg):`, purchase.quantity);
             if (newQuantity === null) return;
             
             const newPrice = prompt(`السعر الجديد ($) | Yeni fiyat ($):`, purchase.price);
             if (newPrice === null) return;
             
-            const newRemaining = prompt(`الكمية المتبقية الجديدة (${getUnitDisplayText(purchase.unit)}) | Yeni kalan miktar (${getUnitDisplayText(purchase.unit)}):`, displayQuantity);
+            const newRemaining = prompt(`الكمية المتبقية الجديدة (كغ) | Yeni kalan miktar (kg):`, purchase.remaining);
             if (newRemaining === null) return;
             
-            // Convert to kg for storage
-            const newQuantityInKg = convertToKg(parseFloat(newQuantity), purchase.unit);
-            const newRemainingInKg = convertToKg(parseFloat(newRemaining), purchase.unit);
-            
-            purchase.quantity = newQuantityInKg;
-            purchase.displayQuantity = parseFloat(newQuantity);
+            purchase.quantity = parseFloat(newQuantity);
             purchase.price = parseFloat(newPrice);
-            purchase.remaining = newRemainingInKg;
-            purchase.originalQuantity = newQuantityInKg;
-            purchase.displayOriginalQuantity = parseFloat(newQuantity);
-            purchase.total = newQuantityInKg * purchase.price;
+            purchase.remaining = parseFloat(newRemaining);
+            purchase.originalQuantity = purchase.quantity;
+            purchase.total = purchase.quantity * purchase.price;
             
             saveData();
             updatePurchasesTable();
@@ -3077,9 +2692,7 @@
             const sale = sales.find(s => s.id === saleId);
             if (!sale) return;
             
-            const displayQuantity = sale.displayQuantity || convertFromKg(sale.quantity, sale.unit);
-            
-            const newQuantity = prompt(`الكمية الجديدة (${getUnitDisplayText(sale.unit)}) | Yeni miktar (${getUnitDisplayText(sale.unit)}):`, displayQuantity);
+            const newQuantity = prompt(`الكمية الجديدة (كغ) | Yeni miktar (kg):`, sale.quantity);
             if (newQuantity === null) return;
             
             const newPrice = prompt(`السعر الجديد ($) | Yeni fiyat ($):`, sale.salePrice);
@@ -3088,8 +2701,7 @@
             const newPaid = prompt(`المبلغ المدفوع الجديد ($) | Yeni ödenen miktar ($):`, sale.paid);
             if (newPaid === null) return;
             
-            const newQuantityInKg = convertToKg(parseFloat(newQuantity), sale.unit);
-            const newTotal = newQuantityInKg * parseFloat(newPrice);
+            const newTotal = parseFloat(newQuantity) * parseFloat(newPrice);
             if (parseFloat(newPaid) > newTotal) {
                 alert('المبلغ المدفوع لا يمكن أن يتجاوز الإجمالي | Ödenen tutar toplamı aşamaz');
                 return;
@@ -3131,19 +2743,14 @@
                     else if (remainingPercentage < 30) remainingClass = 'remaining-low';
                     else if (remainingPercentage < 60) remainingClass = 'remaining-medium';
                     
-                    // Convert quantities for display
-                    const displayQuantity = purchase.displayQuantity || convertFromKg(purchase.quantity, purchase.unit);
-                    const displayRemaining = convertFromKg(purchase.remaining, purchase.unit);
-                    
                     const row = document.createElement('tr');
                     row.innerHTML = `
                         <td>${index + 1}</td>
-                        <td>${displayQuantity.toFixed(2)} ${getUnitBadge(purchase.unit)}</td>
-                        <td>${getUnitDisplayText(purchase.unit)}</td>
+                        <td>${purchase.quantity.toFixed(2)} كغ</td>
                         <td><span class="dollar">$</span> ${purchase.price.toFixed(2)}</td>
                         <td><span class="dollar">$</span> ${purchase.total.toFixed(2)}</td>
                         <td>${purchase.date}</td>
-                        <td><span class="remaining-quantity ${remainingClass}">${displayRemaining.toFixed(2)} ${getUnitBadge(purchase.unit)}</span></td>
+                        <td><span class="remaining-quantity ${remainingClass}">${purchase.remaining.toFixed(2)} كغ</span></td>
                         <td>
                             <button class="btn btn-sm btn-warning" onclick="editPurchase(${purchase.id})" title="تعديل | Düzenle">
                                 <i class="fas fa-edit"></i>
@@ -3172,7 +2779,7 @@
             const tableBody = document.getElementById('salesTableBody');
             tableBody.innerHTML = '';
             
-            let totalSalesQuantity = 0; // In kg
+            let totalSalesQuantity = 0;
             let totalSalesAmount = 0;
             let totalProfit = 0;
             let totalRemaining = 0;
@@ -3188,7 +2795,6 @@
                     groupedSales[sale.parentSaleId] = {
                         customerName: sale.customerName,
                         date: sale.date,
-                        unit: sale.unit,
                         sources: []
                     };
                 }
@@ -3231,16 +2837,13 @@
                     else if (groupTotalRemaining < groupTotalAmount * 0.3) remainingClass = 'remaining-low';
                     else if (groupTotalRemaining < groupTotalAmount * 0.6) remainingClass = 'remaining-medium';
                     
-                    const displayQuantity = firstSale.displayQuantity || convertFromKg(firstSale.quantity, firstSale.unit);
-                    
                     const headerRow = document.createElement('tr');
                     headerRow.className = 'sales-source-header';
                     headerRow.innerHTML = `
                         <td rowspan="${group.sources.length}">${saleIndex}</td>
                         <td rowspan="${group.sources.length}">${firstSale.customerName}</td>
                         <td><strong>المصدر ${firstSale.sourceIndex}</strong></td>
-                        <td>${displayQuantity.toFixed(2)} ${getUnitBadge(firstSale.unit)}</td>
-                        <td>${getUnitDisplayText(firstSale.unit)}</td>
+                        <td>${firstSale.quantity.toFixed(2)} كغ</td>
                         <td><span class="dollar">$</span> ${firstSale.purchasePrice.toFixed(2)}</td>
                         <td><span class="dollar">$</span> ${firstSale.salePrice.toFixed(2)}</td>
                         <td><span class="dollar">$</span> ${firstSale.profitPerUnit.toFixed(2)}</td>
@@ -3275,14 +2878,12 @@
                         const sale = group.sources[i];
                         const sourceProfitClass = sale.profit >= 0 ? 'badge-sale' : 'badge-purchase';
                         const sourceProfitSign = sale.profit >= 0 ? '+' : '';
-                        const sourceDisplayQuantity = sale.displayQuantity || convertFromKg(sale.quantity, sale.unit);
                         
                         const sourceRow = document.createElement('tr');
                         sourceRow.className = 'sales-source-row';
                         sourceRow.innerHTML = `
                             <td><strong>المصدر ${sale.sourceIndex}</strong></td>
-                            <td>${sourceDisplayQuantity.toFixed(2)} ${getUnitBadge(sale.unit)}</td>
-                            <td>${getUnitDisplayText(sale.unit)}</td>
+                            <td>${sale.quantity.toFixed(2)} كغ</td>
                             <td><span class="dollar">$</span> ${sale.purchasePrice.toFixed(2)}</td>
                             <td><span class="dollar">$</span> ${sale.salePrice.toFixed(2)}</td>
                             <td><span class="dollar">$</span> ${sale.profitPerUnit.toFixed(2)}</td>
@@ -3309,8 +2910,7 @@
                 document.getElementById('salesTableContainer').style.display = 'none';
             }
             
-            const displayTotalSalesQuantity = convertFromKg(totalSalesQuantity, 'kg'); // Always show in kg in footer
-            document.getElementById('totalSalesQuantity').innerHTML = displayTotalSalesQuantity.toFixed(2) + ' ' + getUnitBadge('kg');
+            document.getElementById('totalSalesQuantity').textContent = totalSalesQuantity.toFixed(2) + ' كغ';
             document.getElementById('totalProfitFooter').innerHTML = totalProfit.toFixed(2) + ' <span class="dollar">$</span>';
             document.getElementById('totalSalesAmount').innerHTML = totalSalesAmount.toFixed(2) + ' <span class="dollar">$</span>';
             document.getElementById('totalRemainingFooter').innerHTML = totalRemaining.toFixed(2) + ' <span class="dollar">$</span>';
@@ -3335,16 +2935,11 @@
             const totalTodayProfit = todaySales.reduce((sum, sale) => sum + sale.profit, 0);
             const totalTodayRemaining = todaySales.reduce((sum, sale) => sum + sale.remaining, 0);
             
-            // Convert quantities for display (always show in kg in dashboard)
-            const displayActivePurchasesQuantity = convertFromKg(totalActivePurchasesQuantity, 'kg');
-            const displayTodaySalesQuantity = convertFromKg(totalTodaySalesQuantity, 'kg');
-            const displayInventoryQuantity = convertFromKg(currentInventoryQuantity, 'kg');
-            
-            document.getElementById('total-purchases').innerHTML = displayActivePurchasesQuantity.toFixed(2) + ' ' + getUnitBadge('kg');
+            document.getElementById('total-purchases').textContent = totalActivePurchasesQuantity.toFixed(2) + ' كغ';
             document.getElementById('purchases-total').innerHTML = totalActivePurchasesAmount.toFixed(2) + ' <span class="dollar">$</span>';
-            document.getElementById('total-sales').innerHTML = displayTodaySalesQuantity.toFixed(2) + ' ' + getUnitBadge('kg');
+            document.getElementById('total-sales').textContent = totalTodaySalesQuantity.toFixed(2) + ' كغ';
             document.getElementById('sales-total').innerHTML = totalTodaySalesAmount.toFixed(2) + ' <span class="dollar">$</span>';
-            document.getElementById('current-inventory').innerHTML = displayInventoryQuantity.toFixed(2) + ' ' + getUnitBadge('kg');
+            document.getElementById('current-inventory').textContent = currentInventoryQuantity.toFixed(2) + ' كغ';
             document.getElementById('inventory-total').innerHTML = currentInventoryValue.toFixed(2) + ' <span class="dollar">$</span>';
             document.getElementById('total-profit').innerHTML = totalTodayProfit.toFixed(2) + ' <span class="dollar">$</span>';
             document.getElementById('pending-amount').innerHTML = `مستحق اليوم: ${totalTodayRemaining.toFixed(2)} <span class="dollar">$</span>`;
@@ -3440,16 +3035,11 @@
             const currentInventoryQuantity = totalPurchasesAll - totalSalesAll;
             const currentInventoryValue = purchases.reduce((sum, purchase) => sum + (purchase.remaining * purchase.price), 0);
             
-            // Convert quantities for display (always show in kg in dashboard)
-            const displayActivePurchasesQuantity = convertFromKg(totalActivePurchasesQuantity, 'kg');
-            const displayTodaySalesQuantity = convertFromKg(totalTodaySalesQuantity, 'kg');
-            const displayInventoryQuantity = convertFromKg(currentInventoryQuantity, 'kg');
-            
-            document.getElementById('total-purchases').innerHTML = displayActivePurchasesQuantity.toFixed(2) + ' ' + getUnitBadge('kg');
+            document.getElementById('total-purchases').textContent = totalActivePurchasesQuantity.toFixed(2) + ' كغ';
             document.getElementById('purchases-total').innerHTML = totalActivePurchasesAmount.toFixed(2) + ' <span class="dollar">$</span>';
-            document.getElementById('total-sales').innerHTML = displayTodaySalesQuantity.toFixed(2) + ' ' + getUnitBadge('kg');
+            document.getElementById('total-sales').textContent = totalTodaySalesQuantity.toFixed(2) + ' كغ';
             document.getElementById('sales-total').innerHTML = totalTodaySalesAmount.toFixed(2) + ' <span class="dollar">$</span>';
-            document.getElementById('current-inventory').innerHTML = displayInventoryQuantity.toFixed(2) + ' ' + getUnitBadge('kg');
+            document.getElementById('current-inventory').textContent = currentInventoryQuantity.toFixed(2) + ' كغ';
             document.getElementById('inventory-total').innerHTML = currentInventoryValue.toFixed(2) + ' <span class="dollar">$</span>';
             document.getElementById('total-profit').innerHTML = totalTodayProfit.toFixed(2) + ' <span class="dollar">$</span>';
             document.getElementById('pending-amount').innerHTML = `إجمالي المستحق: ${totalTodayRemaining.toFixed(2)} <span class="dollar">$</span>`;
@@ -3509,14 +3099,13 @@
                     groupedSales[sale.parentSaleId] = {
                         customerName: sale.customerName,
                         date: sale.date,
-                        unit: sale.unit,
                         sources: []
                     };
                 }
                 groupedSales[sale.parentSaleId].sources.push(sale);
             });
             
-            const totalQuantity = dateSales.reduce((sum, sale) => sum + sale.quantity, 0); // In kg
+            const totalQuantity = dateSales.reduce((sum, sale) => sum + sale.quantity, 0);
             const totalRevenue = dateSales.reduce((sum, sale) => sum + sale.total, 0);
             const totalProfit = dateSales.reduce((sum, sale) => sum + sale.profit, 0);
             const totalPaid = dateSales.reduce((sum, sale) => sum + sale.paid, 0);
@@ -3543,14 +3132,13 @@
                     group.sources.forEach((sale, sourceIndex) => {
                         const profitClass = sale.profit >= 0 ? 'profit-positive' : 'profit-negative';
                         const profitSign = sale.profit >= 0 ? '+' : '';
-                        const displayQuantity = sale.displayQuantity || convertFromKg(sale.quantity, sale.unit);
                         
                         salesTableHTML += `
                             <tr>
                                 <td>${saleIndex}</td>
                                 <td>${sale.customerName}</td>
                                 <td>المصدر ${sourceIndex + 1}</td>
-                                <td>${displayQuantity.toFixed(2)} ${getUnitBadge(sale.unit)}</td>
+                                <td>${sale.quantity.toFixed(2)} كغ</td>
                                 <td><span class="dollar">$</span> ${sale.purchasePrice.toFixed(2)}</td>
                                 <td><span class="dollar">$</span> ${sale.salePrice.toFixed(2)}</td>
                                 <td><span class="dollar">$</span> ${sale.profitPerUnit.toFixed(2)}</td>
@@ -3565,8 +3153,6 @@
                 }
             });
             
-            const displayTotalQuantity = convertFromKg(totalQuantity, 'kg'); // Always show in kg in reports
-            
             let reportHTML = `
                 <div style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); padding: 25px; border-radius: var(--border-radius); margin-bottom: 30px;">
                     <h3 style="color: var(--primary-color); text-align: center; margin-bottom: 20px;">ملخص التقرير اليومي | Günlük Rapor Özeti - ${selectedDate}</h3>
@@ -3577,7 +3163,7 @@
                         </div>
                         <div style="text-align: center; padding: 15px; background: white; border-radius: 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.05);">
                             <h4 style="color: var(--primary-color); margin-bottom: 10px;">إجمالي الكمية المباعة | Toplam Satılan Miktar</h4>
-                            <p style="font-size: 1.8rem; font-weight: bold; color: var(--accent-color);">${displayTotalQuantity.toFixed(2)} ${getUnitBadge('kg')}</p>
+                            <p style="font-size: 1.8rem; font-weight: bold; color: var(--accent-color);">${totalQuantity.toFixed(2)} كغ</p>
                         </div>
                         <div style="text-align: center; padding: 15px; background: white; border-radius: 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.05);">
                             <h4 style="color: var(--primary-color); margin-bottom: 10px;">إجمالي الربح | Toplam Kâr</h4>
@@ -3613,7 +3199,7 @@
                         <tfoot style="font-weight: bold; background-color: #f8f9fa;">
                             <tr>
                                 <td colspan="3">إجمالي اليوم | Günlük Toplam</td>
-                                <td>${displayTotalQuantity.toFixed(2)} ${getUnitBadge('kg')}</td>
+                                <td>${totalQuantity.toFixed(2)} كغ</td>
                                 <td><span class="dollar">$</span> ${totalPurchaseCost.toFixed(2)}</td>
                                 <td></td>
                                 <td></td>
@@ -3658,7 +3244,7 @@
             
             // حساب الكمية المتبقية وتكلفتها
             const remainingPurchases = purchases.filter(purchase => purchase.remaining > 0);
-            let totalRemainingQuantity = 0; // In kg
+            let totalRemainingQuantity = 0;
             let totalRemainingValue = 0;
             let remainingDetailsHTML = '';
             
@@ -3667,14 +3253,11 @@
                     totalRemainingQuantity += purchase.remaining;
                     totalRemainingValue += purchase.remaining * purchase.price;
                     
-                    const displayRemaining = convertFromKg(purchase.remaining, purchase.unit);
-                    const unitBadge = getUnitBadge(purchase.unit);
-                    
                     remainingDetailsHTML += `
                         <tr>
                             <td>${index + 1}</td>
                             <td>${purchase.date}</td>
-                            <td class="number-cell">${displayRemaining.toFixed(2)} ${unitBadge}</td>
+                            <td class="number-cell">${purchase.remaining.toFixed(2)} كغ</td>
                             <td class="number-cell"><span class="dollar-print">$</span> ${purchase.price.toFixed(2)}</td>
                             <td class="number-cell"><span class="dollar-print">$</span> ${(purchase.remaining * purchase.price).toFixed(2)}</td>
                         </tr>
@@ -3698,15 +3281,13 @@
                     group.sources.forEach((sale, sourceIndex) => {
                         const profitClass = sale.profit >= 0 ? 'profit-positive' : 'profit-negative';
                         const profitSign = sale.profit >= 0 ? '+' : '';
-                        const displayQuantity = sale.displayQuantity || convertFromKg(sale.quantity, sale.unit);
-                        const unitBadge = getUnitBadge(sale.unit);
                         
                         salesTableHTML += `
                             <tr>
                                 <td>${saleIndex}</td>
                                 <td>${sale.customerName}</td>
                                 <td>المصدر ${sourceIndex + 1}</td>
-                                <td class="number-cell">${displayQuantity.toFixed(2)} ${unitBadge}</td>
+                                <td class="number-cell">${sale.quantity.toFixed(2)} كغ</td>
                                 <td class="number-cell"><span class="dollar-print">$</span> ${sale.purchasePrice.toFixed(2)}</td>
                                 <td class="number-cell"><span class="dollar-print">$</span> ${sale.salePrice.toFixed(2)}</td>
                                 <td class="number-cell"><span class="dollar-print">$</span> ${sale.profitPerUnit.toFixed(2)}</td>
@@ -3721,9 +3302,6 @@
                 }
             });
             
-            const displayTotalQuantity = convertFromKg(totalQuantity, 'kg');
-            const displayTotalRemainingQuantity = convertFromKg(totalRemainingQuantity, 'kg');
-            
             const printableReportHTML = `
                 <div class="print-header">
                     <h1>ALANHAR SILVER</h1>
@@ -3735,7 +3313,7 @@
                         </div>
                         <div>
                             <p><strong>تاريخ الإنشاء | Oluşturma Tarihi:</strong> ${printDate}</p>
-                            <p><strong>الصفحة | Sayfa:</strong> 1/2</p>
+                            <p><strong>الصفحة | Sayfa:</strong> 1/1</p>
                         </div>
                     </div>
                 </div>
@@ -3749,7 +3327,7 @@
                         </div>
                         <div class="print-summary-item">
                             <h4>إجمالي الكمية<br>Toplam Miktar</h4>
-                            <p>${displayTotalQuantity.toFixed(2)} <span class="unit-badge unit-badge-kg">كغ</span></p>
+                            <p>${totalQuantity.toFixed(2)} كغ</p>
                         </div>
                         <div class="print-summary-item">
                             <h4>إجمالي الإيرادات<br>Toplam Gelir</h4>
@@ -3785,7 +3363,7 @@
                         <tfoot>
                             <tr style="background-color: #e8f5e9 !important; font-weight: bold;">
                                 <td colspan="3">إجمالي اليوم | Günlük Toplam</td>
-                                <td class="number-cell">${displayTotalQuantity.toFixed(2)} <span class="unit-badge unit-badge-kg">كغ</span></td>
+                                <td class="number-cell">${totalQuantity.toFixed(2)} كغ</td>
                                 <td class="number-cell"><span class="dollar-print">$</span> ${totalPurchaseCost.toFixed(2)}</td>
                                 <td></td>
                                 <td></td>
@@ -3805,7 +3383,7 @@
                         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-bottom: 20px;">
                             <div style="text-align: center; padding: 15px; background: white; border-radius: 8px; border: 2px solid #e0e0e0;">
                                 <h4 style="color: var(--primary-color); margin-bottom: 10px;">إجمالي الكمية المتبقية<br>Toplam Kalan Miktar</h4>
-                                <p style="font-size: 1.5rem; font-weight: bold; color: var(--secondary-color);">${displayTotalRemainingQuantity.toFixed(2)} <span class="unit-badge unit-badge-kg">كغ</span></p>
+                                <p style="font-size: 1.5rem; font-weight: bold; color: var(--secondary-color);">${totalRemainingQuantity.toFixed(2)} كغ</p>
                             </div>
                             <div style="text-align: center; padding: 15px; background: white; border-radius: 8px; border: 2px solid #e0e0e0;">
                                 <h4 style="color: var(--primary-color); margin-bottom: 10px;">إجمالي قيمة المتبقي<br>Toplam Kalan Değer</h4>
@@ -3835,7 +3413,7 @@
                                 <tfoot>
                                     <tr style="background-color: #e8f5e9 !important; font-weight: bold;">
                                         <td colspan="2">الإجمالي | Toplam</td>
-                                        <td class="number-cell">${displayTotalRemainingQuantity.toFixed(2)} <span class="unit-badge unit-badge-kg">كغ</span></td>
+                                        <td class="number-cell">${totalRemainingQuantity.toFixed(2)} كغ</td>
                                         <td></td>
                                         <td class="number-cell"><span class="dollar-print">$</span> ${totalRemainingValue.toFixed(2)}</td>
                                     </tr>
@@ -3854,7 +3432,7 @@
                     <div class="print-totals-grid">
                         <div>
                             <p><strong>عدد المعاملات | İşlem Sayısı:</strong> ${Object.keys(groupedSales).length}</p>
-                            <p><strong>إجمالي الكمية المباعة | Toplam Satılan Miktar:</strong> ${displayTotalQuantity.toFixed(2)} <span class="unit-badge unit-badge-kg">كغ</span></p>
+                            <p><strong>إجمالي الكمية المباعة | Toplam Satılan Miktar:</strong> ${totalQuantity.toFixed(2)} كغ</p>
                             <p><strong>متوسط سعر الشراء | Ortalama Alış Fiyatı:</strong> <span class="dollar-print">$</span> ${(totalPurchaseCost / totalQuantity || 0).toFixed(2)}</p>
                         </div>
                         <div>
@@ -3871,7 +3449,7 @@
                         <div>
                             <p><strong>إجمالي تكلفة الشراء | Toplam Alış Maliyeti:</strong> <span class="dollar-print">$</span> ${totalPurchaseCost.toFixed(2)}</p>
                             <p><strong>إجمالي إيرادات البيع | Toplam Satış Geliri:</strong> <span class="dollar-print">$</span> ${totalRevenue.toFixed(2)}</p>
-                            <p><strong>إجمالي الكمية المتبقية | Toplam Kalan Miktar:</strong> ${displayTotalRemainingQuantity.toFixed(2)} <span class="unit-badge unit-badge-kg">كغ</span></p>
+                            <p><strong>إجمالي الكمية المتبقية | Toplam Kalan Miktar:</strong> ${totalRemainingQuantity.toFixed(2)} كغ</p>
                         </div>
                         <div>
                             <p><strong>إجمالي الربح الصافي | Toplam Net Kâr:</strong> <span class="dollar-print">$</span> ${totalProfit.toFixed(2)}</p>
@@ -3938,16 +3516,12 @@
                 currentSaleForReceive = null;
                 selectedSources = [];
                 currentViewDate = new Date().toISOString().split('T')[0];
-                selectedUnit = 'kg';
-                selectedSaleUnit = 'kg';
                 
                 localStorage.removeItem('alanharPurchases');
                 localStorage.removeItem('alanharSales');
                 
                 document.getElementById('currentDate').value = currentViewDate;
                 updateDateDisplay();
-                updateUnitDisplay();
-                updateSaleUnitDisplay();
                 updatePurchasesTable();
                 updateSalesTable();
                 updateDashboardStats();
@@ -3996,14 +3570,10 @@
                         currentSaleForReceive = null;
                         selectedSources = [];
                         currentViewDate = new Date().toISOString().split('T')[0];
-                        selectedUnit = 'kg';
-                        selectedSaleUnit = 'kg';
                         
                         saveData();
                         document.getElementById('currentDate').value = currentViewDate;
                         updateDateDisplay();
-                        updateUnitDisplay();
-                        updateSaleUnitDisplay();
                         updatePurchasesTable();
                         updateSalesTable();
                         updateDashboardStats();
