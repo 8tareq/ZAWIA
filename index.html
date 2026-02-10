@@ -92,6 +92,41 @@
             font-weight: 300;
         }
         
+        /* Quick Guide */
+        .quick-guide {
+            background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            margin: 20px 0;
+            border: 2px solid #ffb74d;
+        }
+        
+        .quick-guide h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .guide-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+        
+        .guide-step {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid var(--secondary-color);
+        }
+        
+        .guide-step i {
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+        }
+        
         /* Date Filter */
         .date-filter {
             background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
@@ -206,6 +241,27 @@
             font-weight: 500;
         }
         
+        /* Purchase Payment Summary */
+        .purchase-payment-summary {
+            background: linear-gradient(135deg, #e8f4ff 0%, #bbdefb 100%);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            margin-top: 15px;
+            border: 2px solid #90caf9;
+        }
+        
+        .purchase-payment-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed #90caf9;
+        }
+        
+        .purchase-payment-item:last-child {
+            border-bottom: none;
+        }
+        
         /* Main Content */
         .content-wrapper {
             display: grid;
@@ -302,7 +358,7 @@
             box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
         }
         
-        /* Payment Modals */
+        /* Payment Modal */
         .payment-modal {
             display: none;
             position: fixed;
@@ -314,10 +370,12 @@
             z-index: 1000;
             justify-content: center;
             align-items: center;
+            animation: fadeIn 0.3s ease-out;
         }
         
-        .payment-modal.active {
-            display: flex;
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
         
         .modal-content {
@@ -327,6 +385,8 @@
             max-width: 500px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
             animation: modalAppear 0.3s ease-out;
+            max-height: 90vh;
+            overflow-y: auto;
         }
         
         @keyframes modalAppear {
@@ -449,6 +509,25 @@
             border-radius: var(--border-radius);
             margin-top: 15px;
             border: 1px solid #bbdefb;
+        }
+        
+        .auto-distribute-btn {
+            background: var(--success-color);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 15px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            margin: 10px 0;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .auto-distribute-btn:hover {
+            background: #219653;
         }
         
         .source-selection-grid {
@@ -667,14 +746,6 @@
             box-shadow: 0 7px 15px rgba(23, 162, 184, 0.3);
         }
         
-        .btn-orange {
-            background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
-        }
-        
-        .btn-orange:hover {
-            box-shadow: 0 7px 15px rgba(230, 126, 34, 0.3);
-        }
-        
         .btn-sm {
             padding: 8px 15px;
             font-size: 0.9rem;
@@ -889,7 +960,7 @@
             gap: 8px;
         }
         
-        /* تحسينات الطباعة - خطوط أكبر وأوضح */
+        /* تحسينات الطباعة */
         @media print {
             @page {
                 size: A4 portrait;
@@ -921,6 +992,10 @@
                 line-height: 1.6 !important;
                 font-family: 'Arial', 'Helvetica', sans-serif !important;
                 color: black !important;
+            }
+            
+            .no-print {
+                display: none !important;
             }
             
             .print-header {
@@ -1183,56 +1258,9 @@
                 font-size: 12pt !important;
             }
             
-            .source-details-print {
-                margin: 8px 0 !important;
-                padding: 5px 0 !important;
-                border-bottom: 2px dashed #ddd !important;
-                font-size: 11pt !important;
-            }
-            
-            .expanded-source-details {
-                background: #f0f7ff !important;
-                padding: 10px !important;
-                margin: 8px 0 !important;
-                border-radius: 5px !important;
-                border: 2px solid #bbdefb !important;
-                font-size: 11pt !important;
-            }
-            
-            .print-table-container, .print-totals, .print-final-totals {
-                margin-bottom: 25px !important;
-            }
-            
-            p, span, td, th {
-                font-weight: normal !important;
-                letter-spacing: 0.5px !important;
-            }
-            
-            h1, h2, h3, h4 {
-                text-shadow: none !important;
-                letter-spacing: 1px !important;
-            }
-            
-            /* إضافات جديدة للصفحة الثانية */
             .page-break {
                 page-break-before: always !important;
                 margin-top: 30px !important;
-            }
-            
-            .remaining-section {
-                margin-top: 30px !important;
-                padding: 20px !important;
-                background: #f8f9fa !important;
-                border-radius: 8px !important;
-                border: 2px solid #ddd !important;
-            }
-            
-            .remaining-section h3 {
-                text-align: center !important;
-                font-size: 16pt !important;
-                margin-bottom: 15px !important;
-                color: #2c3e50 !important;
-                font-weight: bold !important;
             }
         }
         
@@ -1280,32 +1308,6 @@
             display: block;
         }
         
-        .source-detail-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-            border-bottom: 1px dashed #dee2e6;
-        }
-        
-        .source-detail-item:last-child {
-            border-bottom: none;
-        }
-        
-        .toggle-source-btn {
-            background: #6c757d;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            padding: 4px 8px;
-            font-size: 0.8rem;
-            cursor: pointer;
-            margin-top: 5px;
-        }
-        
-        .toggle-source-btn:hover {
-            background: #545b62;
-        }
-        
         /* Remaining quantity highlight */
         .remaining-quantity {
             display: inline-block;
@@ -1349,74 +1351,6 @@
         .sales-source-header {
             background-color: #e3f2fd !important;
             font-weight: bold;
-        }
-        
-        /* Purchase Payment Status */
-        .purchase-payment-status {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-            align-items: center;
-        }
-        
-        .payment-progress {
-            width: 100px;
-            height: 6px;
-            background-color: #e0e0e0;
-            border-radius: 3px;
-            overflow: hidden;
-        }
-        
-        .payment-progress-bar {
-            height: 100%;
-            background-color: #27ae60;
-            border-radius: 3px;
-        }
-        
-        /* Simple Modal for Purchase Receipt */
-        .simple-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .simple-modal.active {
-            display: flex;
-        }
-        
-        .simple-modal-content {
-            background-color: white;
-            border-radius: var(--border-radius);
-            width: 90%;
-            max-width: 400px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-            animation: modalAppear 0.3s ease-out;
-        }
-        
-        .simple-modal-header {
-            background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
-            color: white;
-            padding: 20px;
-            border-radius: var(--border-radius) var(--border-radius) 0 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .simple-modal-header h3 {
-            font-size: 1.5rem;
-            margin: 0;
-        }
-        
-        .simple-modal-body {
-            padding: 25px;
         }
         
         /* Responsive */
@@ -1502,7 +1436,7 @@
     </style>
 </head>
 <body>
-    <!-- Payment Modal for Sales -->
+    <!-- Payment Modal -->
     <div class="payment-modal" id="paymentModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -1552,74 +1486,9 @@
                     </div>
                 </div>
                 
-                <div style="display: flex; gap: 10px; margin-top: 20px;">
-                    <button class="btn btn-danger" onclick="closePaymentModal()" style="flex: 1;">
-                        <i class="fas fa-times"></i> إلغاء | İptal
-                    </button>
-                    <button class="btn btn-success" onclick="completeSaleWithPayment()" id="confirmSaleBtn" style="flex: 2;">
-                        <i class="fas fa-check-circle"></i> تأكيد البيع والدفع | Satışı ve Ödemeyi Onayla
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Simple Modal for Purchase Receipt -->
-    <div class="simple-modal" id="purchaseReceiptModal">
-        <div class="simple-modal-content">
-            <div class="simple-modal-header">
-                <h3>استلام قيمة الشراء | Alım Tutarı Al</h3>
-                <button class="close-modal" onclick="closePurchaseReceiptModal()">
-                    <i class="fas fa-times"></i>
+                <button class="btn btn-success" onclick="completeSaleWithPayment()" id="confirmSaleBtn" style="width: 100%; margin-top: 20px;">
+                    <i class="fas fa-check-circle"></i> تأكيد البيع والدفع | Satışı ve Ödemeyi Onayla
                 </button>
-            </div>
-            <div class="simple-modal-body">
-                <div class="payment-summary">
-                    <h4 style="text-align: center; margin-bottom: 20px; color: var(--primary-color);">تفاصيل الشراء | Alım Detayları</h4>
-                    <div class="payment-item">
-                        <span>رقم العملية | İşlem No:</span>
-                        <span id="receiptPurchaseId"></span>
-                    </div>
-                    <div class="payment-item">
-                        <span>الكمية | Miktar:</span>
-                        <span id="receiptPurchaseQuantity">0 كغ</span>
-                    </div>
-                    <div class="payment-item">
-                        <span>سعر الشراء | Alış Fiyatı:</span>
-                        <span id="receiptPurchasePrice">0 <span class="dollar">$</span></span>
-                    </div>
-                    <div class="payment-item">
-                        <span>المبلغ الإجمالي | Toplam Tutar:</span>
-                        <span id="receiptPurchaseTotal">0 <span class="dollar">$</span></span>
-                    </div>
-                    <div class="payment-item">
-                        <span>المدفوع سابقاً | Önceden Ödenen:</span>
-                        <span id="receiptPurchasePaid">0 <span class="dollar">$</span></span>
-                    </div>
-                    <div class="payment-item total">
-                        <span>المبلغ المتبقي للدفع | Ödenecek Kalan Tutar:</span>
-                        <span id="receiptPurchaseRemaining">0 <span class="dollar">$</span></span>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="receiptAmount">المبلغ المستلم | Alınan Tutar <span class="dollar">$</span></label>
-                    <input type="number" id="receiptAmount" class="form-control" step="0.01" min="0" value="0" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="receiptDate">تاريخ الاستلام | Alınma Tarihi</label>
-                    <input type="date" id="receiptDate" class="form-control" required>
-                </div>
-                
-                <div style="display: flex; gap: 10px; margin-top: 20px;">
-                    <button class="btn btn-danger" onclick="closePurchaseReceiptModal()" style="flex: 1;">
-                        <i class="fas fa-times"></i> إلغاء | İptal
-                    </button>
-                    <button class="btn btn-orange" onclick="completePurchaseReceipt()" style="flex: 2;">
-                        <i class="fas fa-check-circle"></i> تأكيد الاستلام | Almayı Onayla
-                    </button>
-                </div>
             </div>
         </div>
     </div>
@@ -1649,7 +1518,7 @@
                         <span id="receiveTotalAmount">0 <span class="dollar">$</span></span>
                     </div>
                     <div class="payment-item">
-                        <span>المدفوع سابقاً | Önceden Ödenen:</span>
+                        <span>المدفوع سابقاً | Önceden Önenen:</span>
                         <span id="receivePaidAmount">0 <span class="dollar">$</span></span>
                     </div>
                     <div class="payment-item total">
@@ -1668,14 +1537,64 @@
                     <input type="date" id="receiveDate" class="form-control" required>
                 </div>
                 
-                <div style="display: flex; gap: 10px; margin-top: 20px;">
-                    <button class="btn btn-danger" onclick="closeReceivePaymentModal()" style="flex: 1;">
-                        <i class="fas fa-times"></i> إلغاء | İptal
-                    </button>
-                    <button class="btn" onclick="completeReceivePayment()" style="background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%); flex: 2;">
-                        <i class="fas fa-money-bill-wave"></i> تأكيد استلام الدفعة | Ödeme Almayı Onayla
-                    </button>
+                <button class="btn" style="background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%); width: 100%;" onclick="completeReceivePayment()">
+                    <i class="fas fa-money-bill-wave"></i> تأكيد استلام الدفعة | Ödeme Almayı Onayla
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Purchase Payment Modal -->
+    <div class="payment-modal" id="purchasePaymentModal">
+        <div class="modal-content">
+            <div class="modal-header" style="background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);">
+                <h3>تسديد قيمة شراء | Alış Bedeli Ödeme</h3>
+                <button class="close-modal" onclick="closePurchasePaymentModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="payment-summary">
+                    <h4 style="text-align: center; margin-bottom: 20px; color: var(--primary-color);">تفاصيل الشراء | Alış Detayları</h4>
+                    <div class="payment-item">
+                        <span>رقم الشراء | Alış No:</span>
+                        <span id="purchaseModalId">#</span>
+                    </div>
+                    <div class="payment-item">
+                        <span>الكمية | Miktar:</span>
+                        <span id="purchaseModalQuantity">0 كغ</span>
+                    </div>
+                    <div class="payment-item">
+                        <span>سعر الشراء | Alış Fiyatı:</span>
+                        <span id="purchaseModalPrice">0 <span class="dollar">$</span></span>
+                    </div>
+                    <div class="payment-item">
+                        <span>المبلغ الإجمالي | Toplam Tutar:</span>
+                        <span id="purchaseModalTotal">0 <span class="dollar">$</span></span>
+                    </div>
+                    <div class="payment-item">
+                        <span>المدفوع سابقاً | Önceden Ödenen:</span>
+                        <span id="purchaseModalPaid">0 <span class="dollar">$</span></span>
+                    </div>
+                    <div class="payment-item total">
+                        <span>المبلغ المتبقي | Kalan Tutar:</span>
+                        <span id="purchaseModalRemaining">0 <span class="dollar">$</span></span>
+                    </div>
                 </div>
+                
+                <div class="form-group">
+                    <label for="purchasePaymentAmount">المبلغ المدفوع | Ödenen Tutar <span class="dollar">$</span></label>
+                    <input type="number" id="purchasePaymentAmount" class="form-control" step="0.01" min="0" value="0" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="purchasePaymentDate">تاريخ الدفع | Ödeme Tarihi</label>
+                    <input type="date" id="purchasePaymentDate" class="form-control" required>
+                </div>
+                
+                <button class="btn" style="background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); width: 100%;" onclick="completePurchasePayment()">
+                    <i class="fas fa-check-circle"></i> تأكيد الدفع | Ödemeyi Onayla
+                </button>
             </div>
         </div>
     </div>
@@ -1691,6 +1610,33 @@
     </header>
     
     <div class="container">
+        <!-- Quick Guide -->
+        <div class="quick-guide no-print">
+            <h3><i class="fas fa-info-circle"></i> دليل سريع للاستخدام | Hızlı Kullanım Kılavuzu</h3>
+            <div class="guide-steps">
+                <div class="guide-step">
+                    <i class="fas fa-shopping-cart"></i>
+                    <h4>1. إضافة شراء</h4>
+                    <p>أدخل الكمية والسعر ثم اضغط "تسجيل عملية الشراء"</p>
+                </div>
+                <div class="guide-step">
+                    <i class="fas fa-cash-register"></i>
+                    <h4>2. إضافة بيع</h4>
+                    <p>اختر المصادر ثم اضغط "تسجيل عملية البيع"</p>
+                </div>
+                <div class="guide-step">
+                    <i class="fas fa-money-bill-wave"></i>
+                    <h4>3. استلام دفعات</h4>
+                    <p>من قسم "المبالغ المتبقية" اضغط "استلام دفعة"</p>
+                </div>
+                <div class="guide-step">
+                    <i class="fas fa-file-invoice-dollar"></i>
+                    <h4>4. طباعة التقارير</h4>
+                    <p>اختر التاريخ ثم اضغط "طباعة التقرير"</p>
+                </div>
+            </div>
+        </div>
+        
         <!-- Current Date Display -->
         <div class="current-date-display">
             <span id="currentDateDisplay">عرض بيانات اليوم: </span>
@@ -1723,7 +1669,7 @@
                 <h3 id="total-purchases">0 كغ</h3>
                 <p>المشتريات النشطة | Aktif Alımlar</p>
                 <div id="purchases-total" style="font-size: 1.5rem; margin-top: 10px; font-weight: bold; color: var(--secondary-color);">0 <span class="dollar">$</span></div>
-                <div id="purchases-remaining" style="font-size: 1rem; margin-top: 5px; color: #e74c3c;">مستحق: 0 <span class="dollar">$</span></div>
+                <div id="purchases-remaining" style="font-size: 1rem; margin-top: 5px; color: #e74c3c;">متبقي: 0 <span class="dollar">$</span></div>
             </div>
             <div class="stat-card sales">
                 <i class="fas fa-chart-line"></i>
@@ -1771,7 +1717,6 @@
                         <select id="purchaseFilter" onchange="updatePurchasesTable()">
                             <option value="all">عرض الكل</option>
                             <option value="active">المتبقي فقط (نشط)</option>
-                            <option value="unpaid">غير المدفوعة بالكامل</option>
                         </select>
                     </div>
                 </div>
@@ -1793,9 +1738,9 @@
                             <input type="date" id="purchaseDate" class="form-control" required>
                         </div>
                         <div class="form-group">
-                            <label for="purchasePaid">المبلغ المدفوع حالياً | Şu Anda Ödenen Tutar <span class="dollar">$</span></label>
-                            <input type="number" id="purchasePaid" class="form-control" step="0.01" min="0" value="0">
-                            <small style="color: #666;">يمكنك تركها صفراً ودفع المبلغ لاحقاً | Sıfır bırakabilir ve tutarı daha sonra ödeyebilirsiniz</small>
+                            <label for="purchasePaidAmount">المبلغ المدفوع | Ödenen Tutar <span class="dollar">$</span></label>
+                            <input type="number" id="purchasePaidAmount" class="form-control" step="0.01" min="0" value="0">
+                            <small style="color: #666;">(يمكن تركيه 0 وتسديده لاحقاً)</small>
                         </div>
                         <button type="submit" class="btn">
                             <i class="fas fa-save"></i> تسجيل عملية الشراء | Alımı Kaydet
@@ -1815,7 +1760,7 @@
                                     <th>الإجمالي | Toplam</th>
                                     <th>التاريخ | Tarih</th>
                                     <th>المتبقي | Kalan</th>
-                                    <th>الحالة المالية | Finansal Durum</th>
+                                    <th>المدفوع | Ödenen</th>
                                     <th>التحكم | Kontrol</th>
                                 </tr>
                             </thead>
@@ -1824,10 +1769,11 @@
                             </tbody>
                             <tfoot style="font-weight: bold; background-color: #f8f9fa;">
                                 <tr>
-                                    <td colspan="3">إجمالي اليوم | Günlük Toplam</td>
+                                    <td colspan="2">إجمالي اليوم | Günlük Toplam</td>
+                                    <td></td>
                                     <td id="totalPurchasesFooter">0 <span class="dollar">$</span></td>
                                     <td colspan="2"></td>
-                                    <td id="totalPurchasesRemaining">0 <span class="dollar">$</span></td>
+                                    <td id="totalPurchasesPaid">0 <span class="dollar">$</span></td>
                                     <td></td>
                                 </tr>
                             </tfoot>
@@ -1868,7 +1814,7 @@
                         </div>
                         <div class="form-group">
                             <label for="saleQuantity">كمية البيع (كغ) | Satış Miktarı (kg)</label>
-                            <input type="number" id="saleQuantity" class="form-control" step="0.01" min="0" required oninput="updateSourceQuantitiesFromSale()">
+                            <input type="number" id="saleQuantity" class="form-control" step="0.01" min="0.01" required onchange="syncQuantityWithSources()">
                         </div>
                         <div class="form-group">
                             <label for="salePrice">سعر البيع (لكل كغ) | Satış Fiyatı (kg başına) <span class="dollar">$</span></label>
@@ -1878,7 +1824,11 @@
                         <!-- Multiple Purchase Sources Selection -->
                         <div class="multi-source-container">
                             <h4 style="color: var(--primary-color); margin-bottom: 15px;">اختيار مصادر الشراء | Alım Kaynaklarını Seçin:</h4>
-                            <p style="color: #666; margin-bottom: 15px;">اختر مصادر متعددة - الكمية تنسحب تلقائياً من الكمية المباعة | Çoklu kaynak seçin - miktar otomatik olarak satış miktarından çekilir</p>
+                            <p style="color: #666; margin-bottom: 15px;">اختر مصادر متعددة، سيتم توزيع كمية البيع تلقائياً على المصادر المختارة</p>
+                            
+                            <button type="button" class="auto-distribute-btn" onclick="autoDistributeQuantity()">
+                                <i class="fas fa-balance-scale"></i> توزيع الكمية تلقائياً | Miktarı Otomatik Dağıt
+                            </button>
                             
                             <div id="sourcesList" class="source-selection-grid">
                                 <!-- سيتم ملؤها بواسطة JavaScript -->
@@ -1997,8 +1947,8 @@
         let purchases = [];
         let sales = [];
         let currentSaleData = null;
-        let currentPurchaseForReceipt = null;
         let currentSaleForReceive = null;
+        let currentPurchaseForPayment = null;
         let selectedSources = [];
         let currentViewDate = new Date().toISOString().split('T')[0];
         
@@ -2009,7 +1959,7 @@
             document.getElementById('reportDate').value = today;
             document.getElementById('currentDate').value = today;
             document.getElementById('receiveDate').value = today;
-            document.getElementById('receiptDate').value = today;
+            document.getElementById('purchasePaymentDate').value = today;
             currentViewDate = today;
             
             updateDateDisplay();
@@ -2031,53 +1981,27 @@
             generateTodayReport();
             
             document.getElementById('amountPaid').addEventListener('input', updatePaymentRemaining);
-            document.getElementById('receiptAmount').addEventListener('input', updateReceiptAmount);
             document.getElementById('receiveAmount').addEventListener('input', updateReceiveAmount);
+            document.getElementById('saleQuantity').addEventListener('input', syncQuantityWithSources);
             
-            // إضافة أزرار التحكم في الهيدر
-            addControlButtons();
+            document.getElementById('purchasePaymentAmount').addEventListener('input', function() {
+                const maxAmount = currentPurchaseForPayment ? 
+                    currentPurchaseForPayment.total - currentPurchaseForPayment.paid : 0;
+                if (parseFloat(this.value) > maxAmount) {
+                    this.value = maxAmount.toFixed(2);
+                }
+            });
+            
+            document.querySelectorAll('.payment-modal').forEach(modal => {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        if (this.id === 'paymentModal') closePaymentModal();
+                        else if (this.id === 'receivePaymentModal') closeReceivePaymentModal();
+                        else if (this.id === 'purchasePaymentModal') closePurchasePaymentModal();
+                    }
+                });
+            });
         });
-        
-        function addControlButtons() {
-            const header = document.querySelector('header .container');
-            
-            const resetButton = document.createElement('button');
-            resetButton.innerHTML = '<i class="fas fa-trash-alt"></i> حذف جميع البيانات | Tüm Verileri Sil';
-            resetButton.className = 'btn btn-danger no-print';
-            resetButton.style.position = 'absolute';
-            resetButton.style.top = '25px';
-            resetButton.style.left = '25px';
-            resetButton.onclick = resetAllData;
-            
-            const exportButton = document.createElement('button');
-            exportButton.innerHTML = '<i class="fas fa-download"></i> تصدير البيانات | Verileri Dışa Aktar';
-            exportButton.className = 'btn btn-warning no-print';
-            exportButton.style.position = 'absolute';
-            exportButton.style.top = '25px';
-            exportButton.style.right = '25px';
-            exportButton.onclick = exportData;
-            
-            const importInput = document.createElement('input');
-            importInput.type = 'file';
-            importInput.accept = '.json';
-            importInput.style.display = 'none';
-            importInput.id = 'importInput';
-            importInput.onchange = importData;
-            document.body.appendChild(importInput);
-            
-            const importButton = document.createElement('button');
-            importButton.innerHTML = '<i class="fas fa-upload"></i> استيراد البيانات | Verileri İçe Aktar';
-            importButton.className = 'btn btn-success no-print';
-            importButton.style.position = 'absolute';
-            importButton.style.top = '80px';
-            importButton.style.right = '25px';
-            importButton.onclick = () => document.getElementById('importInput').click();
-            
-            header.style.position = 'relative';
-            header.appendChild(resetButton);
-            header.appendChild(exportButton);
-            header.appendChild(importButton);
-        }
         
         function updateDateDisplay() {
             const displayElement = document.getElementById('currentDateDisplay');
@@ -2096,7 +2020,6 @@
             const customerRemainingList = document.getElementById('customerRemainingList');
             const noCustomerRemaining = document.getElementById('noCustomerRemaining');
             
-            // تجميع المبيعات حسب العميل
             const customerSales = {};
             
             sales.forEach(sale => {
@@ -2115,13 +2038,11 @@
                 customerSales[sale.customerName].totalRemaining += sale.remaining;
                 customerSales[sale.customerName].salesCount += 1;
                 
-                // تحديث آخر تاريخ بيع
                 if (new Date(sale.date) > new Date(customerSales[sale.customerName].lastSaleDate)) {
                     customerSales[sale.customerName].lastSaleDate = sale.date;
                 }
             });
             
-            // تصفية العملاء الذين لديهم مبالغ متبقية فقط
             const customersWithRemaining = Object.keys(customerSales).filter(customer => 
                 customerSales[customer].totalRemaining > 0
             );
@@ -2135,7 +2056,6 @@
             noCustomerRemaining.style.display = 'none';
             customerRemainingList.innerHTML = '';
             
-            // ترتيب العملاء حسب المبلغ المتبقي (من الأعلى للأقل)
             customersWithRemaining.sort((a, b) => 
                 customerSales[b].totalRemaining - customerSales[a].totalRemaining
             );
@@ -2197,7 +2117,6 @@
         }
         
         function receivePaymentFromCustomer(customerName) {
-            // الحصول على جميع مبيعات العميل
             const customerSales = sales.filter(sale => sale.customerName === customerName && sale.remaining > 0);
             
             if (customerSales.length === 0) {
@@ -2205,7 +2124,6 @@
                 return;
             }
             
-            // تجميع المبيعات حسب parentSaleId
             const groupedSales = {};
             customerSales.forEach(sale => {
                 if (!groupedSales[sale.parentSaleId]) {
@@ -2217,7 +2135,6 @@
                 groupedSales[sale.parentSaleId].sources.push(sale);
             });
             
-            // اختيار أول مجموعة
             const firstGroupId = Object.keys(groupedSales)[0];
             const firstGroup = groupedSales[firstGroupId];
             
@@ -2226,137 +2143,21 @@
             }
         }
         
-        function viewCustomerDetails(customerName) {
-            // الحصول على جميع مبيعات العميل
-            const customerSales = sales.filter(sale => sale.customerName === customerName);
-            
-            let totalAmount = 0;
-            let totalPaid = 0;
-            let totalRemaining = 0;
-            let salesDetails = '';
-            
-            customerSales.forEach((sale, index) => {
-                totalAmount += sale.total;
-                totalPaid += sale.paid;
-                totalRemaining += sale.remaining;
-                
-                salesDetails += `
-                    <tr>
-                        <td>${index + 1}</td>
-                        <td>${sale.date}</td>
-                        <td>${sale.quantity.toFixed(2)} كغ</td>
-                        <td>${sale.salePrice.toFixed(2)} <span class="dollar">$</span></td>
-                        <td>${sale.total.toFixed(2)} <span class="dollar">$</span></td>
-                        <td>${sale.paid.toFixed(2)} <span class="dollar">$</span></td>
-                        <td>${sale.remaining.toFixed(2)} <span class="dollar">$</span></td>
-                    </tr>
-                `;
-            });
-            
-            const paidPercentage = (totalPaid / totalAmount) * 100;
-            
-            const detailsHTML = `
-                <div style="background: white; padding: 25px; border-radius: var(--border-radius); margin-top: 20px;">
-                    <h3 style="color: var(--primary-color); margin-bottom: 20px; text-align: center;">
-                        <i class="fas fa-user"></i> تفاصيل العميل: ${customerName}
-                    </h3>
-                    
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 25px;">
-                        <div style="text-align: center; padding: 15px; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 10px;">
-                            <h4 style="color: var(--primary-color); margin-bottom: 10px;">عدد المعاملات</h4>
-                            <p style="font-size: 1.5rem; font-weight: bold; color: var(--secondary-color);">${customerSales.length}</p>
-                        </div>
-                        <div style="text-align: center; padding: 15px; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 10px;">
-                            <h4 style="color: var(--primary-color); margin-bottom: 10px;">الإجمالي</h4>
-                            <p style="font-size: 1.5rem; font-weight: bold; color: var(--accent-color);">${totalAmount.toFixed(2)} <span class="dollar">$</span></p>
-                        </div>
-                        <div style="text-align: center; padding: 15px; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 10px;">
-                            <h4 style="color: var(--primary-color); margin-bottom: 10px;">المدفوع</h4>
-                            <p style="font-size: 1.5rem; font-weight: bold; color: #27ae60;">${totalPaid.toFixed(2)} <span class="dollar">$</span></p>
-                        </div>
-                        <div style="text-align: center; padding: 15px; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 10px;">
-                            <h4 style="color: var(--primary-color); margin-bottom: 10px;">المتبقي</h4>
-                            <p style="font-size: 1.5rem; font-weight: bold; color: #e74c3c;">${totalRemaining.toFixed(2)} <span class="dollar">$</span></p>
-                        </div>
-                    </div>
-                    
-                    <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
-                        <h4 style="color: var(--primary-color); margin-bottom: 10px;">نسبة السداد</h4>
-                        <div style="background: #e9ecef; height: 20px; border-radius: 10px; overflow: hidden;">
-                            <div style="background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%); height: 100%; width: ${paidPercentage}%; border-radius: 10px;"></div>
-                        </div>
-                        <div style="display: flex; justify-content: space-between; margin-top: 5px;">
-                            <span>0%</span>
-                            <span style="font-weight: bold;">${paidPercentage.toFixed(1)}%</span>
-                            <span>100%</span>
-                        </div>
-                    </div>
-                    
-                    <h4 style="color: var(--primary-color); margin-bottom: 15px;">تفاصيل المعاملات</h4>
-                    <div class="table-container">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>التاريخ</th>
-                                    <th>الكمية</th>
-                                    <th>سعر البيع</th>
-                                    <th>الإجمالي</th>
-                                    <th>المدفوع</th>
-                                    <th>المتبقي</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                ${salesDetails}
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                    <div style="text-align: center; margin-top: 20px;">
-                        <button class="btn btn-warning" onclick="receivePaymentFromCustomer('${customerName}')">
-                            <i class="fas fa-money-bill-wave"></i> استلام دفعة جديدة من هذا العميل
-                        </button>
-                    </div>
-                </div>
-            `;
-            
-            // إنشاء نافذة عرض
-            const modal = document.createElement('div');
-            modal.className = 'payment-modal active';
-            modal.innerHTML = `
-                <div class="modal-content" style="max-width: 900px;">
-                    <div class="modal-header">
-                        <h3>تفاصيل العميل | Müşteri Detayları</h3>
-                        <button class="close-modal" onclick="this.parentElement.parentElement.remove()">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        ${detailsHTML}
-                    </div>
-                </div>
-            `;
-            
-            document.body.appendChild(modal);
-        }
-        
-        // إضافة شراء جديد مع دفع
         document.getElementById('purchaseForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
             const quantity = parseFloat(document.getElementById('purchaseQuantity').value);
             const price = parseFloat(document.getElementById('purchasePrice').value);
             const date = document.getElementById('purchaseDate').value;
-            const paid = parseFloat(document.getElementById('purchasePaid').value) || 0;
+            const paid = parseFloat(document.getElementById('purchasePaidAmount').value) || 0;
             
             if (quantity <= 0 || price <= 0) {
                 alert('الرجاء إدخال قيم صحيحة أكبر من الصفر | Lütfen sıfırdan büyük geçerli değerler girin');
                 return;
             }
             
-            const total = quantity * price;
-            if (paid > total) {
-                alert('المبلغ المدفوع لا يمكن أن يتجاوز الإجمالي | Ödenen tutar toplamı aşamaz');
+            if (paid > quantity * price) {
+                alert('المبلغ المدفوع لا يمكن أن يتجاوز المبلغ الإجمالي | Ödenen tutar toplam tutarı aşamaz');
                 return;
             }
             
@@ -2364,12 +2165,14 @@
                 id: Date.now(),
                 quantity: quantity,
                 price: price,
-                total: total,
+                total: quantity * price,
                 date: date,
                 remaining: quantity,
                 originalQuantity: quantity,
                 paid: paid,
-                remainingAmount: total - paid,
+                remainingPayment: (quantity * price) - paid,
+                originalPrice: price,
+                modifiedPrice: price,
                 payments: paid > 0 ? [{
                     amount: paid,
                     date: date,
@@ -2385,57 +2188,24 @@
             
             document.getElementById('purchaseForm').reset();
             document.getElementById('purchaseDate').value = new Date().toISOString().split('T')[0];
+            document.getElementById('purchasePaidAmount').value = '0';
             
             alert('تم تسجيل عملية الشراء بنجاح! | Alım başarıyla kaydedildi!');
         });
         
-        // تحديث قائمة مصادر الشراء
         function updatePurchaseSourcesList() {
             const sourcesList = document.getElementById('sourcesList');
             sourcesList.innerHTML = '';
             
-            // تحديث currentViewDate ليكون تاريخ اليوم إذا لم يتم تحديد تاريخ
-            if (!currentViewDate) {
-                currentViewDate = new Date().toISOString().split('T')[0];
-            }
-            
-            // إعادة حساب الكمية المتبقية لكل عملية شراء
-            purchases.forEach(purchase => {
-                // البحث عن جميع المبيعات التي تستخدم هذا المصدر
-                const relatedSales = sales.filter(sale => sale.sourceId === purchase.id);
-                let totalSoldFromThisPurchase = 0;
-                
-                relatedSales.forEach(sale => {
-                    totalSoldFromThisPurchase += sale.quantity;
-                });
-                
-                // تحديث الكمية المتبقية
-                purchase.remaining = Math.max(0, purchase.originalQuantity - totalSoldFromThisPurchase);
-            });
-            
             const activePurchases = purchases.filter(purchase => purchase.remaining > 0);
-            
-            if (activePurchases.length === 0) {
-                sourcesList.innerHTML = `
-                    <div style="grid-column: 1 / -1; text-align: center; padding: 20px; color: #666;">
-                        <i class="fas fa-box-open" style="font-size: 2rem; margin-bottom: 10px;"></i>
-                        <p>لا توجد مشتريات متاحة للبيع | Satış için mevcut alım yok</p>
-                        <p style="margin-top: 10px; font-size: 0.9rem;">جميع الكميات تم بيعها أو لم يتم إضافة مشتريات بعد | Tüm miktarlar satıldı veya henüz alım eklenmedi</p>
-                    </div>
-                `;
-                return;
-            }
             
             activePurchases.forEach(purchase => {
                 const isSelected = selectedSources.find(s => s.id === purchase.id);
                 
                 const remainingPercentage = (purchase.remaining / purchase.originalQuantity) * 100;
                 let remainingClass = 'remaining-high';
-                if (remainingPercentage === 0) remainingClass = 'remaining-zero';
-                else if (remainingPercentage < 30) remainingClass = 'remaining-low';
+                if (remainingPercentage < 30) remainingClass = 'remaining-low';
                 else if (remainingPercentage < 60) remainingClass = 'remaining-medium';
-                
-                const paidPercentage = (purchase.paid / purchase.total) * 100;
                 
                 const sourceItem = document.createElement('div');
                 sourceItem.className = `source-checkbox-item ${isSelected ? 'selected' : ''}`;
@@ -2443,11 +2213,9 @@
                     <input type="checkbox" id="source_${purchase.id}" ${isSelected ? 'checked' : ''} 
                            style="display: none;" onchange="toggleSourceSelection(${purchase.id})">
                     <div class="source-checkbox-content">
-                        <h5>مصدر #${purchase.id}</h5>
-                        <p>الكمية المتبقية: <span class="remaining-quantity ${remainingClass}"><strong>${purchase.remaining.toFixed(2)} كغ</strong></span></p>
+                        <h5>مصدر #${purchase.id} <small>(متوفر: ${purchase.remaining.toFixed(2)} كغ)</small></h5>
                         <p>الكمية الأصلية: ${purchase.originalQuantity.toFixed(2)} كغ</p>
-                        <p>سعر الشراء: <strong>${purchase.price.toFixed(2)}$ للكغ</strong></p>
-                        <p>السداد: ${paidPercentage.toFixed(1)}% (${purchase.paid.toFixed(2)}$ من ${purchase.total.toFixed(2)}$)</p>
+                        <p>سعر الشراء: <strong>${purchase.modifiedPrice.toFixed(2)}$ للكغ</strong></p>
                         <p>تاريخ الشراء: ${purchase.date}</p>
                         ${isSelected ? `
                             <div style="margin-top: 8px;">
@@ -2455,6 +2223,9 @@
                                 <input type="number" class="source-quantity-input" id="source_qty_${purchase.id}" 
                                        value="${isSelected.quantity}" step="0.01" min="0.01" max="${purchase.remaining}" 
                                        onchange="updateSourceQuantity(${purchase.id}, this.value)">
+                                <button class="btn-full-quantity" onclick="setFullQuantity(${purchase.id})" title="الكمية الكاملة | Tam Miktar">
+                                    <i class="fas fa-check"></i> الكمية الكاملة
+                                </button>
                             </div>
                         ` : ''}
                     </div>
@@ -2462,13 +2233,24 @@
                 `;
                 
                 sourceItem.onclick = function(e) {
-                    if (!e.target.classList.contains('source-quantity-input')) {
+                    if (!e.target.classList.contains('source-quantity-input') && 
+                        !e.target.classList.contains('btn-full-quantity')) {
                         toggleSourceSelection(purchase.id);
                     }
                 };
                 
                 sourcesList.appendChild(sourceItem);
             });
+            
+            if (sourcesList.children.length === 0) {
+                sourcesList.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 20px; color: #666;">
+                        <i class="fas fa-box-open" style="font-size: 2rem; margin-bottom: 10px;"></i>
+                        <p>لا توجد مشتريات متاحة للبيع | Satış için mevcut alım yok</p>
+                        <p style="margin-top: 10px; font-size: 0.9rem;">جميع الكميات تم بيعها أو لم يتم إضافة مشتريات بعد | Tüm miktarlar satıldı veya henüz alım eklenmedi</p>
+                    </div>
+                `;
+            }
             
             updateSelectedSourcesDisplay();
         }
@@ -2480,97 +2262,105 @@
             const index = selectedSources.findIndex(s => s.id === purchaseId);
             
             if (index === -1) {
-                // الحصول على كمية البيع المدخلة
-                const saleQuantity = parseFloat(document.getElementById('saleQuantity').value) || 0;
-                let defaultQuantity = 0;
-                
-                if (saleQuantity > 0) {
-                    // إذا كانت هناك مصادر مختارة بالفعل، حساب الكمية المتبقية
-                    let totalSelectedQuantity = selectedSources.reduce((sum, source) => sum + source.quantity, 0);
-                    let remainingSaleQuantity = saleQuantity - totalSelectedQuantity;
-                    
-                    if (remainingSaleQuantity > 0) {
-                        // تحديد الكمية: الحد الأدنى بين الكمية المتبقية في المصدر والكمية المتبقية من البيع
-                        defaultQuantity = Math.min(purchase.remaining, remainingSaleQuantity);
-                    } else {
-                        // إذا تم توزيع كل الكمية بالفعل، استخدام الكمية الكاملة من المصدر
-                        defaultQuantity = purchase.remaining;
-                    }
-                } else {
-                    // إذا لم يتم إدخال كمية البيع، استخدام الكمية الكاملة من المصدر
-                    defaultQuantity = purchase.remaining;
-                }
-                
                 selectedSources.push({
                     id: purchase.id,
-                    quantity: defaultQuantity,
-                    price: purchase.price,
+                    quantity: 0,
+                    price: purchase.modifiedPrice,
                     purchaseDate: purchase.date,
                     remaining: purchase.remaining,
-                    paidPercentage: (purchase.paid / purchase.total) * 100
+                    originalPrice: purchase.originalPrice,
+                    modifiedPrice: purchase.modifiedPrice
                 });
-                
-                // تحديث كمية البيع إذا كانت صفر
-                const saleQuantityInput = document.getElementById('saleQuantity');
-                if (!saleQuantityInput.value || parseFloat(saleQuantityInput.value) === 0) {
-                    saleQuantityInput.value = defaultQuantity.toFixed(2);
-                }
             } else {
                 selectedSources.splice(index, 1);
             }
             
             updatePurchaseSourcesList();
+            syncQuantityWithSources();
+        }
+        
+        function syncQuantityWithSources() {
+            const saleQuantity = parseFloat(document.getElementById('saleQuantity').value) || 0;
+            
+            if (selectedSources.length === 0) {
+                document.getElementById('saleQuantity').value = '0';
+                updateSelectedSourcesDisplay();
+                return;
+            }
+            
+            if (saleQuantity <= 0) {
+                selectedSources.forEach(source => {
+                    source.quantity = 0;
+                });
+                updateSelectedSourcesDisplay();
+                return;
+            }
+            
+            autoDistributeQuantity();
+        }
+        
+        function autoDistributeQuantity() {
+            const saleQuantity = parseFloat(document.getElementById('saleQuantity').value) || 0;
+            
+            if (selectedSources.length === 0 || saleQuantity <= 0) return;
+            
+            let totalAvailable = 0;
+            selectedSources.forEach(source => {
+                totalAvailable += source.remaining;
+            });
+            
+            if (saleQuantity > totalAvailable) {
+                alert(`الكمية المطلوبة (${saleQuantity.toFixed(2)} كغ) تتجاوز الكمية المتاحة في المصادر المختارة (${totalAvailable.toFixed(2)} كغ) | İstenen miktar (${saleQuantity.toFixed(2)} kg) seçilen kaynaklardaki miktarı (${totalAvailable.toFixed(2)} kg) aşıyor`);
+                document.getElementById('saleQuantity').value = totalAvailable.toFixed(2);
+                return autoDistributeQuantity();
+            }
+            
+            let remainingQuantity = saleQuantity;
+            selectedSources.forEach((source, index) => {
+                if (index === selectedSources.length - 1) {
+                    source.quantity = remainingQuantity;
+                } else {
+                    const proportion = source.remaining / totalAvailable;
+                    source.quantity = Math.min(source.remaining, Math.floor(saleQuantity * proportion * 100) / 100);
+                    remainingQuantity -= source.quantity;
+                }
+                
+                document.getElementById(`source_qty_${source.id}`).value = source.quantity.toFixed(2);
+            });
+            
+            updateSelectedSourcesDisplay();
         }
         
         function updateSourceQuantity(purchaseId, quantity) {
             const quantityNum = parseFloat(quantity);
             const purchase = purchases.find(p => p.id === purchaseId);
             
-            if (!purchase || isNaN(quantityNum) || quantityNum <= 0) {
+            if (!purchase || isNaN(quantityNum) || quantityNum < 0) {
                 return;
             }
             
             if (quantityNum > purchase.remaining) {
                 alert(`الكمية المطلوبة (${quantityNum.toFixed(2)} كغ) تتجاوز الكمية المتبقية في المصدر (${purchase.remaining.toFixed(2)} كغ) | İstenen miktar (${quantityNum.toFixed(2)} kg) kaynaktaki kalan miktarı (${purchase.remaining.toFixed(2)} kg) aşıyor`);
                 document.getElementById(`source_qty_${purchaseId}`).value = purchase.remaining.toFixed(2);
-                return;
+                quantityNum = purchase.remaining;
             }
             
             const source = selectedSources.find(s => s.id === purchaseId);
             if (source) {
                 source.quantity = quantityNum;
                 updateSelectedSourcesDisplay();
+                
+                const totalSelected = selectedSources.reduce((sum, s) => sum + s.quantity, 0);
+                document.getElementById('saleQuantity').value = totalSelected.toFixed(2);
             }
         }
         
-        // تحديث كميات المصادر من كمية البيع
-        function updateSourceQuantitiesFromSale() {
-            const saleQuantity = parseFloat(document.getElementById('saleQuantity').value) || 0;
+        function setFullQuantity(purchaseId) {
+            const purchase = purchases.find(p => p.id === purchaseId);
+            if (!purchase) return;
             
-            if (selectedSources.length === 0) return;
-            
-            // توزيع الكمية على المصادر بالتساوي
-            let remainingQuantity = saleQuantity;
-            let totalSelected = selectedSources.reduce((sum, source) => sum + source.quantity, 0);
-            
-            if (saleQuantity === totalSelected) return;
-            
-            // توزيع الكمية بالتساوي مع مراعاة الحد الأقصى لكل مصدر
-            selectedSources.forEach(source => {
-                const purchase = purchases.find(p => p.id === source.id);
-                if (purchase) {
-                    // حساب الحصة النسبية من الكمية الإجمالية
-                    let share = (saleQuantity / selectedSources.length);
-                    
-                    // لا يمكن تجاوز الكمية المتبقية في المصدر
-                    share = Math.min(share, purchase.remaining);
-                    
-                    source.quantity = share;
-                    document.getElementById(`source_qty_${source.id}`).value = share.toFixed(2);
-                }
-            });
-            
-            updateSelectedSourcesDisplay();
+            document.getElementById(`source_qty_${purchaseId}`).value = purchase.remaining.toFixed(2);
+            updateSourceQuantity(purchaseId, purchase.remaining);
         }
         
         function updateSelectedSourcesDisplay() {
@@ -2581,6 +2371,7 @@
             
             if (selectedSources.length === 0) {
                 summaryDiv.style.display = 'none';
+                document.getElementById('saleQuantity').value = '0';
                 return;
             }
             
@@ -2592,13 +2383,13 @@
                 if (!purchase) return;
                 
                 totalSelectedQuantity += source.quantity;
-                totalPurchaseCost += source.quantity * source.price;
+                totalPurchaseCost += source.quantity * source.modifiedPrice;
                 
                 const percentage = (source.quantity / purchase.remaining) * 100;
                 let remainingClass = 'remaining-high';
-                if (percentage === 0) remainingClass = 'remaining-zero';
-                else if (percentage < 30) remainingClass = 'remaining-low';
-                else if (percentage < 60) remainingClass = 'remaining-medium';
+                if (percentage > 80) remainingClass = 'remaining-high';
+                else if (percentage > 50) remainingClass = 'remaining-medium';
+                else remainingClass = 'remaining-low';
                 
                 const sourceItem = document.createElement('div');
                 sourceItem.className = 'selected-source-item';
@@ -2607,8 +2398,8 @@
                     <div class="selected-source-info">
                         <strong>مصدر #${source.id}</strong>
                         <div>الكمية: <span class="remaining-quantity ${remainingClass}">${source.quantity.toFixed(2)} كغ</span> من ${purchase.remaining.toFixed(2)} كغ</div>
-                        <div>السعر: ${source.price.toFixed(2)}$ للكغ</div>
-                        <div>الإجمالي الشرائي: ${(source.quantity * source.price).toFixed(2)}$</div>
+                        <div>السعر: ${source.modifiedPrice.toFixed(2)}$ للكغ</div>
+                        <div>الإجمالي الشرائي: ${(source.quantity * source.modifiedPrice).toFixed(2)}$</div>
                     </div>
                     <div class="selected-source-actions">
                         <button class="btn-remove-source" onclick="removeSelectedSource(${index})" title="حذف المصدر | Kaynağı Sil">
@@ -2628,12 +2419,7 @@
             document.getElementById('totalSaleCost').textContent = totalSaleCost.toFixed(2);
             
             summaryDiv.style.display = 'block';
-            
-            // تحديث كمية البيع لتكون مساوية لإجمالي الكمية المختارة
-            const saleQuantityInput = document.getElementById('saleQuantity');
-            if (!saleQuantityInput.value || parseFloat(saleQuantityInput.value) !== totalSelectedQuantity) {
-                saleQuantityInput.value = totalSelectedQuantity.toFixed(2);
-            }
+            document.getElementById('saleQuantity').value = totalSelectedQuantity.toFixed(2);
         }
         
         function removeSelectedSource(index) {
@@ -2641,7 +2427,6 @@
             updatePurchaseSourcesList();
         }
         
-        // إضافة بيع جديد
         document.getElementById('saleForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -2664,7 +2449,7 @@
             
             selectedSources.forEach(source => {
                 totalSelectedQuantity += source.quantity;
-                totalPurchaseCost += source.quantity * source.price;
+                totalPurchaseCost += source.quantity * source.modifiedPrice;
             });
             
             if (Math.abs(saleQuantity - totalSelectedQuantity) > 0.01) {
@@ -2689,7 +2474,6 @@
             openPaymentModal();
         });
         
-        // فتح شاشة الدفع للمبيعات
         function openPaymentModal() {
             if (!currentSaleData) return;
             
@@ -2702,11 +2486,11 @@
             document.getElementById('amountPaid').value = '0';
             document.getElementById('paymentRemaining').classList.remove('active');
             
-            document.getElementById('paymentModal').classList.add('active');
+            document.getElementById('paymentModal').style.display = 'flex';
         }
         
         function closePaymentModal() {
-            document.getElementById('paymentModal').classList.remove('active');
+            document.getElementById('paymentModal').style.display = 'none';
             currentSaleData = null;
             selectedSources = [];
             updateSelectedSourcesDisplay();
@@ -2715,7 +2499,7 @@
         function updatePaymentRemaining() {
             if (!currentSaleData) return;
             
-            const amountPaid = parseFloat(document.getElementById('amountPaid').value) || 0;
+            const amountPaid = parseFloat(this.value) || 0;
             const remainingAmount = currentSaleData.total - amountPaid;
             
             document.getElementById('remainingAmount').innerHTML = remainingAmount.toFixed(2) + ' <span class="dollar">$</span>';
@@ -2728,7 +2512,6 @@
             }
         }
         
-        // إكمال عملية البيع مع الدفع
         function completeSaleWithPayment() {
             if (!currentSaleData) return;
             
@@ -2745,24 +2528,28 @@
                 return;
             }
             
-            // تحديث الكمية المتبقية من المشتريات المختارة
             currentSaleData.selectedSources.forEach(source => {
                 const purchase = purchases.find(p => p.id === source.id);
                 if (purchase) {
                     purchase.remaining -= source.quantity;
                     if (purchase.remaining < 0) purchase.remaining = 0;
+                    
+                    if (!purchase.relatedSales) purchase.relatedSales = [];
+                    purchase.relatedSales.push({
+                        saleId: currentSaleData.parentSaleId,
+                        quantity: source.quantity,
+                        salePrice: currentSaleData.price
+                    });
                 }
             });
             
-            // إنشاء سجل منفصل لكل مصدر مع ربحه الخاص
             currentSaleData.selectedSources.forEach((source, index) => {
                 const purchase = purchases.find(p => p.id === source.id);
                 if (!purchase) return;
                 
-                const sourceProfit = (currentSaleData.price - source.price) * source.quantity;
+                const sourceProfit = (currentSaleData.price - source.modifiedPrice) * source.quantity;
                 const sourceTotal = source.quantity * currentSaleData.price;
                 
-                // توزيع المبلغ المدفوع على المصادر حسب نسبة كل مصدر
                 const sourceRatio = source.quantity / currentSaleData.quantity;
                 const sourcePaid = amountPaid * sourceRatio;
                 const sourceRemaining = sourceTotal - sourcePaid;
@@ -2773,9 +2560,10 @@
                     sourceId: source.id,
                     sourceIndex: index + 1,
                     quantity: source.quantity,
-                    purchasePrice: source.price,
+                    purchasePrice: source.modifiedPrice,
+                    originalPurchasePrice: source.originalPrice,
                     salePrice: currentSaleData.price,
-                    profitPerUnit: currentSaleData.price - source.price,
+                    profitPerUnit: currentSaleData.price - source.modifiedPrice,
                     profit: sourceProfit,
                     total: sourceTotal,
                     paid: sourcePaid,
@@ -2784,7 +2572,8 @@
                     selectedSources: [source],
                     date: currentViewDate,
                     status: sourceRemaining > 0 ? 'pending' : 'completed',
-                    parentSaleId: currentSaleData.parentSaleId
+                    parentSaleId: currentSaleData.parentSaleId,
+                    paymentDate: currentViewDate
                 };
                 
                 sales.push(sale);
@@ -2806,93 +2595,10 @@
             alert('تم تسجيل عملية البيع بنجاح! | Satış başarıyla kaydedildi!');
         }
         
-        // فتح شاشة استلام قيمة الشراء
-        function openPurchaseReceiptModal(purchaseId) {
-            const purchase = purchases.find(p => p.id === purchaseId);
-            if (!purchase) return;
-            
-            currentPurchaseForReceipt = purchase;
-            
-            document.getElementById('receiptPurchaseId').textContent = purchase.id;
-            document.getElementById('receiptPurchaseQuantity').textContent = purchase.quantity.toFixed(2) + ' كغ';
-            document.getElementById('receiptPurchasePrice').innerHTML = purchase.price.toFixed(2) + ' <span class="dollar">$</span>';
-            document.getElementById('receiptPurchaseTotal').innerHTML = purchase.total.toFixed(2) + ' <span class="dollar">$</span>';
-            document.getElementById('receiptPurchasePaid').innerHTML = purchase.paid.toFixed(2) + ' <span class="dollar">$</span>';
-            document.getElementById('receiptPurchaseRemaining').innerHTML = purchase.remainingAmount.toFixed(2) + ' <span class="dollar">$</span>';
-            
-            document.getElementById('receiptDate').value = new Date().toISOString().split('T')[0];
-            document.getElementById('receiptAmount').value = purchase.remainingAmount.toFixed(2);
-            
-            document.getElementById('purchaseReceiptModal').classList.add('active');
-        }
-        
-        function closePurchaseReceiptModal() {
-            document.getElementById('purchaseReceiptModal').classList.remove('active');
-            currentPurchaseForReceipt = null;
-        }
-        
-        function updateReceiptAmount() {
-            if (!currentPurchaseForReceipt) return;
-            
-            const receiptAmount = parseFloat(document.getElementById('receiptAmount').value) || 0;
-            const maxAmount = currentPurchaseForReceipt.remainingAmount;
-            
-            if (receiptAmount > maxAmount) {
-                document.getElementById('receiptAmount').value = maxAmount.toFixed(2);
-                alert(`لا يمكن استلام أكثر من المبلغ المتبقي (${maxAmount.toFixed(2)}$) | Kalan tutardan (${maxAmount.toFixed(2)}$) fazlası alınamaz`);
-            }
-        }
-        
-        // إكمال استلام قيمة الشراء
-        function completePurchaseReceipt() {
-            if (!currentPurchaseForReceipt) return;
-            
-            const receiptAmount = parseFloat(document.getElementById('receiptAmount').value) || 0;
-            const receiptDate = document.getElementById('receiptDate').value;
-            
-            if (receiptAmount <= 0) {
-                alert('الرجاء إدخال مبلغ صالح للاستلام | Lütfen geçerli bir alınacak tutar girin');
-                return;
-            }
-            
-            if (receiptAmount > currentPurchaseForReceipt.remainingAmount) {
-                alert(`لا يمكن استلام أكثر من المبلغ المتبقي (${currentPurchaseForReceipt.remainingAmount.toFixed(2)}$) | Kalan tutardan (${currentPurchaseForReceipt.remainingAmount.toFixed(2)}$) fazlası alınamaz`);
-                return;
-            }
-            
-            // تحديث المشتريات
-            const purchaseIndex = purchases.findIndex(p => p.id === currentPurchaseForReceipt.id);
-            if (purchaseIndex !== -1) {
-                purchases[purchaseIndex].paid += receiptAmount;
-                purchases[purchaseIndex].remainingAmount = purchases[purchaseIndex].total - purchases[purchaseIndex].paid;
-                
-                if (!purchases[purchaseIndex].payments) {
-                    purchases[purchaseIndex].payments = [];
-                }
-                
-                purchases[purchaseIndex].payments.push({
-                    amount: receiptAmount,
-                    date: receiptDate,
-                    timestamp: new Date().toISOString()
-                });
-            }
-            
-            saveData();
-            updatePurchasesTable();
-            updateDashboardStats();
-            updatePurchaseSourcesList();
-            
-            closePurchaseReceiptModal();
-            
-            alert(`تم استلام مبلغ ${receiptAmount.toFixed(2)}$ بنجاح! | ${receiptAmount.toFixed(2)}$ tutarı başarıyla alındı!`);
-        }
-        
-        // فتح شاشة استلام الدفعة من العملاء
         function openReceivePaymentModal(saleId) {
             const sale = sales.find(s => s.id === saleId);
             if (!sale) return;
             
-            // الحصول على جميع مبيعات نفس parentSaleId
             const allSourcesSales = sales.filter(s => s.parentSaleId === sale.parentSaleId);
             
             if (allSourcesSales.length === 0) return;
@@ -2904,7 +2610,6 @@
                 allSources: allSourcesSales
             };
             
-            // حساب الإجماليات من جميع المصادر
             let totalQuantity = 0;
             let totalAmount = 0;
             let totalPaid = 0;
@@ -2926,22 +2631,22 @@
             document.getElementById('receiveDate').value = new Date().toISOString().split('T')[0];
             document.getElementById('receiveAmount').value = totalRemaining.toFixed(2);
             
-            document.getElementById('receivePaymentModal').classList.add('active');
+            document.getElementById('receivePaymentModal').style.display = 'flex';
         }
         
         function closeReceivePaymentModal() {
-            document.getElementById('receivePaymentModal').classList.remove('active');
+            document.getElementById('receivePaymentModal').style.display = 'none';
             currentSaleForReceive = null;
         }
         
         function updateReceiveAmount() {
             if (!currentSaleForReceive) return;
             
-            const receiveAmount = parseFloat(document.getElementById('receiveAmount').value) || 0;
+            const receiveAmount = parseFloat(this.value) || 0;
             const maxAmount = currentSaleForReceive.allSources.reduce((sum, sale) => sum + sale.remaining, 0);
             
             if (receiveAmount > maxAmount) {
-                document.getElementById('receiveAmount').value = maxAmount.toFixed(2);
+                this.value = maxAmount.toFixed(2);
                 alert(`لا يمكن استلام أكثر من المبلغ المتبقي (${maxAmount.toFixed(2)}$) | Kalan tutardan (${maxAmount.toFixed(2)}$) fazlası alınamaz`);
             }
         }
@@ -2957,7 +2662,6 @@
                 return;
             }
             
-            // حساب إجمالي المتبقي من جميع المصادر
             const totalRemaining = currentSaleForReceive.allSources.reduce((sum, sale) => sum + sale.remaining, 0);
             
             if (receiveAmount > totalRemaining) {
@@ -2965,7 +2669,6 @@
                 return;
             }
             
-            // توزيع المبلغ المستلم على جميع المصادر بنسبة كل مصدر
             currentSaleForReceive.allSources.forEach(sourceSale => {
                 const sourceIndex = sales.findIndex(s => s.id === sourceSale.id);
                 if (sourceIndex !== -1) {
@@ -2998,31 +2701,82 @@
             alert(`تم استلام الدفعة البالغة ${receiveAmount.toFixed(2)}$ بنجاح! | ${receiveAmount.toFixed(2)}$ tutarındaki ödeme başarıyla alındı!`);
         }
         
-        // حذف عملية شراء
-        function deletePurchase(purchaseId) {
-            if (confirm('هل تريد حذف عملية الشراء هذه؟ | Bu alımı silmek istiyor musunuz?')) {
-                // التحقق إذا كان هناك مبيعات مرتبطة بهذا المصدر
-                const relatedSales = sales.filter(sale => sale.sourceId === purchaseId);
-                if (relatedSales.length > 0) {
-                    if (!confirm(`هناك ${relatedSales.length} عملية بيع مرتبطة بهذا الشراء. هل تريد حذفها أيضاً؟ | Bu alıma bağlı ${relatedSales.length} satış işlemi var. Bunları da silmek istiyor musunuz?`)) {
-                        return;
-                    }
-                    
-                    // حذف المبيعات المرتبطة
-                    sales = sales.filter(s => s.sourceId !== purchaseId);
+        function openPurchasePaymentModal(purchaseId) {
+            const purchase = purchases.find(p => p.id === purchaseId);
+            if (!purchase) return;
+            
+            currentPurchaseForPayment = purchase;
+            
+            document.getElementById('purchaseModalId').textContent = `#${purchase.id}`;
+            document.getElementById('purchaseModalQuantity').textContent = purchase.quantity.toFixed(2) + ' كغ';
+            document.getElementById('purchaseModalPrice').innerHTML = purchase.modifiedPrice.toFixed(2) + ' <span class="dollar">$</span>';
+            document.getElementById('purchaseModalTotal').innerHTML = purchase.total.toFixed(2) + ' <span class="dollar">$</span>';
+            document.getElementById('purchaseModalPaid').innerHTML = purchase.paid.toFixed(2) + ' <span class="dollar">$</span>';
+            document.getElementById('purchaseModalRemaining').innerHTML = purchase.remainingPayment.toFixed(2) + ' <span class="dollar">$</span>';
+            
+            document.getElementById('purchasePaymentDate').value = new Date().toISOString().split('T')[0];
+            document.getElementById('purchasePaymentAmount').value = purchase.remainingPayment.toFixed(2);
+            
+            document.getElementById('purchasePaymentModal').style.display = 'flex';
+        }
+        
+        function closePurchasePaymentModal() {
+            document.getElementById('purchasePaymentModal').style.display = 'none';
+            currentPurchaseForPayment = null;
+        }
+        
+        function completePurchasePayment() {
+            if (!currentPurchaseForPayment) return;
+            
+            const paymentAmount = parseFloat(document.getElementById('purchasePaymentAmount').value) || 0;
+            const paymentDate = document.getElementById('purchasePaymentDate').value;
+            
+            if (paymentAmount <= 0) {
+                alert('الرجاء إدخال مبلغ صالح للدفع | Lütfen geçerli bir ödeme tutarı girin');
+                return;
+            }
+            
+            if (paymentAmount > currentPurchaseForPayment.remainingPayment) {
+                alert(`لا يمكن دفع أكثر من المبلغ المتبقي (${currentPurchaseForPayment.remainingPayment.toFixed(2)}$) | Kalan tutardan (${currentPurchaseForPayment.remainingPayment.toFixed(2)}$) fazlası ödenemez`);
+                return;
+            }
+            
+            const purchaseIndex = purchases.findIndex(p => p.id === currentPurchaseForPayment.id);
+            if (purchaseIndex !== -1) {
+                purchases[purchaseIndex].paid += paymentAmount;
+                purchases[purchaseIndex].remainingPayment = purchases[purchaseIndex].total - purchases[purchaseIndex].paid;
+                
+                if (!purchases[purchaseIndex].payments) {
+                    purchases[purchaseIndex].payments = [];
                 }
                 
+                purchases[purchaseIndex].payments.push({
+                    amount: paymentAmount,
+                    date: paymentDate,
+                    timestamp: new Date().toISOString()
+                });
+            }
+            
+            saveData();
+            updatePurchasesTable();
+            updateDashboardStats();
+            
+            closePurchasePaymentModal();
+            
+            alert(`تم تسديد المبلغ البالغ ${paymentAmount.toFixed(2)}$ بنجاح! | ${paymentAmount.toFixed(2)}$ tutarındaki ödeme başarıyla yapıldı!`);
+        }
+        
+        function deletePurchase(purchaseId) {
+            if (confirm('هل تريد حذف عملية الشراء هذه؟ | Bu alımı silmek istiyor musunuz?')) {
                 purchases = purchases.filter(p => p.id !== purchaseId);
                 saveData();
                 updatePurchasesTable();
-                updateSalesTable();
                 updateDashboardStats();
                 updatePurchaseSourcesList();
                 alert('تم حذف عملية الشراء بنجاح | Alım başarıyla silindi');
             }
         }
         
-        // حذف عملية بيع
         function deleteSale(saleId) {
             if (confirm('هل تريد حذف عملية البيع هذه؟ | Bu satışı silmek istiyor musunuz?')) {
                 const sale = sales.find(s => s.id === saleId);
@@ -3045,7 +2799,6 @@
             }
         }
         
-        // تعديل عملية شراء مع تحديث المبيعات المرتبطة
         function editPurchase(purchaseId) {
             const purchase = purchases.find(p => p.id === purchaseId);
             if (!purchase) return;
@@ -3053,106 +2806,66 @@
             const newQuantity = prompt(`الكمية الجديدة (كغ) | Yeni miktar (kg):`, purchase.quantity);
             if (newQuantity === null) return;
             
-            const newPrice = prompt(`السعر الجديد ($) | Yeni fiyat ($):`, purchase.price);
+            const newPrice = prompt(`السعر الجديد ($) | Yeni fiyat ($):`, purchase.modifiedPrice);
             if (newPrice === null) return;
             
-            const newPaid = prompt(`المبلغ المدفوع الجديد ($) | Yeni ödenen miktar ($):`, purchase.paid);
-            if (newPaid === null) return;
-            
-            const oldPrice = purchase.price;
-            const newPriceNum = parseFloat(newPrice);
             const newQuantityNum = parseFloat(newQuantity);
-            const newPaidNum = parseFloat(newPaid);
+            const newPriceNum = parseFloat(newPrice);
             
-            // التحقق من صحة البيانات
-            if (newQuantityNum <= 0 || newPriceNum <= 0 || newPaidNum < 0) {
+            if (isNaN(newQuantityNum) || isNaN(newPriceNum) || newQuantityNum <= 0 || newPriceNum <= 0) {
                 alert('الرجاء إدخال قيم صحيحة | Lütfen geçerli değerler girin');
                 return;
             }
             
-            if (newPaidNum > newQuantityNum * newPriceNum) {
-                alert('المبلغ المدفوع لا يمكن أن يتجاوز الإجمالي | Ödenen tutar toplamı aşamaz');
-                return;
-            }
+            const oldRemaining = purchase.remaining;
+            const oldPrice = purchase.modifiedPrice;
             
-            // تحديث المشتريات
             purchase.quantity = newQuantityNum;
-            purchase.price = newPriceNum;
-            purchase.paid = newPaidNum;
-            purchase.remainingAmount = (newQuantityNum * newPriceNum) - newPaidNum;
-            purchase.originalQuantity = newQuantityNum;
+            purchase.modifiedPrice = newPriceNum;
             purchase.total = newQuantityNum * newPriceNum;
             
-            // إذا كانت الكمية الجديدة أقل من المتبقي، ضبط المتبقي
             if (purchase.remaining > newQuantityNum) {
                 purchase.remaining = newQuantityNum;
             }
             
-            // تحديث جميع المبيعات المرتبطة بهذا المصدر
-            sales.forEach(sale => {
-                if (sale.sourceId === purchaseId) {
-                    // تحديث سعر الشراء في البيع
-                    sale.purchasePrice = newPriceNum;
-                    sale.profitPerUnit = sale.salePrice - newPriceNum;
-                    sale.profit = sale.quantity * sale.profitPerUnit;
-                    
-                    // إذا كانت هناك مصادر متعددة، تحديثها أيضًا
-                    if (sale.selectedSources) {
-                        sale.selectedSources.forEach(source => {
-                            if (source.id === purchaseId) {
-                                source.price = newPriceNum;
-                            }
-                        });
-                        
-                        // إعادة حساب إجمالي الربح
-                        sale.profit = sale.selectedSources.reduce((sum, source) => {
-                            return sum + (source.quantity * (sale.salePrice - source.price));
-                        }, 0);
-                    }
-                }
-            });
+            purchase.remainingPayment = purchase.total - purchase.paid;
+            
+            if (purchase.relatedSales && purchase.relatedSales.length > 0) {
+                purchase.relatedSales.forEach(saleInfo => {
+                    sales.forEach(sale => {
+                        if (sale.parentSaleId === saleInfo.saleId && sale.sourceId === purchase.id) {
+                            sale.purchasePrice = newPriceNum;
+                            sale.profitPerUnit = sale.salePrice - newPriceNum;
+                            sale.profit = sale.quantity * (sale.salePrice - newPriceNum);
+                        }
+                    });
+                });
+            }
             
             saveData();
             updatePurchasesTable();
             updateSalesTable();
             updateDashboardStats();
             updatePurchaseSourcesList();
-            alert('تم تعديل عملية الشراء وتحديث جميع المبيعات المرتبطة | Alım başarıyla düzenlendi ve tüm ilgili satışlar güncellendi');
+            alert('تم تعديل عملية الشراء بنجاح | Alım başarıyla düzenlendi');
         }
         
-        // تعديل عملية بيع
         function editSale(saleId) {
             const sale = sales.find(s => s.id === saleId);
             if (!sale) return;
-            
-            const newQuantity = prompt(`الكمية الجديدة (كغ) | Yeni miktar (kg):`, sale.quantity);
-            if (newQuantity === null) return;
-            
-            const newPrice = prompt(`السعر الجديد ($) | Yeni fiyat ($):`, sale.salePrice);
-            if (newPrice === null) return;
-            
-            const newPaid = prompt(`المبلغ المدفوع الجديد ($) | Yeni ödenen miktar ($):`, sale.paid);
-            if (newPaid === null) return;
-            
-            const newTotal = parseFloat(newQuantity) * parseFloat(newPrice);
-            if (parseFloat(newPaid) > newTotal) {
-                alert('المبلغ المدفوع لا يمكن أن يتجاوز الإجمالي | Ödenen tutar toplamı aşamaz');
-                return;
-            }
             
             alert('للتعديل، يرجى حذف عملية البيع الحالية وإضافة بيع جديد بالمعلومات الصحيحة | Düzenlemek için lütfen mevcut satışı silin ve doğru bilgilerle yeni bir satış ekleyin');
             
             deleteSale(saleId);
         }
         
-        // تحديث جدول المشتريات
         function updatePurchasesTable() {
             const tableBody = document.getElementById('purchasesTableBody');
             tableBody.innerHTML = '';
             
             let totalPurchasesAmount = 0;
             let totalPurchasesQuantity = 0;
-            let totalPurchasesRemaining = 0;
+            let totalPurchasesPaid = 0;
             let hasPurchases = false;
             
             const filterType = document.getElementById('purchaseFilter').value;
@@ -3165,15 +2878,13 @@
                     showPurchase = true;
                 } else if (filterType === 'active') {
                     showPurchase = purchase.remaining > 0;
-                } else if (filterType === 'unpaid') {
-                    showPurchase = purchase.remainingAmount > 0;
                 }
                 
                 if (showPurchase) {
                     hasPurchases = true;
                     totalPurchasesAmount += purchase.total;
                     totalPurchasesQuantity += purchase.quantity;
-                    totalPurchasesRemaining += purchase.remainingAmount;
+                    totalPurchasesPaid += purchase.paid;
                     
                     const remainingPercentage = (purchase.remaining / purchase.originalQuantity) * 100;
                     let remainingClass = 'remaining-high';
@@ -3181,44 +2892,30 @@
                     else if (remainingPercentage < 30) remainingClass = 'remaining-low';
                     else if (remainingPercentage < 60) remainingClass = 'remaining-medium';
                     
-                    const paidPercentage = (purchase.paid / purchase.total) * 100;
+                    const paymentPercentage = (purchase.paid / purchase.total) * 100;
                     let paymentStatus = '';
-                    let paymentColor = '#27ae60';
-                    
-                    if (paidPercentage === 0) {
-                        paymentStatus = 'غير مدفوعة';
-                        paymentColor = '#e74c3c';
-                    } else if (paidPercentage === 100) {
-                        paymentStatus = 'مدفوعة بالكامل';
-                        paymentColor = '#27ae60';
-                    } else {
-                        paymentStatus = `مدفوعة جزئياً ${paidPercentage.toFixed(1)}%`;
-                        paymentColor = '#f39c12';
-                    }
+                    if (paymentPercentage === 100) paymentStatus = 'مدفوع بالكامل';
+                    else if (paymentPercentage > 0) paymentStatus = 'مدفوع جزئياً';
+                    else paymentStatus = 'غير مدفوع';
                     
                     const row = document.createElement('tr');
                     row.innerHTML = `
                         <td>${index + 1}</td>
                         <td>${purchase.quantity.toFixed(2)} كغ</td>
-                        <td><span class="dollar">$</span> ${purchase.price.toFixed(2)}</td>
+                        <td><span class="dollar">$</span> ${purchase.modifiedPrice.toFixed(2)}</td>
                         <td><span class="dollar">$</span> ${purchase.total.toFixed(2)}</td>
                         <td>${purchase.date}</td>
                         <td><span class="remaining-quantity ${remainingClass}">${purchase.remaining.toFixed(2)} كغ</span></td>
                         <td>
-                            <div class="purchase-payment-status">
-                                <span style="color: ${paymentColor}; font-weight: bold;">${paymentStatus}</span>
-                                <div class="payment-progress">
-                                    <div class="payment-progress-bar" style="width: ${paidPercentage}%; background-color: ${paymentColor};"></div>
-                                </div>
-                                <span style="font-size: 0.9rem;">${purchase.paid.toFixed(2)}<span class="dollar">$</span> / ${purchase.total.toFixed(2)}<span class="dollar">$</span></span>
-                            </div>
+                            <span class="dollar">$</span> ${purchase.paid.toFixed(2)}
+                            <br><small>${paymentStatus}</small>
                         </td>
                         <td>
                             <button class="btn btn-sm btn-warning" onclick="editPurchase(${purchase.id})" title="تعديل | Düzenle">
                                 <i class="fas fa-edit"></i>
                             </button>
-                            ${purchase.remainingAmount > 0 ? `
-                                <button class="btn btn-sm btn-orange" onclick="openPurchaseReceiptModal(${purchase.id})" title="استلام قيمة | Tutar Al">
+                            ${purchase.remainingPayment > 0 ? `
+                                <button class="btn-receive" onclick="openPurchasePaymentModal(${purchase.id})" title="تسديد دفعة | Ödeme Yap">
                                     <i class="fas fa-money-bill-wave"></i>
                                 </button>
                             ` : ''}
@@ -3240,10 +2937,9 @@
             }
             
             document.getElementById('totalPurchasesFooter').innerHTML = totalPurchasesAmount.toFixed(2) + ' <span class="dollar">$</span>';
-            document.getElementById('totalPurchasesRemaining').innerHTML = totalPurchasesRemaining.toFixed(2) + ' <span class="dollar">$</span>';
+            document.getElementById('totalPurchasesPaid').innerHTML = totalPurchasesPaid.toFixed(2) + ' <span class="dollar">$</span>';
         }
         
-        // تحديث جدول المبيعات
         function updateSalesTable() {
             const tableBody = document.getElementById('salesTableBody');
             tableBody.innerHTML = '';
@@ -3257,7 +2953,6 @@
             const filterType = document.getElementById('salesFilter').value;
             const filteredSales = sales.filter(sale => sale.date === currentViewDate);
             
-            // تجميع المبيعات حسب parentSaleId
             const groupedSales = {};
             filteredSales.forEach(sale => {
                 if (!groupedSales[sale.parentSaleId]) {
@@ -3292,7 +2987,6 @@
                     const profitClass = firstSale.profit >= 0 ? 'badge-sale' : 'badge-purchase';
                     const profitSign = firstSale.profit >= 0 ? '+' : '';
                     
-                    // حساب إجماليات المجموعة
                     let groupTotalAmount = 0;
                     let groupTotalRemaining = 0;
                     
@@ -3385,7 +3079,6 @@
             document.getElementById('totalRemainingFooter').innerHTML = totalRemaining.toFixed(2) + ' <span class="dollar">$</span>';
         }
         
-        // تحديث إحصائيات لوحة التحكم
         function updateDashboardStats() {
             const todaySales = sales.filter(sale => sale.date === currentViewDate);
             const todayPurchases = purchases.filter(purchase => purchase.date === currentViewDate);
@@ -3393,7 +3086,7 @@
             
             const totalActivePurchasesQuantity = activePurchases.reduce((sum, purchase) => sum + purchase.quantity, 0);
             const totalActivePurchasesAmount = activePurchases.reduce((sum, purchase) => sum + purchase.total, 0);
-            const totalActivePurchasesRemaining = activePurchases.reduce((sum, purchase) => sum + purchase.remainingAmount, 0);
+            const totalActivePurchasesPaid = activePurchases.reduce((sum, purchase) => sum + purchase.paid, 0);
             
             const totalTodaySalesQuantity = todaySales.reduce((sum, sale) => sum + sale.quantity, 0);
             const totalTodaySalesAmount = todaySales.reduce((sum, sale) => sum + sale.total, 0);
@@ -3401,14 +3094,14 @@
             const totalPurchasesAll = purchases.reduce((sum, purchase) => sum + purchase.quantity, 0);
             const totalSalesAll = sales.reduce((sum, sale) => sum + sale.quantity, 0);
             const currentInventoryQuantity = totalPurchasesAll - totalSalesAll;
-            const currentInventoryValue = purchases.reduce((sum, purchase) => sum + (purchase.remaining * purchase.price), 0);
+            const currentInventoryValue = purchases.reduce((sum, purchase) => sum + (purchase.remaining * purchase.modifiedPrice), 0);
             
             const totalTodayProfit = todaySales.reduce((sum, sale) => sum + sale.profit, 0);
             const totalTodayRemaining = todaySales.reduce((sum, sale) => sum + sale.remaining, 0);
             
             document.getElementById('total-purchases').textContent = totalActivePurchasesQuantity.toFixed(2) + ' كغ';
             document.getElementById('purchases-total').innerHTML = totalActivePurchasesAmount.toFixed(2) + ' <span class="dollar">$</span>';
-            document.getElementById('purchases-remaining').innerHTML = `مستحق: ${totalActivePurchasesRemaining.toFixed(2)} <span class="dollar">$</span>`;
+            document.getElementById('purchases-remaining').innerHTML = `متبقي: ${(totalActivePurchasesAmount - totalActivePurchasesPaid).toFixed(2)} <span class="dollar">$</span>`;
             document.getElementById('total-sales').textContent = totalTodaySalesQuantity.toFixed(2) + ' كغ';
             document.getElementById('sales-total').innerHTML = totalTodaySalesAmount.toFixed(2) + ' <span class="dollar">$</span>';
             document.getElementById('current-inventory').textContent = currentInventoryQuantity.toFixed(2) + ' كغ';
@@ -3417,7 +3110,6 @@
             document.getElementById('pending-amount').innerHTML = `مستحق اليوم: ${totalTodayRemaining.toFixed(2)} <span class="dollar">$</span>`;
         }
         
-        // وظائف العرض حسب التاريخ
         function showToday() {
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('currentDate').value = today;
@@ -3498,7 +3190,6 @@
             
             const totalActivePurchasesQuantity = activePurchases.reduce((sum, purchase) => sum + purchase.quantity, 0);
             const totalActivePurchasesAmount = activePurchases.reduce((sum, purchase) => sum + purchase.total, 0);
-            const totalActivePurchasesRemaining = activePurchases.reduce((sum, purchase) => sum + purchase.remainingAmount, 0);
             const totalTodaySalesQuantity = todaySales.reduce((sum, sale) => sum + sale.quantity, 0);
             const totalTodaySalesAmount = todaySales.reduce((sum, sale) => sum + sale.total, 0);
             const totalTodayProfit = todaySales.reduce((sum, sale) => sum + sale.profit, 0);
@@ -3507,11 +3198,10 @@
             const totalPurchasesAll = purchases.reduce((sum, purchase) => sum + purchase.quantity, 0);
             const totalSalesAll = sales.reduce((sum, sale) => sum + sale.quantity, 0);
             const currentInventoryQuantity = totalPurchasesAll - totalSalesAll;
-            const currentInventoryValue = purchases.reduce((sum, purchase) => sum + (purchase.remaining * purchase.price), 0);
+            const currentInventoryValue = purchases.reduce((sum, purchase) => sum + (purchase.remaining * purchase.modifiedPrice), 0);
             
             document.getElementById('total-purchases').textContent = totalActivePurchasesQuantity.toFixed(2) + ' كغ';
             document.getElementById('purchases-total').innerHTML = totalActivePurchasesAmount.toFixed(2) + ' <span class="dollar">$</span>';
-            document.getElementById('purchases-remaining').innerHTML = `إجمالي المستحق: ${totalActivePurchasesRemaining.toFixed(2)} <span class="dollar">$</span>`;
             document.getElementById('total-sales').textContent = totalTodaySalesQuantity.toFixed(2) + ' كغ';
             document.getElementById('sales-total').innerHTML = totalTodaySalesAmount.toFixed(2) + ' <span class="dollar">$</span>';
             document.getElementById('current-inventory').textContent = currentInventoryQuantity.toFixed(2) + ' كغ';
@@ -3536,7 +3226,6 @@
             generateDetailedReport();
         });
         
-        // وظائف التقارير
         function generateTodayReport() {
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('reportDate').value = today;
@@ -3599,7 +3288,6 @@
                 const group = groupedSales[parentSaleId];
                 
                 if (group.sources.length > 0) {
-                    // حساب إجماليات المجموعة
                     let groupTotalRemaining = 0;
                     group.sources.forEach(sale => {
                         groupTotalRemaining += sale.remaining;
@@ -3718,7 +3406,6 @@
                 day: 'numeric'
             });
             
-            // حساب الكمية المتبقية وتكلفتها
             const remainingPurchases = purchases.filter(purchase => purchase.remaining > 0);
             let totalRemainingQuantity = 0;
             let totalRemainingValue = 0;
@@ -3727,15 +3414,15 @@
             if (remainingPurchases.length > 0) {
                 remainingPurchases.forEach((purchase, index) => {
                     totalRemainingQuantity += purchase.remaining;
-                    totalRemainingValue += purchase.remaining * purchase.price;
+                    totalRemainingValue += purchase.remaining * purchase.modifiedPrice;
                     
                     remainingDetailsHTML += `
                         <tr>
                             <td>${index + 1}</td>
                             <td>${purchase.date}</td>
                             <td class="number-cell">${purchase.remaining.toFixed(2)} كغ</td>
-                            <td class="number-cell"><span class="dollar-print">$</span> ${purchase.price.toFixed(2)}</td>
-                            <td class="number-cell"><span class="dollar-print">$</span> ${(purchase.remaining * purchase.price).toFixed(2)}</td>
+                            <td class="number-cell"><span class="dollar-print">$</span> ${purchase.modifiedPrice.toFixed(2)}</td>
+                            <td class="number-cell"><span class="dollar-print">$</span> ${(purchase.remaining * purchase.modifiedPrice).toFixed(2)}</td>
                         </tr>
                     `;
                 });
@@ -3748,7 +3435,6 @@
                 const group = groupedSales[parentSaleId];
                 
                 if (group.sources.length > 0) {
-                    // حساب إجماليات المجموعة
                     let groupTotalRemaining = 0;
                     group.sources.forEach(sale => {
                         groupTotalRemaining += sale.remaining;
@@ -3979,7 +3665,6 @@
             }, 100);
         }
         
-        // حفظ البيانات
         function saveData() {
             localStorage.setItem('alanharPurchases', JSON.stringify(purchases));
             localStorage.setItem('alanharSales', JSON.stringify(sales));
@@ -3990,8 +3675,8 @@
                 purchases = [];
                 sales = [];
                 currentSaleData = null;
-                currentPurchaseForReceipt = null;
                 currentSaleForReceive = null;
+                currentPurchaseForPayment = null;
                 selectedSources = [];
                 currentViewDate = new Date().toISOString().split('T')[0];
                 
@@ -4045,8 +3730,8 @@
                         purchases = data.purchases;
                         sales = data.sales;
                         currentSaleData = null;
-                        currentPurchaseForReceipt = null;
                         currentSaleForReceive = null;
+                        currentPurchaseForPayment = null;
                         selectedSources = [];
                         currentViewDate = new Date().toISOString().split('T')[0];
                         
@@ -4070,6 +3755,47 @@
             };
             reader.readAsText(file);
         }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const header = document.querySelector('header .container');
+            
+            const resetButton = document.createElement('button');
+            resetButton.innerHTML = '<i class="fas fa-trash-alt"></i> حذف جميع البيانات | Tüm Verileri Sil';
+            resetButton.className = 'btn btn-danger no-print';
+            resetButton.style.position = 'absolute';
+            resetButton.style.top = '25px';
+            resetButton.style.left = '25px';
+            resetButton.onclick = resetAllData;
+            
+            const exportButton = document.createElement('button');
+            exportButton.innerHTML = '<i class="fas fa-download"></i> تصدير البيانات | Verileri Dışa Aktar';
+            exportButton.className = 'btn btn-warning no-print';
+            exportButton.style.position = 'absolute';
+            exportButton.style.top = '25px';
+            exportButton.style.right = '25px';
+            exportButton.onclick = exportData;
+            
+            const importInput = document.createElement('input');
+            importInput.type = 'file';
+            importInput.accept = '.json';
+            importInput.style.display = 'none';
+            importInput.id = 'importInput';
+            importInput.onchange = importData;
+            document.body.appendChild(importInput);
+            
+            const importButton = document.createElement('button');
+            importButton.innerHTML = '<i class="fas fa-upload"></i> استيراد البيانات | Verileri İçe Aktar';
+            importButton.className = 'btn btn-success no-print';
+            importButton.style.position = 'absolute';
+            importButton.style.top = '80px';
+            importButton.style.right = '25px';
+            importButton.onclick = () => document.getElementById('importInput').click();
+            
+            header.style.position = 'relative';
+            header.appendChild(resetButton);
+            header.appendChild(exportButton);
+            header.appendChild(importButton);
+        });
     </script>
 </body>
 </html>
