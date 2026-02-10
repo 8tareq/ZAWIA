@@ -2033,7 +2033,51 @@
             document.getElementById('amountPaid').addEventListener('input', updatePaymentRemaining);
             document.getElementById('receiptAmount').addEventListener('input', updateReceiptAmount);
             document.getElementById('receiveAmount').addEventListener('input', updateReceiveAmount);
+            
+            // إضافة أزرار التحكم في الهيدر
+            addControlButtons();
         });
+        
+        function addControlButtons() {
+            const header = document.querySelector('header .container');
+            
+            const resetButton = document.createElement('button');
+            resetButton.innerHTML = '<i class="fas fa-trash-alt"></i> حذف جميع البيانات | Tüm Verileri Sil';
+            resetButton.className = 'btn btn-danger no-print';
+            resetButton.style.position = 'absolute';
+            resetButton.style.top = '25px';
+            resetButton.style.left = '25px';
+            resetButton.onclick = resetAllData;
+            
+            const exportButton = document.createElement('button');
+            exportButton.innerHTML = '<i class="fas fa-download"></i> تصدير البيانات | Verileri Dışa Aktar';
+            exportButton.className = 'btn btn-warning no-print';
+            exportButton.style.position = 'absolute';
+            exportButton.style.top = '25px';
+            exportButton.style.right = '25px';
+            exportButton.onclick = exportData;
+            
+            const importInput = document.createElement('input');
+            importInput.type = 'file';
+            importInput.accept = '.json';
+            importInput.style.display = 'none';
+            importInput.id = 'importInput';
+            importInput.onchange = importData;
+            document.body.appendChild(importInput);
+            
+            const importButton = document.createElement('button');
+            importButton.innerHTML = '<i class="fas fa-upload"></i> استيراد البيانات | Verileri İçe Aktar';
+            importButton.className = 'btn btn-success no-print';
+            importButton.style.position = 'absolute';
+            importButton.style.top = '80px';
+            importButton.style.right = '25px';
+            importButton.onclick = () => document.getElementById('importInput').click();
+            
+            header.style.position = 'relative';
+            header.appendChild(resetButton);
+            header.appendChild(exportButton);
+            header.appendChild(importButton);
+        }
         
         function updateDateDisplay() {
             const displayElement = document.getElementById('currentDateDisplay');
@@ -2350,6 +2394,25 @@
             const sourcesList = document.getElementById('sourcesList');
             sourcesList.innerHTML = '';
             
+            // تحديث currentViewDate ليكون تاريخ اليوم إذا لم يتم تحديد تاريخ
+            if (!currentViewDate) {
+                currentViewDate = new Date().toISOString().split('T')[0];
+            }
+            
+            // إعادة حساب الكمية المتبقية لكل عملية شراء
+            purchases.forEach(purchase => {
+                // البحث عن جميع المبيعات التي تستخدم هذا المصدر
+                const relatedSales = sales.filter(sale => sale.sourceId === purchase.id);
+                let totalSoldFromThisPurchase = 0;
+                
+                relatedSales.forEach(sale => {
+                    totalSoldFromThisPurchase += sale.quantity;
+                });
+                
+                // تحديث الكمية المتبقية
+                purchase.remaining = Math.max(0, purchase.originalQuantity - totalSoldFromThisPurchase);
+            });
+            
             const activePurchases = purchases.filter(purchase => purchase.remaining > 0);
             
             if (activePurchases.length === 0) {
@@ -2368,7 +2431,8 @@
                 
                 const remainingPercentage = (purchase.remaining / purchase.originalQuantity) * 100;
                 let remainingClass = 'remaining-high';
-                if (remainingPercentage < 30) remainingClass = 'remaining-low';
+                if (remainingPercentage === 0) remainingClass = 'remaining-zero';
+                else if (remainingPercentage < 30) remainingClass = 'remaining-low';
                 else if (remainingPercentage < 60) remainingClass = 'remaining-medium';
                 
                 const paidPercentage = (purchase.paid / purchase.total) * 100;
@@ -2469,7 +2533,7 @@
             if (quantityNum > purchase.remaining) {
                 alert(`الكمية المطلوبة (${quantityNum.toFixed(2)} كغ) تتجاوز الكمية المتبقية في المصدر (${purchase.remaining.toFixed(2)} كغ) | İstenen miktar (${quantityNum.toFixed(2)} kg) kaynaktaki kalan miktarı (${purchase.remaining.toFixed(2)} kg) aşıyor`);
                 document.getElementById(`source_qty_${purchaseId}`).value = purchase.remaining.toFixed(2);
-                quantityNum = purchase.remaining;
+                return;
             }
             
             const source = selectedSources.find(s => s.id === purchaseId);
@@ -2532,9 +2596,9 @@
                 
                 const percentage = (source.quantity / purchase.remaining) * 100;
                 let remainingClass = 'remaining-high';
-                if (percentage > 80) remainingClass = 'remaining-high';
-                else if (percentage > 50) remainingClass = 'remaining-medium';
-                else remainingClass = 'remaining-low';
+                if (percentage === 0) remainingClass = 'remaining-zero';
+                else if (percentage < 30) remainingClass = 'remaining-low';
+                else if (percentage < 60) remainingClass = 'remaining-medium';
                 
                 const sourceItem = document.createElement('div');
                 sourceItem.className = 'selected-source-item';
@@ -2651,7 +2715,7 @@
         function updatePaymentRemaining() {
             if (!currentSaleData) return;
             
-            const amountPaid = parseFloat(this.value) || 0;
+            const amountPaid = parseFloat(document.getElementById('amountPaid').value) || 0;
             const remainingAmount = currentSaleData.total - amountPaid;
             
             document.getElementById('remainingAmount').innerHTML = remainingAmount.toFixed(2) + ' <span class="dollar">$</span>';
@@ -2770,11 +2834,11 @@
         function updateReceiptAmount() {
             if (!currentPurchaseForReceipt) return;
             
-            const receiptAmount = parseFloat(this.value) || 0;
+            const receiptAmount = parseFloat(document.getElementById('receiptAmount').value) || 0;
             const maxAmount = currentPurchaseForReceipt.remainingAmount;
             
             if (receiptAmount > maxAmount) {
-                this.value = maxAmount.toFixed(2);
+                document.getElementById('receiptAmount').value = maxAmount.toFixed(2);
                 alert(`لا يمكن استلام أكثر من المبلغ المتبقي (${maxAmount.toFixed(2)}$) | Kalan tutardan (${maxAmount.toFixed(2)}$) fazlası alınamaz`);
             }
         }
@@ -2873,11 +2937,11 @@
         function updateReceiveAmount() {
             if (!currentSaleForReceive) return;
             
-            const receiveAmount = parseFloat(this.value) || 0;
+            const receiveAmount = parseFloat(document.getElementById('receiveAmount').value) || 0;
             const maxAmount = currentSaleForReceive.allSources.reduce((sum, sale) => sum + sale.remaining, 0);
             
             if (receiveAmount > maxAmount) {
-                this.value = maxAmount.toFixed(2);
+                document.getElementById('receiveAmount').value = maxAmount.toFixed(2);
                 alert(`لا يمكن استلام أكثر من المبلغ المتبقي (${maxAmount.toFixed(2)}$) | Kalan tutardan (${maxAmount.toFixed(2)}$) fazlası alınamaz`);
             }
         }
@@ -3447,7 +3511,7 @@
             
             document.getElementById('total-purchases').textContent = totalActivePurchasesQuantity.toFixed(2) + ' كغ';
             document.getElementById('purchases-total').innerHTML = totalActivePurchasesAmount.toFixed(2) + ' <span class="dollar">$</span>';
-            document.getElementById('purchases-remaining').innerHTML = `مستحق: ${totalActivePurchasesRemaining.toFixed(2)} <span class="dollar">$</span>`;
+            document.getElementById('purchases-remaining').innerHTML = `إجمالي المستحق: ${totalActivePurchasesRemaining.toFixed(2)} <span class="dollar">$</span>`;
             document.getElementById('total-sales').textContent = totalTodaySalesQuantity.toFixed(2) + ' كغ';
             document.getElementById('sales-total').innerHTML = totalTodaySalesAmount.toFixed(2) + ' <span class="dollar">$</span>';
             document.getElementById('current-inventory').textContent = currentInventoryQuantity.toFixed(2) + ' كغ';
@@ -3920,48 +3984,6 @@
             localStorage.setItem('alanharPurchases', JSON.stringify(purchases));
             localStorage.setItem('alanharSales', JSON.stringify(sales));
         }
-        
-        // إضافة أزرار التحكم في الهيدر
-        document.addEventListener('DOMContentLoaded', function() {
-            const header = document.querySelector('header .container');
-            
-            const resetButton = document.createElement('button');
-            resetButton.innerHTML = '<i class="fas fa-trash-alt"></i> حذف جميع البيانات | Tüm Verileri Sil';
-            resetButton.className = 'btn btn-danger no-print';
-            resetButton.style.position = 'absolute';
-            resetButton.style.top = '25px';
-            resetButton.style.left = '25px';
-            resetButton.onclick = resetAllData;
-            
-            const exportButton = document.createElement('button');
-            exportButton.innerHTML = '<i class="fas fa-download"></i> تصدير البيانات | Verileri Dışa Aktar';
-            exportButton.className = 'btn btn-warning no-print';
-            exportButton.style.position = 'absolute';
-            exportButton.style.top = '25px';
-            exportButton.style.right = '25px';
-            exportButton.onclick = exportData;
-            
-            const importInput = document.createElement('input');
-            importInput.type = 'file';
-            importInput.accept = '.json';
-            importInput.style.display = 'none';
-            importInput.id = 'importInput';
-            importInput.onchange = importData;
-            document.body.appendChild(importInput);
-            
-            const importButton = document.createElement('button');
-            importButton.innerHTML = '<i class="fas fa-upload"></i> استيراد البيانات | Verileri İçe Aktar';
-            importButton.className = 'btn btn-success no-print';
-            importButton.style.position = 'absolute';
-            importButton.style.top = '80px';
-            importButton.style.right = '25px';
-            importButton.onclick = () => document.getElementById('importInput').click();
-            
-            header.style.position = 'relative';
-            header.appendChild(resetButton);
-            header.appendChild(exportButton);
-            header.appendChild(importButton);
-        });
         
         function resetAllData() {
             if (confirm('هل أنت متأكد من حذف جميع البيانات؟ هذا الإجراء لا يمكن التراجع عنه. | Tüm verileri silmek istediğinize emin misiniz? Bu işlem geri alınamaz.')) {
