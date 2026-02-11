@@ -6,6 +6,7 @@
     <title>ALANHAR SILVER - نظام إدارة الفضة</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* جميع الأنماط كما هي دون تغيير */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -42,7 +43,6 @@
             padding: 0 20px;
         }
         
-        /* Header Styles */
         header {
             background: var(--gradient-primary);
             color: white;
@@ -92,7 +92,6 @@
             font-weight: 300;
         }
         
-        /* Date Filter */
         .date-filter {
             background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
             padding: 25px;
@@ -145,7 +144,6 @@
             border: 2px solid var(--secondary-color);
         }
         
-        /* Dashboard Stats */
         .stats-container {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -206,7 +204,6 @@
             font-weight: 500;
         }
         
-        /* Main Content */
         .content-wrapper {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -272,7 +269,6 @@
             background-color: white;
         }
         
-        /* Form Styles */
         .form-group {
             margin-bottom: 25px;
         }
@@ -302,7 +298,6 @@
             box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
         }
         
-        /* Sales Payment Modal */
         .payment-modal {
             display: none;
             position: fixed;
@@ -423,7 +418,6 @@
             display: block;
         }
         
-        /* Quantity Selection */
         .quantity-selection {
             background: #e8f4ff;
             padding: 20px;
@@ -442,7 +436,6 @@
             background-color: white;
         }
         
-        /* Multi Source Selection */
         .multi-source-container {
             background: #f0f7ff;
             padding: 20px;
@@ -667,12 +660,19 @@
             box-shadow: 0 7px 15px rgba(23, 162, 184, 0.3);
         }
         
+        .btn-orange {
+            background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
+        }
+        
+        .btn-orange:hover {
+            box-shadow: 0 7px 15px rgba(230, 126, 34, 0.3);
+        }
+        
         .btn-sm {
             padding: 8px 15px;
             font-size: 0.9rem;
         }
         
-        /* Table Styles */
         .table-container {
             overflow-x: auto;
             margin-top: 25px;
@@ -754,7 +754,6 @@
             transform: translateY(-1px);
         }
         
-        /* Report Content */
         #reportContent {
             background-color: white;
             border-radius: var(--border-radius);
@@ -762,7 +761,6 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
         }
         
-        /* Customer Remaining Section */
         .customer-remaining-section {
             margin-top: 40px;
             background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
@@ -881,7 +879,6 @@
             gap: 8px;
         }
         
-        /* تحسينات الطباعة - خطوط أكبر وأوضح */
         @media print {
             @page {
                 size: A4 portrait;
@@ -1182,10 +1179,6 @@
                 font-size: 11pt !important;
             }
             
-            .source-details-print:last-child {
-                border-bottom: none !important;
-            }
-            
             .expanded-source-details {
                 background: #f0f7ff !important;
                 padding: 10px !important;
@@ -1209,7 +1202,6 @@
                 letter-spacing: 1px !important;
             }
             
-            /* إضافات جديدة للصفحة الثانية */
             .page-break {
                 page-break-before: always !important;
                 margin-top: 30px !important;
@@ -1232,7 +1224,6 @@
             }
         }
         
-        /* Footer */
         footer {
             text-align: center;
             margin-top: 50px;
@@ -1244,7 +1235,6 @@
             box-shadow: 0 -3px 10px rgba(0, 0, 0, 0.05);
         }
         
-        /* Empty State */
         .empty-state {
             text-align: center;
             padding: 40px 20px;
@@ -1263,7 +1253,6 @@
             color: #888;
         }
         
-        /* Sales Details Source */
         .source-details {
             margin-top: 10px;
             background: #f8f9fa;
@@ -1302,7 +1291,6 @@
             background: #545b62;
         }
         
-        /* Remaining quantity highlight */
         .remaining-quantity {
             display: inline-block;
             padding: 2px 8px;
@@ -1332,7 +1320,6 @@
             text-decoration: line-through;
         }
         
-        /* Sales Source Row Style */
         .sales-source-row {
             background-color: #f8fafc !important;
             font-size: 0.9rem;
@@ -1347,7 +1334,72 @@
             font-weight: bold;
         }
         
-        /* Responsive */
+        .purchase-payment-status {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            align-items: center;
+        }
+        
+        .payment-progress {
+            width: 100px;
+            height: 6px;
+            background-color: #e0e0e0;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        
+        .payment-progress-bar {
+            height: 100%;
+            background-color: #27ae60;
+            border-radius: 3px;
+        }
+        
+        .simple-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .simple-modal.active {
+            display: flex;
+        }
+        
+        .simple-modal-content {
+            background-color: white;
+            border-radius: var(--border-radius);
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            animation: modalAppear 0.3s ease-out;
+        }
+        
+        .simple-modal-header {
+            background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
+            color: white;
+            padding: 20px;
+            border-radius: var(--border-radius) var(--border-radius) 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .simple-modal-header h3 {
+            font-size: 1.5rem;
+            margin: 0;
+        }
+        
+        .simple-modal-body {
+            padding: 25px;
+        }
+        
         @media (max-width: 768px) {
             .logo h1 {
                 font-size: 2.2rem;
@@ -1408,7 +1460,6 @@
             }
         }
         
-        /* Scrollbar Styling */
         ::-webkit-scrollbar {
             width: 8px;
             height: 8px;
@@ -1430,7 +1481,7 @@
     </style>
 </head>
 <body>
-    <!-- Payment Modal -->
+    <!-- Payment Modal for Sales -->
     <div class="payment-modal" id="paymentModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -1480,9 +1531,74 @@
                     </div>
                 </div>
                 
-                <button class="btn btn-success" onclick="completeSaleWithPayment()" id="confirmSaleBtn" style="width: 100%; margin-top: 20px;">
-                    <i class="fas fa-check-circle"></i> تأكيد البيع والدفع | Satışı ve Ödemeyi Onayla
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button class="btn btn-danger" onclick="closePaymentModal()" style="flex: 1;">
+                        <i class="fas fa-times"></i> إلغاء | İptal
+                    </button>
+                    <button class="btn btn-success" onclick="completeSaleWithPayment()" id="confirmSaleBtn" style="flex: 2;">
+                        <i class="fas fa-check-circle"></i> تأكيد البيع والدفع | Satışı ve Ödemeyi Onayla
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Simple Modal for Purchase Receipt -->
+    <div class="simple-modal" id="purchaseReceiptModal">
+        <div class="simple-modal-content">
+            <div class="simple-modal-header">
+                <h3>استلام قيمة الشراء | Alım Tutarı Al</h3>
+                <button class="close-modal" onclick="closePurchaseReceiptModal()">
+                    <i class="fas fa-times"></i>
                 </button>
+            </div>
+            <div class="simple-modal-body">
+                <div class="payment-summary">
+                    <h4 style="text-align: center; margin-bottom: 20px; color: var(--primary-color);">تفاصيل الشراء | Alım Detayları</h4>
+                    <div class="payment-item">
+                        <span>رقم العملية | İşlem No:</span>
+                        <span id="receiptPurchaseId"></span>
+                    </div>
+                    <div class="payment-item">
+                        <span>الكمية | Miktar:</span>
+                        <span id="receiptPurchaseQuantity">0 كغ</span>
+                    </div>
+                    <div class="payment-item">
+                        <span>سعر الشراء | Alış Fiyatı:</span>
+                        <span id="receiptPurchasePrice">0 <span class="dollar">$</span></span>
+                    </div>
+                    <div class="payment-item">
+                        <span>المبلغ الإجمالي | Toplam Tutar:</span>
+                        <span id="receiptPurchaseTotal">0 <span class="dollar">$</span></span>
+                    </div>
+                    <div class="payment-item">
+                        <span>المدفوع سابقاً | Önceden Ödenen:</span>
+                        <span id="receiptPurchasePaid">0 <span class="dollar">$</span></span>
+                    </div>
+                    <div class="payment-item total">
+                        <span>المبلغ المتبقي للدفع | Ödenecek Kalan Tutar:</span>
+                        <span id="receiptPurchaseRemaining">0 <span class="dollar">$</span></span>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="receiptAmount">المبلغ المستلم | Alınan Tutar <span class="dollar">$</span></label>
+                    <input type="number" id="receiptAmount" class="form-control" step="0.01" min="0" value="0" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="receiptDate">تاريخ الاستلام | Alınma Tarihi</label>
+                    <input type="date" id="receiptDate" class="form-control" required>
+                </div>
+                
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button class="btn btn-danger" onclick="closePurchaseReceiptModal()" style="flex: 1;">
+                        <i class="fas fa-times"></i> إلغاء | İptal
+                    </button>
+                    <button class="btn btn-orange" onclick="completePurchaseReceipt()" style="flex: 2;">
+                        <i class="fas fa-check-circle"></i> تأكيد الاستلام | Almayı Onayla
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -1531,9 +1647,14 @@
                     <input type="date" id="receiveDate" class="form-control" required>
                 </div>
                 
-                <button class="btn" style="background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%); width: 100%;" onclick="completeReceivePayment()">
-                    <i class="fas fa-money-bill-wave"></i> تأكيد استلام الدفعة | Ödeme Almayı Onayla
-                </button>
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button class="btn btn-danger" onclick="closeReceivePaymentModal()" style="flex: 1;">
+                        <i class="fas fa-times"></i> إلغاء | İptal
+                    </button>
+                    <button class="btn" onclick="completeReceivePayment()" style="background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%); flex: 2;">
+                        <i class="fas fa-money-bill-wave"></i> تأكيد استلام الدفعة | Ödeme Almayı Onayla
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -1581,6 +1702,7 @@
                 <h3 id="total-purchases">0 كغ</h3>
                 <p>المشتريات النشطة | Aktif Alımlar</p>
                 <div id="purchases-total" style="font-size: 1.5rem; margin-top: 10px; font-weight: bold; color: var(--secondary-color);">0 <span class="dollar">$</span></div>
+                <div id="purchases-remaining" style="font-size: 1rem; margin-top: 5px; color: #e74c3c;">مستحق: 0 <span class="dollar">$</span></div>
             </div>
             <div class="stat-card sales">
                 <i class="fas fa-chart-line"></i>
@@ -1628,6 +1750,7 @@
                         <select id="purchaseFilter" onchange="updatePurchasesTable()">
                             <option value="all">عرض الكل</option>
                             <option value="active">المتبقي فقط (نشط)</option>
+                            <option value="unpaid">غير المدفوعة بالكامل</option>
                         </select>
                     </div>
                 </div>
@@ -1648,6 +1771,11 @@
                             <label for="purchaseDate">تاريخ الشراء | Alış Tarihi</label>
                             <input type="date" id="purchaseDate" class="form-control" required>
                         </div>
+                        <div class="form-group">
+                            <label for="purchasePaid">المبلغ المدفوع حالياً | Şu Anda Ödenen Tutar <span class="dollar">$</span></label>
+                            <input type="number" id="purchasePaid" class="form-control" step="0.01" min="0" value="0">
+                            <small style="color: #666;">يمكنك تركها صفراً ودفع المبلغ لاحقاً | Sıfır bırakabilir ve tutarı daha sonra ödeyebilirsiniz</small>
+                        </div>
                         <button type="submit" class="btn">
                             <i class="fas fa-save"></i> تسجيل عملية الشراء | Alımı Kaydet
                         </button>
@@ -1666,6 +1794,7 @@
                                     <th>الإجمالي | Toplam</th>
                                     <th>التاريخ | Tarih</th>
                                     <th>المتبقي | Kalan</th>
+                                    <th>الحالة المالية | Finansal Durum</th>
                                     <th>التحكم | Kontrol</th>
                                 </tr>
                             </thead>
@@ -1674,10 +1803,11 @@
                             </tbody>
                             <tfoot style="font-weight: bold; background-color: #f8f9fa;">
                                 <tr>
-                                    <td colspan="2">إجمالي اليوم | Günlük Toplam</td>
-                                    <td></td>
+                                    <td colspan="3">إجمالي اليوم | Günlük Toplam</td>
                                     <td id="totalPurchasesFooter">0 <span class="dollar">$</span></td>
-                                    <td colspan="3"></td>
+                                    <td colspan="2"></td>
+                                    <td id="totalPurchasesRemaining">0 <span class="dollar">$</span></td>
+                                    <td></td>
                                 </tr>
                             </tfoot>
                         </table>
@@ -1717,7 +1847,7 @@
                         </div>
                         <div class="form-group">
                             <label for="saleQuantity">كمية البيع (كغ) | Satış Miktarı (kg)</label>
-                            <input type="number" id="saleQuantity" class="form-control" step="0.01" min="0" required>
+                            <input type="number" id="saleQuantity" class="form-control" step="0.01" min="0" required oninput="updateSourceQuantitiesFromSale()">
                         </div>
                         <div class="form-group">
                             <label for="salePrice">سعر البيع (لكل كغ) | Satış Fiyatı (kg başına) <span class="dollar">$</span></label>
@@ -1727,7 +1857,7 @@
                         <!-- Multiple Purchase Sources Selection -->
                         <div class="multi-source-container">
                             <h4 style="color: var(--primary-color); margin-bottom: 15px;">اختيار مصادر الشراء | Alım Kaynaklarını Seçin:</h4>
-                            <p style="color: #666; margin-bottom: 15px;">اختر مصادر متعددة وحدد الكمية من كل مصدر. يمكنك تحديد الكمية الكاملة من المصدر الأول بالضغط على ✓</p>
+                            <p style="color: #666; margin-bottom: 15px;">اختر مصادر متعددة - الكمية تنسحب تلقائياً من الكمية المباعة | Çoklu kaynak seçin - miktar otomatik olarak satış miktarından çekilir</p>
                             
                             <div id="sourcesList" class="source-selection-grid">
                                 <!-- سيتم ملؤها بواسطة JavaScript -->
@@ -1842,55 +1972,211 @@
     </footer>
 
     <script>
-        // البيانات الأساسية
+        // البيانات الأساسية - إصلاح مشكلة الذاكرة
         let purchases = [];
         let sales = [];
         let currentSaleData = null;
+        let currentPurchaseForReceipt = null;
         let currentSaleForReceive = null;
         let selectedSources = [];
         let currentViewDate = new Date().toISOString().split('T')[0];
         
-        // تحميل البيانات من localStorage إذا كانت موجودة
+        // تحميل البيانات من localStorage بشكل صحيح
+        function loadDataFromStorage() {
+            try {
+                // تحميل المشتريات
+                const storedPurchases = localStorage.getItem('alanharPurchases');
+                if (storedPurchases) {
+                    purchases = JSON.parse(storedPurchases);
+                    console.log('تم تحميل المشتريات:', purchases.length);
+                } else {
+                    purchases = [];
+                    console.log('لا توجد مشتريات محفوظة');
+                }
+                
+                // تحميل المبيعات
+                const storedSales = localStorage.getItem('alanharSales');
+                if (storedSales) {
+                    sales = JSON.parse(storedSales);
+                    console.log('تم تحميل المبيعات:', sales.length);
+                } else {
+                    sales = [];
+                    console.log('لا توجد مبيعات محفوظة');
+                }
+                
+                // التحقق من صحة البيانات
+                if (!Array.isArray(purchases)) purchases = [];
+                if (!Array.isArray(sales)) sales = [];
+                
+            } catch (error) {
+                console.error('خطأ في تحميل البيانات:', error);
+                purchases = [];
+                sales = [];
+                
+                // محاولة إصلاح localStorage
+                try {
+                    localStorage.removeItem('alanharPurchases');
+                    localStorage.removeItem('alanharSales');
+                } catch (e) {
+                    console.error('لا يمكن مسح localStorage:', e);
+                }
+            }
+        }
+        
+        // حفظ البيانات مع التأكد من الصحة
+        function saveData() {
+            try {
+                // التأكد من أن البيانات مصفوفات
+                const purchasesToSave = Array.isArray(purchases) ? purchases : [];
+                const salesToSave = Array.isArray(sales) ? sales : [];
+                
+                localStorage.setItem('alanharPurchases', JSON.stringify(purchasesToSave));
+                localStorage.setItem('alanharSales', JSON.stringify(salesToSave));
+                
+                console.log('تم حفظ البيانات:', purchasesToSave.length, 'مشتريات', salesToSave.length, 'مبيعات');
+                return true;
+            } catch (error) {
+                console.error('خطأ في حفظ البيانات:', error);
+                return false;
+            }
+        }
+        
+        // تحديث الكمية المتبقية للمشتريات
+        function updatePurchasesRemaining() {
+            if (!Array.isArray(purchases) || !Array.isArray(sales)) return;
+            
+            purchases.forEach(purchase => {
+                // حساب الكمية المباعة من هذا المصدر
+                const relatedSales = sales.filter(sale => sale && sale.sourceId === purchase.id);
+                let totalSoldFromThisPurchase = 0;
+                
+                relatedSales.forEach(sale => {
+                    if (sale && sale.quantity) {
+                        totalSoldFromThisPurchase += sale.quantity;
+                    }
+                });
+                
+                // تحديث الكمية المتبقية
+                purchase.remaining = Math.max(0, (purchase.originalQuantity || purchase.quantity) - totalSoldFromThisPurchase);
+                
+                // التأكد من وجود الخصائص المطلوبة
+                if (purchase.remainingAmount === undefined) {
+                    purchase.remainingAmount = purchase.total - (purchase.paid || 0);
+                }
+                if (purchase.originalQuantity === undefined) {
+                    purchase.originalQuantity = purchase.quantity;
+                }
+                if (purchase.paid === undefined) {
+                    purchase.paid = 0;
+                }
+                if (purchase.payments === undefined) {
+                    purchase.payments = [];
+                }
+            });
+        }
+        
         document.addEventListener('DOMContentLoaded', function() {
+            console.log('بدء تحميل الصفحة...');
+            
+            // تحميل البيانات من localStorage
+            loadDataFromStorage();
+            
+            // تحديث الكمية المتبقية
+            updatePurchasesRemaining();
+            
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('purchaseDate').value = today;
             document.getElementById('reportDate').value = today;
             document.getElementById('currentDate').value = today;
             document.getElementById('receiveDate').value = today;
+            document.getElementById('receiptDate').value = today;
             currentViewDate = today;
             
             updateDateDisplay();
             
-            if (localStorage.getItem('alanharPurchases')) {
-                purchases = JSON.parse(localStorage.getItem('alanharPurchases'));
-            }
-            
-            if (localStorage.getItem('alanharSales')) {
-                sales = JSON.parse(localStorage.getItem('alanharSales'));
-            }
-            
+            // تحديث جميع الجداول
             updatePurchasesTable();
             updateSalesTable();
             updateDashboardStats();
             updatePurchaseSourcesList();
             updateCustomerRemainingList();
             
+            // إنشاء تقرير اليوم
             generateTodayReport();
             
+            // إضافة مستمعي الأحداث
             document.getElementById('amountPaid').addEventListener('input', updatePaymentRemaining);
+            document.getElementById('receiptAmount').addEventListener('input', updateReceiptAmount);
             document.getElementById('receiveAmount').addEventListener('input', updateReceiveAmount);
+            
+            // إضافة أزرار التحكم في الهيدر
+            addControlButtons();
+            
+            console.log('تم تحميل الصفحة بنجاح');
         });
+        
+        function addControlButtons() {
+            const header = document.querySelector('header .container');
+            if (!header) return;
+            
+            // إزالة الأزرار القديمة إذا وجدت
+            const oldButtons = header.querySelectorAll('.control-button');
+            oldButtons.forEach(btn => btn.remove());
+            
+            const resetButton = document.createElement('button');
+            resetButton.innerHTML = '<i class="fas fa-trash-alt"></i> حذف جميع البيانات | Tüm Verileri Sil';
+            resetButton.className = 'btn btn-danger no-print control-button';
+            resetButton.style.position = 'absolute';
+            resetButton.style.top = '25px';
+            resetButton.style.left = '25px';
+            resetButton.onclick = resetAllData;
+            
+            const exportButton = document.createElement('button');
+            exportButton.innerHTML = '<i class="fas fa-download"></i> تصدير البيانات | Verileri Dışa Aktar';
+            exportButton.className = 'btn btn-warning no-print control-button';
+            exportButton.style.position = 'absolute';
+            exportButton.style.top = '25px';
+            exportButton.style.right = '25px';
+            exportButton.onclick = exportData;
+            
+            const importInput = document.createElement('input');
+            importInput.type = 'file';
+            importInput.accept = '.json';
+            importInput.style.display = 'none';
+            importInput.id = 'importInput';
+            importInput.onchange = importData;
+            document.body.appendChild(importInput);
+            
+            const importButton = document.createElement('button');
+            importButton.innerHTML = '<i class="fas fa-upload"></i> استيراد البيانات | Verileri İçe Aktar';
+            importButton.className = 'btn btn-success no-print control-button';
+            importButton.style.position = 'absolute';
+            importButton.style.top = '80px';
+            importButton.style.right = '25px';
+            importButton.onclick = () => document.getElementById('importInput').click();
+            
+            header.style.position = 'relative';
+            header.appendChild(resetButton);
+            header.appendChild(exportButton);
+            header.appendChild(importButton);
+        }
         
         function updateDateDisplay() {
             const displayElement = document.getElementById('currentDateDisplay');
-            const dateObj = new Date(currentViewDate);
-            const formattedDate = dateObj.toLocaleDateString('ar-EG', {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            });
-            displayElement.textContent = `عرض بيانات: ${formattedDate} | Veriler gösteriliyor: ${currentViewDate}`;
+            if (!displayElement) return;
+            
+            try {
+                const dateObj = new Date(currentViewDate);
+                const formattedDate = dateObj.toLocaleDateString('ar-EG', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+                displayElement.textContent = `عرض بيانات: ${formattedDate} | Veriler gösteriliyor: ${currentViewDate}`;
+            } catch (e) {
+                displayElement.textContent = `عرض بيانات: ${currentViewDate}`;
+            }
         }
         
         // تحديث قائمة المتبقي على العملاء
@@ -1898,10 +2184,15 @@
             const customerRemainingList = document.getElementById('customerRemainingList');
             const noCustomerRemaining = document.getElementById('noCustomerRemaining');
             
+            if (!customerRemainingList || !noCustomerRemaining) return;
+            if (!Array.isArray(sales)) return;
+            
             // تجميع المبيعات حسب العميل
             const customerSales = {};
             
             sales.forEach(sale => {
+                if (!sale || !sale.customerName) return;
+                
                 if (!customerSales[sale.customerName]) {
                     customerSales[sale.customerName] = {
                         totalAmount: 0,
@@ -1912,13 +2203,13 @@
                     };
                 }
                 
-                customerSales[sale.customerName].totalAmount += sale.total;
-                customerSales[sale.customerName].totalPaid += sale.paid;
-                customerSales[sale.customerName].totalRemaining += sale.remaining;
+                customerSales[sale.customerName].totalAmount += sale.total || 0;
+                customerSales[sale.customerName].totalPaid += sale.paid || 0;
+                customerSales[sale.customerName].totalRemaining += sale.remaining || 0;
                 customerSales[sale.customerName].salesCount += 1;
                 
-                // تحديث آخر تاريخ بيع
-                if (new Date(sale.date) > new Date(customerSales[sale.customerName].lastSaleDate)) {
+                if (sale.date && (!customerSales[sale.customerName].lastSaleDate || 
+                    new Date(sale.date) > new Date(customerSales[sale.customerName].lastSaleDate))) {
                     customerSales[sale.customerName].lastSaleDate = sale.date;
                 }
             });
@@ -1944,12 +2235,12 @@
             
             customersWithRemaining.forEach(customerName => {
                 const customerData = customerSales[customerName];
-                const paidPercentage = (customerData.totalPaid / customerData.totalAmount) * 100;
+                const paidPercentage = customerData.totalAmount > 0 ? (customerData.totalPaid / customerData.totalAmount) * 100 : 0;
                 
                 let statusClass = 'status-pending';
                 let itemClass = '';
                 
-                if (paidPercentage === 100) {
+                if (paidPercentage >= 99.99) {
                     statusClass = 'status-paid';
                     itemClass = 'paid';
                 } else if (paidPercentage > 0) {
@@ -1961,9 +2252,9 @@
                 customerItem.className = `customer-remaining-item ${itemClass}`;
                 customerItem.innerHTML = `
                     <div class="customer-remaining-header">
-                        <div class="customer-name">${customerName}</div>
+                        <div class="customer-name">${escapeHTML(customerName)}</div>
                         <div class="customer-status ${statusClass}">
-                            ${paidPercentage === 100 ? 'مدفوع بالكامل' : 
+                            ${paidPercentage >= 99.99 ? 'مدفوع بالكامل' : 
                               paidPercentage > 0 ? 'مدفوع جزئياً' : 'غير مدفوع'}
                         </div>
                     </div>
@@ -1974,22 +2265,22 @@
                         </div>
                         <div class="customer-detail-item">
                             <span class="customer-detail-label">الإجمالي:</span>
-                            <span class="customer-detail-value">${customerData.totalAmount.toFixed(2)} <span class="dollar">$</span></span>
+                            <span class="customer-detail-value">${(customerData.totalAmount || 0).toFixed(2)} <span class="dollar">$</span></span>
                         </div>
                         <div class="customer-detail-item">
                             <span class="customer-detail-label">المدفوع:</span>
-                            <span class="customer-detail-value paid">${customerData.totalPaid.toFixed(2)} <span class="dollar">$</span></span>
+                            <span class="customer-detail-value paid">${(customerData.totalPaid || 0).toFixed(2)} <span class="dollar">$</span></span>
                         </div>
                         <div class="customer-detail-item">
                             <span class="customer-detail-label">المتبقي:</span>
-                            <span class="customer-detail-value remaining">${customerData.totalRemaining.toFixed(2)} <span class="dollar">$</span></span>
+                            <span class="customer-detail-value remaining">${(customerData.totalRemaining || 0).toFixed(2)} <span class="dollar">$</span></span>
                         </div>
                     </div>
                     <div class="customer-actions">
-                        <button class="btn-receive" onclick="receivePaymentFromCustomer('${customerName}')">
+                        <button class="btn-receive" onclick="receivePaymentFromCustomer('${escapeHTML(customerName)}')">
                             <i class="fas fa-money-bill-wave"></i> استلام دفعة
                         </button>
-                        <button class="btn btn-sm btn-info" onclick="viewCustomerDetails('${customerName}')">
+                        <button class="btn btn-sm btn-info" onclick="viewCustomerDetails('${escapeHTML(customerName)}')">
                             <i class="fas fa-eye"></i> التفاصيل
                         </button>
                     </div>
@@ -1998,39 +2289,39 @@
             });
         }
         
+        // دالة للهروب من HTML
+        function escapeHTML(str) {
+            if (!str) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+        
         function receivePaymentFromCustomer(customerName) {
+            if (!Array.isArray(sales)) return;
+            
             // الحصول على جميع مبيعات العميل
-            const customerSales = sales.filter(sale => sale.customerName === customerName && sale.remaining > 0);
+            const customerSales = sales.filter(sale => sale && sale.customerName === customerName && sale.remaining > 0);
             
             if (customerSales.length === 0) {
                 alert('لا توجد مبالغ متبقية لهذا العميل | Bu müşteri için kalan tutar yok');
                 return;
             }
             
-            // تجميع المبيعات حسب parentSaleId
-            const groupedSales = {};
-            customerSales.forEach(sale => {
-                if (!groupedSales[sale.parentSaleId]) {
-                    groupedSales[sale.parentSaleId] = {
-                        customerName: sale.customerName,
-                        sources: []
-                    };
-                }
-                groupedSales[sale.parentSaleId].sources.push(sale);
-            });
-            
-            // اختيار أول مجموعة
-            const firstGroupId = Object.keys(groupedSales)[0];
-            const firstGroup = groupedSales[firstGroupId];
-            
-            if (firstGroup && firstGroup.sources.length > 0) {
-                openReceivePaymentModal(firstGroup.sources[0].id);
+            // اختيار أول عملية بيع
+            if (customerSales[0] && customerSales[0].id) {
+                openReceivePaymentModal(customerSales[0].id);
             }
         }
         
         function viewCustomerDetails(customerName) {
+            if (!Array.isArray(sales)) return;
+            
             // الحصول على جميع مبيعات العميل
-            const customerSales = sales.filter(sale => sale.customerName === customerName);
+            const customerSales = sales.filter(sale => sale && sale.customerName === customerName);
             
             let totalAmount = 0;
             let totalPaid = 0;
@@ -2038,29 +2329,29 @@
             let salesDetails = '';
             
             customerSales.forEach((sale, index) => {
-                totalAmount += sale.total;
-                totalPaid += sale.paid;
-                totalRemaining += sale.remaining;
+                totalAmount += sale.total || 0;
+                totalPaid += sale.paid || 0;
+                totalRemaining += sale.remaining || 0;
                 
                 salesDetails += `
                     <tr>
                         <td>${index + 1}</td>
-                        <td>${sale.date}</td>
-                        <td>${sale.quantity.toFixed(2)} كغ</td>
-                        <td>${sale.salePrice.toFixed(2)} <span class="dollar">$</span></td>
-                        <td>${sale.total.toFixed(2)} <span class="dollar">$</span></td>
-                        <td>${sale.paid.toFixed(2)} <span class="dollar">$</span></td>
-                        <td>${sale.remaining.toFixed(2)} <span class="dollar">$</span></td>
+                        <td>${sale.date || ''}</td>
+                        <td>${(sale.quantity || 0).toFixed(2)} كغ</td>
+                        <td>${(sale.salePrice || 0).toFixed(2)} <span class="dollar">$</span></td>
+                        <td>${(sale.total || 0).toFixed(2)} <span class="dollar">$</span></td>
+                        <td>${(sale.paid || 0).toFixed(2)} <span class="dollar">$</span></td>
+                        <td>${(sale.remaining || 0).toFixed(2)} <span class="dollar">$</span></td>
                     </tr>
                 `;
             });
             
-            const paidPercentage = (totalPaid / totalAmount) * 100;
+            const paidPercentage = totalAmount > 0 ? (totalPaid / totalAmount) * 100 : 0;
             
             const detailsHTML = `
                 <div style="background: white; padding: 25px; border-radius: var(--border-radius); margin-top: 20px;">
                     <h3 style="color: var(--primary-color); margin-bottom: 20px; text-align: center;">
-                        <i class="fas fa-user"></i> تفاصيل العميل: ${customerName}
+                        <i class="fas fa-user"></i> تفاصيل العميل: ${escapeHTML(customerName)}
                     </h3>
                     
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 25px;">
@@ -2115,7 +2406,7 @@
                     </div>
                     
                     <div style="text-align: center; margin-top: 20px;">
-                        <button class="btn btn-warning" onclick="receivePaymentFromCustomer('${customerName}')">
+                        <button class="btn btn-warning" onclick="receivePaymentFromCustomer('${escapeHTML(customerName)}')">
                             <i class="fas fa-money-bill-wave"></i> استلام دفعة جديدة من هذا العميل
                         </button>
                     </div>
@@ -2129,7 +2420,7 @@
                 <div class="modal-content" style="max-width: 900px;">
                     <div class="modal-header">
                         <h3>تفاصيل العميل | Müşteri Detayları</h3>
-                        <button class="close-modal" onclick="this.parentElement.parentElement.remove()">
+                        <button class="close-modal" onclick="this.parentElement.parentElement.parentElement.remove()">
                             <i class="fas fa-times"></i>
                         </button>
                     </div>
@@ -2142,30 +2433,47 @@
             document.body.appendChild(modal);
         }
         
+        // إضافة شراء جديد مع دفع
         document.getElementById('purchaseForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
             const quantity = parseFloat(document.getElementById('purchaseQuantity').value);
             const price = parseFloat(document.getElementById('purchasePrice').value);
             const date = document.getElementById('purchaseDate').value;
+            const paid = parseFloat(document.getElementById('purchasePaid').value) || 0;
             
             if (quantity <= 0 || price <= 0) {
                 alert('الرجاء إدخال قيم صحيحة أكبر من الصفر | Lütfen sıfırdan büyük geçerli değerler girin');
                 return;
             }
             
+            const total = quantity * price;
+            if (paid > total) {
+                alert('المبلغ المدفوع لا يمكن أن يتجاوز الإجمالي | Ödenen tutar toplamı aşamaz');
+                return;
+            }
+            
             const purchase = {
-                id: Date.now(),
+                id: Date.now() + Math.floor(Math.random() * 1000),
                 quantity: quantity,
+                originalQuantity: quantity,
                 price: price,
-                total: quantity * price,
+                total: total,
                 date: date,
                 remaining: quantity,
-                originalQuantity: quantity
+                paid: paid,
+                remainingAmount: total - paid,
+                payments: paid > 0 ? [{
+                    amount: paid,
+                    date: date,
+                    timestamp: new Date().toISOString()
+                }] : []
             };
             
+            if (!Array.isArray(purchases)) purchases = [];
             purchases.push(purchase);
             saveData();
+            
             updatePurchasesTable();
             updateDashboardStats();
             updatePurchaseSourcesList();
@@ -2176,19 +2484,59 @@
             alert('تم تسجيل عملية الشراء بنجاح! | Alım başarıyla kaydedildi!');
         });
         
+        // تحديث قائمة مصادر الشراء
         function updatePurchaseSourcesList() {
             const sourcesList = document.getElementById('sourcesList');
+            if (!sourcesList) return;
+            
             sourcesList.innerHTML = '';
             
-            const activePurchases = purchases.filter(purchase => purchase.remaining > 0);
+            if (!Array.isArray(purchases)) return;
+            
+            // تحديث currentViewDate ليكون تاريخ اليوم إذا لم يتم تحديد تاريخ
+            if (!currentViewDate) {
+                currentViewDate = new Date().toISOString().split('T')[0];
+            }
+            
+            // إعادة حساب الكمية المتبقية لكل عملية شراء
+            if (Array.isArray(sales)) {
+                purchases.forEach(purchase => {
+                    const relatedSales = sales.filter(sale => sale && sale.sourceId === purchase.id);
+                    let totalSoldFromThisPurchase = 0;
+                    
+                    relatedSales.forEach(sale => {
+                        if (sale && sale.quantity) {
+                            totalSoldFromThisPurchase += sale.quantity;
+                        }
+                    });
+                    
+                    purchase.remaining = Math.max(0, (purchase.originalQuantity || purchase.quantity) - totalSoldFromThisPurchase);
+                });
+            }
+            
+            const activePurchases = purchases.filter(purchase => purchase && purchase.remaining > 0);
+            
+            if (activePurchases.length === 0) {
+                sourcesList.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 20px; color: #666;">
+                        <i class="fas fa-box-open" style="font-size: 2rem; margin-bottom: 10px;"></i>
+                        <p>لا توجد مشتريات متاحة للبيع | Satış için mevcut alım yok</p>
+                        <p style="margin-top: 10px; font-size: 0.9rem;">جميع الكميات تم بيعها أو لم يتم إضافة مشتريات بعد | Tüm miktarlar satıldı veya henüz alım eklenmedi</p>
+                    </div>
+                `;
+                return;
+            }
             
             activePurchases.forEach(purchase => {
-                const isSelected = selectedSources.find(s => s.id === purchase.id);
+                const isSelected = selectedSources.find(s => s && s.id === purchase.id);
                 
-                const remainingPercentage = (purchase.remaining / purchase.originalQuantity) * 100;
+                const remainingPercentage = (purchase.remaining / (purchase.originalQuantity || purchase.quantity)) * 100;
                 let remainingClass = 'remaining-high';
-                if (remainingPercentage < 30) remainingClass = 'remaining-low';
+                if (remainingPercentage === 0) remainingClass = 'remaining-zero';
+                else if (remainingPercentage < 30) remainingClass = 'remaining-low';
                 else if (remainingPercentage < 60) remainingClass = 'remaining-medium';
+                
+                const paidPercentage = purchase.total > 0 ? ((purchase.paid || 0) / purchase.total) * 100 : 0;
                 
                 const sourceItem = document.createElement('div');
                 sourceItem.className = `source-checkbox-item ${isSelected ? 'selected' : ''}`;
@@ -2197,28 +2545,25 @@
                            style="display: none;" onchange="toggleSourceSelection(${purchase.id})">
                     <div class="source-checkbox-content">
                         <h5>مصدر #${purchase.id}</h5>
-                        <p>الكمية المتبقية: <span class="remaining-quantity ${remainingClass}"><strong>${purchase.remaining.toFixed(2)} كغ</strong></span></p>
-                        <p>الكمية الأصلية: ${purchase.originalQuantity.toFixed(2)} كغ</p>
-                        <p>سعر الشراء: <strong>${purchase.price.toFixed(2)}$ للكغ</strong></p>
-                        <p>تاريخ الشراء: ${purchase.date}</p>
+                        <p>الكمية المتبقية: <span class="remaining-quantity ${remainingClass}"><strong>${(purchase.remaining || 0).toFixed(2)} كغ</strong></span></p>
+                        <p>الكمية الأصلية: ${(purchase.originalQuantity || purchase.quantity || 0).toFixed(2)} كغ</p>
+                        <p>سعر الشراء: <strong>${(purchase.price || 0).toFixed(2)}$ للكغ</strong></p>
+                        <p>السداد: ${paidPercentage.toFixed(1)}% (${(purchase.paid || 0).toFixed(2)}$ من ${(purchase.total || 0).toFixed(2)}$)</p>
+                        <p>تاريخ الشراء: ${purchase.date || ''}</p>
                         ${isSelected ? `
                             <div style="margin-top: 8px;">
                                 <label>الكمية المطلوبة:</label>
                                 <input type="number" class="source-quantity-input" id="source_qty_${purchase.id}" 
-                                       value="${isSelected.quantity}" step="0.01" min="0.01" max="${purchase.remaining}" 
+                                       value="${isSelected.quantity || 0}" step="0.01" min="0.01" max="${purchase.remaining || 0}" 
                                        onchange="updateSourceQuantity(${purchase.id}, this.value)">
-                                <button class="btn-full-quantity" onclick="setFullQuantity(${purchase.id})" title="الكمية الكاملة | Tam Miktar">
-                                    <i class="fas fa-check"></i> الكمية الكاملة
-                                </button>
                             </div>
                         ` : ''}
                     </div>
-                    ${isSelected ? `<div class="source-order">${selectedSources.findIndex(s => s.id === purchase.id) + 1}</div>` : ''}
+                    ${isSelected ? `<div class="source-order">${(selectedSources.findIndex(s => s.id === purchase.id) + 1) || 1}</div>` : ''}
                 `;
                 
                 sourceItem.onclick = function(e) {
-                    if (!e.target.classList.contains('source-quantity-input') && 
-                        !e.target.classList.contains('btn-full-quantity')) {
+                    if (!e.target.classList.contains('source-quantity-input')) {
                         toggleSourceSelection(purchase.id);
                     }
                 };
@@ -2226,34 +2571,45 @@
                 sourcesList.appendChild(sourceItem);
             });
             
-            if (sourcesList.children.length === 0) {
-                sourcesList.innerHTML = `
-                    <div style="grid-column: 1 / -1; text-align: center; padding: 20px; color: #666;">
-                        <i class="fas fa-box-open" style="font-size: 2rem; margin-bottom: 10px;"></i>
-                        <p>لا توجد مشتريات متاحة للبيع | Satış için mevcut alım yok</p>
-                        <p style="margin-top: 10px; font-size: 0.9rem;">جميع الكميات تم بيعها أو لم يتم إضافة مشتريات بعد | Tüm miktarlar satıldı veya henüz alım eklenmedi</p>
-                    </div>
-                `;
-            }
-            
             updateSelectedSourcesDisplay();
         }
         
         function toggleSourceSelection(purchaseId) {
-            const purchase = purchases.find(p => p.id === purchaseId);
+            const purchase = purchases.find(p => p && p.id === purchaseId);
             if (!purchase) return;
             
-            const index = selectedSources.findIndex(s => s.id === purchaseId);
+            const index = selectedSources.findIndex(s => s && s.id === purchaseId);
             
             if (index === -1) {
-                const defaultQuantity = purchase.remaining;
+                const saleQuantity = parseFloat(document.getElementById('saleQuantity').value) || 0;
+                let defaultQuantity = 0;
+                
+                if (saleQuantity > 0) {
+                    let totalSelectedQuantity = selectedSources.reduce((sum, source) => sum + (source.quantity || 0), 0);
+                    let remainingSaleQuantity = saleQuantity - totalSelectedQuantity;
+                    
+                    if (remainingSaleQuantity > 0) {
+                        defaultQuantity = Math.min(purchase.remaining || 0, remainingSaleQuantity);
+                    } else {
+                        defaultQuantity = purchase.remaining || 0;
+                    }
+                } else {
+                    defaultQuantity = purchase.remaining || 0;
+                }
+                
                 selectedSources.push({
                     id: purchase.id,
                     quantity: defaultQuantity,
-                    price: purchase.price,
-                    purchaseDate: purchase.date,
-                    remaining: purchase.remaining
+                    price: purchase.price || 0,
+                    purchaseDate: purchase.date || '',
+                    remaining: purchase.remaining || 0,
+                    paidPercentage: purchase.total > 0 ? ((purchase.paid || 0) / purchase.total) * 100 : 0
                 });
+                
+                const saleQuantityInput = document.getElementById('saleQuantity');
+                if (saleQuantityInput && (!saleQuantityInput.value || parseFloat(saleQuantityInput.value) === 0)) {
+                    saleQuantityInput.value = defaultQuantity.toFixed(2);
+                }
             } else {
                 selectedSources.splice(index, 1);
             }
@@ -2263,36 +2619,54 @@
         
         function updateSourceQuantity(purchaseId, quantity) {
             const quantityNum = parseFloat(quantity);
-            const purchase = purchases.find(p => p.id === purchaseId);
+            const purchase = purchases.find(p => p && p.id === purchaseId);
             
             if (!purchase || isNaN(quantityNum) || quantityNum <= 0) {
                 return;
             }
             
-            if (quantityNum > purchase.remaining) {
-                alert(`الكمية المطلوبة (${quantityNum.toFixed(2)} كغ) تتجاوز الكمية المتبقية في المصدر (${purchase.remaining.toFixed(2)} كغ) | İstenen miktar (${quantityNum.toFixed(2)} kg) kaynaktaki kalan miktarı (${purchase.remaining.toFixed(2)} kg) aşıyor`);
-                document.getElementById(`source_qty_${purchaseId}`).value = purchase.remaining.toFixed(2);
-                quantityNum = purchase.remaining;
+            if (quantityNum > (purchase.remaining || 0)) {
+                alert(`الكمية المطلوبة (${quantityNum.toFixed(2)} كغ) تتجاوز الكمية المتبقية في المصدر (${(purchase.remaining || 0).toFixed(2)} كغ) | İstenen miktar (${quantityNum.toFixed(2)} kg) kaynaktaki kalan miktarı (${(purchase.remaining || 0).toFixed(2)} kg) aşıyor`);
+                const input = document.getElementById(`source_qty_${purchaseId}`);
+                if (input) input.value = (purchase.remaining || 0).toFixed(2);
+                return;
             }
             
-            const source = selectedSources.find(s => s.id === purchaseId);
+            const source = selectedSources.find(s => s && s.id === purchaseId);
             if (source) {
                 source.quantity = quantityNum;
                 updateSelectedSourcesDisplay();
             }
         }
         
-        function setFullQuantity(purchaseId) {
-            const purchase = purchases.find(p => p.id === purchaseId);
-            if (!purchase) return;
+        function updateSourceQuantitiesFromSale() {
+            const saleQuantity = parseFloat(document.getElementById('saleQuantity').value) || 0;
             
-            document.getElementById(`source_qty_${purchaseId}`).value = purchase.remaining.toFixed(2);
-            updateSourceQuantity(purchaseId, purchase.remaining);
+            if (selectedSources.length === 0 || saleQuantity === 0) return;
+            
+            let totalSelected = selectedSources.reduce((sum, source) => sum + (source.quantity || 0), 0);
+            
+            if (Math.abs(saleQuantity - totalSelected) < 0.01) return;
+            
+            selectedSources.forEach(source => {
+                const purchase = purchases.find(p => p && p.id === source.id);
+                if (purchase) {
+                    let share = (saleQuantity / selectedSources.length);
+                    share = Math.min(share, purchase.remaining || 0);
+                    source.quantity = share;
+                    const input = document.getElementById(`source_qty_${source.id}`);
+                    if (input) input.value = share.toFixed(2);
+                }
+            });
+            
+            updateSelectedSourcesDisplay();
         }
         
         function updateSelectedSourcesDisplay() {
             const selectedSourcesList = document.getElementById('selectedSourcesList');
             const summaryDiv = document.getElementById('selectedSourcesSummary');
+            
+            if (!selectedSourcesList || !summaryDiv) return;
             
             selectedSourcesList.innerHTML = '';
             
@@ -2305,17 +2679,17 @@
             let totalPurchaseCost = 0;
             
             selectedSources.forEach((source, index) => {
-                const purchase = purchases.find(p => p.id === source.id);
+                const purchase = purchases.find(p => p && p.id === source.id);
                 if (!purchase) return;
                 
-                totalSelectedQuantity += source.quantity;
-                totalPurchaseCost += source.quantity * source.price;
+                totalSelectedQuantity += source.quantity || 0;
+                totalPurchaseCost += (source.quantity || 0) * (source.price || 0);
                 
-                const percentage = (source.quantity / purchase.remaining) * 100;
+                const percentage = purchase.remaining > 0 ? ((source.quantity || 0) / purchase.remaining) * 100 : 0;
                 let remainingClass = 'remaining-high';
-                if (percentage > 80) remainingClass = 'remaining-high';
-                else if (percentage > 50) remainingClass = 'remaining-medium';
-                else remainingClass = 'remaining-low';
+                if (percentage === 0) remainingClass = 'remaining-zero';
+                else if (percentage < 30) remainingClass = 'remaining-low';
+                else if (percentage < 60) remainingClass = 'remaining-medium';
                 
                 const sourceItem = document.createElement('div');
                 sourceItem.className = 'selected-source-item';
@@ -2323,9 +2697,9 @@
                     <div class="source-order-badge">${index + 1}</div>
                     <div class="selected-source-info">
                         <strong>مصدر #${source.id}</strong>
-                        <div>الكمية: <span class="remaining-quantity ${remainingClass}">${source.quantity.toFixed(2)} كغ</span> من ${purchase.remaining.toFixed(2)} كغ</div>
-                        <div>السعر: ${source.price.toFixed(2)}$ للكغ</div>
-                        <div>الإجمالي الشرائي: ${(source.quantity * source.price).toFixed(2)}$</div>
+                        <div>الكمية: <span class="remaining-quantity ${remainingClass}">${(source.quantity || 0).toFixed(2)} كغ</span> من ${(purchase.remaining || 0).toFixed(2)} كغ</div>
+                        <div>السعر: ${(source.price || 0).toFixed(2)}$ للكغ</div>
+                        <div>الإجمالي الشرائي: ${((source.quantity || 0) * (source.price || 0)).toFixed(2)}$</div>
                     </div>
                     <div class="selected-source-actions">
                         <button class="btn-remove-source" onclick="removeSelectedSource(${index})" title="حذف المصدر | Kaynağı Sil">
@@ -2347,14 +2721,19 @@
             summaryDiv.style.display = 'block';
             
             const saleQuantityInput = document.getElementById('saleQuantity');
-            if (!saleQuantityInput.value || parseFloat(saleQuantityInput.value) !== totalSelectedQuantity) {
-                saleQuantityInput.value = totalSelectedQuantity.toFixed(2);
+            if (saleQuantityInput) {
+                const currentVal = parseFloat(saleQuantityInput.value) || 0;
+                if (Math.abs(currentVal - totalSelectedQuantity) > 0.01) {
+                    saleQuantityInput.value = totalSelectedQuantity.toFixed(2);
+                }
             }
         }
         
         function removeSelectedSource(index) {
-            selectedSources.splice(index, 1);
-            updatePurchaseSourcesList();
+            if (index >= 0 && index < selectedSources.length) {
+                selectedSources.splice(index, 1);
+                updatePurchaseSourcesList();
+            }
         }
         
         document.getElementById('saleForm').addEventListener('submit', function(e) {
@@ -2378,8 +2757,8 @@
             let totalPurchaseCost = 0;
             
             selectedSources.forEach(source => {
-                totalSelectedQuantity += source.quantity;
-                totalPurchaseCost += source.quantity * source.price;
+                totalSelectedQuantity += source.quantity || 0;
+                totalPurchaseCost += (source.quantity || 0) * (source.price || 0);
             });
             
             if (Math.abs(saleQuantity - totalSelectedQuantity) > 0.01) {
@@ -2398,7 +2777,7 @@
                 selectedSources: JSON.parse(JSON.stringify(selectedSources)),
                 profit: totalSaleAmount - totalPurchaseCost,
                 date: currentViewDate,
-                parentSaleId: Date.now()
+                parentSaleId: Date.now() + Math.floor(Math.random() * 1000)
             };
             
             openPaymentModal();
@@ -2407,12 +2786,12 @@
         function openPaymentModal() {
             if (!currentSaleData) return;
             
-            document.getElementById('modalCustomerName').textContent = currentSaleData.customerName;
-            document.getElementById('modalSaleQuantity').textContent = currentSaleData.quantity.toFixed(2) + ' كغ';
-            document.getElementById('modalSalePrice').innerHTML = currentSaleData.price.toFixed(2) + ' <span class="dollar">$</span>';
-            document.getElementById('modalTotalAmount').innerHTML = currentSaleData.total.toFixed(2) + ' <span class="dollar">$</span>';
+            document.getElementById('modalCustomerName').textContent = currentSaleData.customerName || '';
+            document.getElementById('modalSaleQuantity').textContent = (currentSaleData.quantity || 0).toFixed(2) + ' كغ';
+            document.getElementById('modalSalePrice').innerHTML = (currentSaleData.price || 0).toFixed(2) + ' <span class="dollar">$</span>';
+            document.getElementById('modalTotalAmount').innerHTML = (currentSaleData.total || 0).toFixed(2) + ' <span class="dollar">$</span>';
             
-            document.getElementById('paymentDate').textContent = currentViewDate;
+            document.getElementById('paymentDate').textContent = currentViewDate || '';
             document.getElementById('amountPaid').value = '0';
             document.getElementById('paymentRemaining').classList.remove('active');
             
@@ -2429,8 +2808,8 @@
         function updatePaymentRemaining() {
             if (!currentSaleData) return;
             
-            const amountPaid = parseFloat(this.value) || 0;
-            const remainingAmount = currentSaleData.total - amountPaid;
+            const amountPaid = parseFloat(document.getElementById('amountPaid').value) || 0;
+            const remainingAmount = (currentSaleData.total || 0) - amountPaid;
             
             document.getElementById('remainingAmount').innerHTML = remainingAmount.toFixed(2) + ' <span class="dollar">$</span>';
             document.getElementById('actualAmount').innerHTML = amountPaid.toFixed(2) + ' <span class="dollar">$</span>';
@@ -2446,64 +2825,64 @@
             if (!currentSaleData) return;
             
             const amountPaid = parseFloat(document.getElementById('amountPaid').value) || 0;
-            const remainingAmount = currentSaleData.total - amountPaid;
+            const remainingAmount = (currentSaleData.total || 0) - amountPaid;
             
             if (amountPaid < 0) {
                 alert('المبلغ المدفوع يجب أن يكون أكبر من أو يساوي صفر | Ödenen tutar sıfırdan büyük veya eşit olmalıdır');
                 return;
             }
             
-            if (amountPaid > currentSaleData.total) {
+            if (amountPaid > (currentSaleData.total || 0)) {
                 alert('المبلغ المدفوع لا يمكن أن يتجاوز المبلغ الإجمالي | Ödenen tutar toplam tutarı aşamaz');
                 return;
             }
             
-            // تحديث الكمية المتبقية من المشتريات المختارة
+            if (!Array.isArray(sales)) sales = [];
+            
             currentSaleData.selectedSources.forEach(source => {
-                const purchase = purchases.find(p => p.id === source.id);
+                const purchase = purchases.find(p => p && p.id === source.id);
                 if (purchase) {
-                    purchase.remaining -= source.quantity;
+                    purchase.remaining = (purchase.remaining || 0) - (source.quantity || 0);
                     if (purchase.remaining < 0) purchase.remaining = 0;
                 }
             });
             
-            // إنشاء سجل منفصل لكل مصدر مع ربحه الخاص
             currentSaleData.selectedSources.forEach((source, index) => {
-                const purchase = purchases.find(p => p.id === source.id);
+                const purchase = purchases.find(p => p && p.id === source.id);
                 if (!purchase) return;
                 
-                const sourceProfit = (currentSaleData.price - source.price) * source.quantity;
-                const sourceTotal = source.quantity * currentSaleData.price;
+                const sourceProfit = ((currentSaleData.price || 0) - (source.price || 0)) * (source.quantity || 0);
+                const sourceTotal = (source.quantity || 0) * (currentSaleData.price || 0);
                 
-                // توزيع المبلغ المدفوع على المصادر حسب نسبة كل مصدر
-                const sourceRatio = source.quantity / currentSaleData.quantity;
+                const sourceRatio = (source.quantity || 0) / (currentSaleData.quantity || 1);
                 const sourcePaid = amountPaid * sourceRatio;
                 const sourceRemaining = sourceTotal - sourcePaid;
                 
                 const sale = {
-                    id: Date.now() + index,
-                    customerName: currentSaleData.customerName,
+                    id: Date.now() + Math.floor(Math.random() * 1000) + index,
+                    customerName: currentSaleData.customerName || '',
                     sourceId: source.id,
                     sourceIndex: index + 1,
-                    quantity: source.quantity,
-                    purchasePrice: source.price,
-                    salePrice: currentSaleData.price,
-                    profitPerUnit: currentSaleData.price - source.price,
+                    quantity: source.quantity || 0,
+                    purchasePrice: source.price || 0,
+                    salePrice: currentSaleData.price || 0,
+                    profitPerUnit: (currentSaleData.price || 0) - (source.price || 0),
                     profit: sourceProfit,
                     total: sourceTotal,
                     paid: sourcePaid,
                     remaining: sourceRemaining,
-                    purchaseDate: source.purchaseDate,
+                    purchaseDate: source.purchaseDate || '',
                     selectedSources: [source],
                     date: currentViewDate,
                     status: sourceRemaining > 0 ? 'pending' : 'completed',
-                    parentSaleId: currentSaleData.parentSaleId
+                    parentSaleId: currentSaleData.parentSaleId || Date.now()
                 };
                 
                 sales.push(sale);
             });
             
             saveData();
+            
             updatePurchasesTable();
             updateSalesTable();
             updateDashboardStats();
@@ -2519,12 +2898,89 @@
             alert('تم تسجيل عملية البيع بنجاح! | Satış başarıyla kaydedildi!');
         }
         
+        function openPurchaseReceiptModal(purchaseId) {
+            const purchase = purchases.find(p => p && p.id === purchaseId);
+            if (!purchase) return;
+            
+            currentPurchaseForReceipt = purchase;
+            
+            document.getElementById('receiptPurchaseId').textContent = purchase.id || '';
+            document.getElementById('receiptPurchaseQuantity').textContent = (purchase.quantity || 0).toFixed(2) + ' كغ';
+            document.getElementById('receiptPurchasePrice').innerHTML = (purchase.price || 0).toFixed(2) + ' <span class="dollar">$</span>';
+            document.getElementById('receiptPurchaseTotal').innerHTML = (purchase.total || 0).toFixed(2) + ' <span class="dollar">$</span>';
+            document.getElementById('receiptPurchasePaid').innerHTML = (purchase.paid || 0).toFixed(2) + ' <span class="dollar">$</span>';
+            document.getElementById('receiptPurchaseRemaining').innerHTML = (purchase.remainingAmount || 0).toFixed(2) + ' <span class="dollar">$</span>';
+            
+            document.getElementById('receiptDate').value = new Date().toISOString().split('T')[0];
+            document.getElementById('receiptAmount').value = (purchase.remainingAmount || 0).toFixed(2);
+            
+            document.getElementById('purchaseReceiptModal').classList.add('active');
+        }
+        
+        function closePurchaseReceiptModal() {
+            document.getElementById('purchaseReceiptModal').classList.remove('active');
+            currentPurchaseForReceipt = null;
+        }
+        
+        function updateReceiptAmount() {
+            if (!currentPurchaseForReceipt) return;
+            
+            const receiptAmount = parseFloat(document.getElementById('receiptAmount').value) || 0;
+            const maxAmount = currentPurchaseForReceipt.remainingAmount || 0;
+            
+            if (receiptAmount > maxAmount) {
+                document.getElementById('receiptAmount').value = maxAmount.toFixed(2);
+                alert(`لا يمكن استلام أكثر من المبلغ المتبقي (${maxAmount.toFixed(2)}$) | Kalan tutardan (${maxAmount.toFixed(2)}$) fazlası alınamaz`);
+            }
+        }
+        
+        function completePurchaseReceipt() {
+            if (!currentPurchaseForReceipt) return;
+            
+            const receiptAmount = parseFloat(document.getElementById('receiptAmount').value) || 0;
+            const receiptDate = document.getElementById('receiptDate').value;
+            
+            if (receiptAmount <= 0) {
+                alert('الرجاء إدخال مبلغ صالح للاستلام | Lütfen geçerli bir alınacak tutar girin');
+                return;
+            }
+            
+            if (receiptAmount > (currentPurchaseForReceipt.remainingAmount || 0)) {
+                alert(`لا يمكن استلام أكثر من المبلغ المتبقي (${(currentPurchaseForReceipt.remainingAmount || 0).toFixed(2)}$) | Kalan tutardan (${(currentPurchaseForReceipt.remainingAmount || 0).toFixed(2)}$) fazlası alınamaz`);
+                return;
+            }
+            
+            const purchaseIndex = purchases.findIndex(p => p && p.id === currentPurchaseForReceipt.id);
+            if (purchaseIndex !== -1) {
+                purchases[purchaseIndex].paid = (purchases[purchaseIndex].paid || 0) + receiptAmount;
+                purchases[purchaseIndex].remainingAmount = (purchases[purchaseIndex].total || 0) - (purchases[purchaseIndex].paid || 0);
+                
+                if (!purchases[purchaseIndex].payments) {
+                    purchases[purchaseIndex].payments = [];
+                }
+                
+                purchases[purchaseIndex].payments.push({
+                    amount: receiptAmount,
+                    date: receiptDate,
+                    timestamp: new Date().toISOString()
+                });
+            }
+            
+            saveData();
+            updatePurchasesTable();
+            updateDashboardStats();
+            updatePurchaseSourcesList();
+            
+            closePurchaseReceiptModal();
+            
+            alert(`تم استلام مبلغ ${receiptAmount.toFixed(2)}$ بنجاح! | ${receiptAmount.toFixed(2)}$ tutarı başarıyla alındı!`);
+        }
+        
         function openReceivePaymentModal(saleId) {
-            const sale = sales.find(s => s.id === saleId);
+            const sale = sales.find(s => s && s.id === saleId);
             if (!sale) return;
             
-            // الحصول على جميع مبيعات نفس parentSaleId
-            const allSourcesSales = sales.filter(s => s.parentSaleId === sale.parentSaleId);
+            const allSourcesSales = sales.filter(s => s && s.parentSaleId === sale.parentSaleId);
             
             if (allSourcesSales.length === 0) return;
             
@@ -2535,20 +2991,19 @@
                 allSources: allSourcesSales
             };
             
-            // حساب الإجماليات من جميع المصادر
             let totalQuantity = 0;
             let totalAmount = 0;
             let totalPaid = 0;
             let totalRemaining = 0;
             
             allSourcesSales.forEach(sourceSale => {
-                totalQuantity += sourceSale.quantity;
-                totalAmount += sourceSale.total;
-                totalPaid += sourceSale.paid;
-                totalRemaining += sourceSale.remaining;
+                totalQuantity += sourceSale.quantity || 0;
+                totalAmount += sourceSale.total || 0;
+                totalPaid += sourceSale.paid || 0;
+                totalRemaining += sourceSale.remaining || 0;
             });
             
-            document.getElementById('receiveCustomerName').textContent = sale.customerName;
+            document.getElementById('receiveCustomerName').textContent = sale.customerName || '';
             document.getElementById('receiveSaleQuantity').textContent = totalQuantity.toFixed(2) + ' كغ';
             document.getElementById('receiveTotalAmount').innerHTML = totalAmount.toFixed(2) + ' <span class="dollar">$</span>';
             document.getElementById('receivePaidAmount').innerHTML = totalPaid.toFixed(2) + ' <span class="dollar">$</span>';
@@ -2566,13 +3021,13 @@
         }
         
         function updateReceiveAmount() {
-            if (!currentSaleForReceive) return;
+            if (!currentSaleForReceive || !currentSaleForReceive.allSources) return;
             
-            const receiveAmount = parseFloat(this.value) || 0;
-            const maxAmount = currentSaleForReceive.allSources.reduce((sum, sale) => sum + sale.remaining, 0);
+            const receiveAmount = parseFloat(document.getElementById('receiveAmount').value) || 0;
+            const maxAmount = currentSaleForReceive.allSources.reduce((sum, sale) => sum + (sale.remaining || 0), 0);
             
             if (receiveAmount > maxAmount) {
-                this.value = maxAmount.toFixed(2);
+                document.getElementById('receiveAmount').value = maxAmount.toFixed(2);
                 alert(`لا يمكن استلام أكثر من المبلغ المتبقي (${maxAmount.toFixed(2)}$) | Kalan tutardan (${maxAmount.toFixed(2)}$) fazlası alınamaz`);
             }
         }
@@ -2588,24 +3043,22 @@
                 return;
             }
             
-            // حساب إجمالي المتبقي من جميع المصادر
-            const totalRemaining = currentSaleForReceive.allSources.reduce((sum, sale) => sum + sale.remaining, 0);
+            const totalRemaining = currentSaleForReceive.allSources.reduce((sum, sale) => sum + (sale.remaining || 0), 0);
             
             if (receiveAmount > totalRemaining) {
                 alert(`لا يمكن استلام أكثر من المبلغ المتبقي (${totalRemaining.toFixed(2)}$) | Kalan tutardan (${totalRemaining.toFixed(2)}$) fazlası alınamaz`);
                 return;
             }
             
-            // توزيع المبلغ المستلم على جميع المصادر بنسبة كل مصدر
             currentSaleForReceive.allSources.forEach(sourceSale => {
-                const sourceIndex = sales.findIndex(s => s.id === sourceSale.id);
+                const sourceIndex = sales.findIndex(s => s && s.id === sourceSale.id);
                 if (sourceIndex !== -1) {
-                    const sourceRatio = sourceSale.remaining / totalRemaining;
+                    const sourceRatio = totalRemaining > 0 ? ((sourceSale.remaining || 0) / totalRemaining) : 0;
                     const sourceReceiveAmount = receiveAmount * sourceRatio;
                     
-                    sales[sourceIndex].paid += sourceReceiveAmount;
-                    sales[sourceIndex].remaining = sales[sourceIndex].total - sales[sourceIndex].paid;
-                    sales[sourceIndex].status = sales[sourceIndex].remaining > 0 ? 'pending' : 'completed';
+                    sales[sourceIndex].paid = (sales[sourceIndex].paid || 0) + sourceReceiveAmount;
+                    sales[sourceIndex].remaining = (sales[sourceIndex].total || 0) - (sales[sourceIndex].paid || 0);
+                    sales[sourceIndex].status = (sales[sourceIndex].remaining || 0) > 0 ? 'pending' : 'completed';
                     
                     if (!sales[sourceIndex].payments) {
                         sales[sourceIndex].payments = [];
@@ -2631,28 +3084,41 @@
         
         function deletePurchase(purchaseId) {
             if (confirm('هل تريد حذف عملية الشراء هذه؟ | Bu alımı silmek istiyor musunuz?')) {
-                purchases = purchases.filter(p => p.id !== purchaseId);
+                const relatedSales = sales.filter(sale => sale && sale.sourceId === purchaseId);
+                
+                if (relatedSales.length > 0) {
+                    if (!confirm(`هناك ${relatedSales.length} عملية بيع مرتبطة بهذا الشراء. هل تريد حذفها أيضاً؟ | Bu alıma bağlı ${relatedSales.length} satış işlemi var. Bunları da silmek istiyor musunuz?`)) {
+                        return;
+                    }
+                    
+                    sales = sales.filter(s => s && s.sourceId !== purchaseId);
+                }
+                
+                purchases = purchases.filter(p => p && p.id !== purchaseId);
                 saveData();
                 updatePurchasesTable();
+                updateSalesTable();
                 updateDashboardStats();
                 updatePurchaseSourcesList();
+                updateCustomerRemainingList();
                 alert('تم حذف عملية الشراء بنجاح | Alım başarıyla silindi');
             }
         }
         
         function deleteSale(saleId) {
             if (confirm('هل تريد حذف عملية البيع هذه؟ | Bu satışı silmek istiyor musunuz?')) {
-                const sale = sales.find(s => s.id === saleId);
-                if (sale && sale.selectedSources) {
+                const sale = sales.find(s => s && s.id === saleId);
+                
+                if (sale && sale.selectedSources && Array.isArray(sale.selectedSources)) {
                     sale.selectedSources.forEach(source => {
-                        const purchase = purchases.find(p => p.id === source.id);
+                        const purchase = purchases.find(p => p && p.id === source.id);
                         if (purchase) {
-                            purchase.remaining += source.quantity;
+                            purchase.remaining = (purchase.remaining || 0) + (source.quantity || 0);
                         }
                     });
                 }
                 
-                sales = sales.filter(s => s.id !== saleId);
+                sales = sales.filter(s => s && s.id !== saleId);
                 saveData();
                 updateSalesTable();
                 updateDashboardStats();
@@ -2663,65 +3129,93 @@
         }
         
         function editPurchase(purchaseId) {
-            const purchase = purchases.find(p => p.id === purchaseId);
+            const purchase = purchases.find(p => p && p.id === purchaseId);
             if (!purchase) return;
             
-            const newQuantity = prompt(`الكمية الجديدة (كغ) | Yeni miktar (kg):`, purchase.quantity);
+            const newQuantity = prompt(`الكمية الجديدة (كغ) | Yeni miktar (kg):`, purchase.quantity || 0);
             if (newQuantity === null) return;
             
-            const newPrice = prompt(`السعر الجديد ($) | Yeni fiyat ($):`, purchase.price);
+            const newPrice = prompt(`السعر الجديد ($) | Yeni fiyat ($):`, purchase.price || 0);
             if (newPrice === null) return;
             
-            const newRemaining = prompt(`الكمية المتبقية الجديدة (كغ) | Yeni kalan miktar (kg):`, purchase.remaining);
-            if (newRemaining === null) return;
-            
-            purchase.quantity = parseFloat(newQuantity);
-            purchase.price = parseFloat(newPrice);
-            purchase.remaining = parseFloat(newRemaining);
-            purchase.originalQuantity = purchase.quantity;
-            purchase.total = purchase.quantity * purchase.price;
-            
-            saveData();
-            updatePurchasesTable();
-            updateDashboardStats();
-            updatePurchaseSourcesList();
-            alert('تم تعديل عملية الشراء بنجاح | Alım başarıyla düzenlendi');
-        }
-        
-        function editSale(saleId) {
-            const sale = sales.find(s => s.id === saleId);
-            if (!sale) return;
-            
-            const newQuantity = prompt(`الكمية الجديدة (كغ) | Yeni miktar (kg):`, sale.quantity);
-            if (newQuantity === null) return;
-            
-            const newPrice = prompt(`السعر الجديد ($) | Yeni fiyat ($):`, sale.salePrice);
-            if (newPrice === null) return;
-            
-            const newPaid = prompt(`المبلغ المدفوع الجديد ($) | Yeni ödenen miktar ($):`, sale.paid);
+            const newPaid = prompt(`المبلغ المدفوع الجديد ($) | Yeni ödenen miktar ($):`, purchase.paid || 0);
             if (newPaid === null) return;
             
-            const newTotal = parseFloat(newQuantity) * parseFloat(newPrice);
-            if (parseFloat(newPaid) > newTotal) {
+            const newPriceNum = parseFloat(newPrice);
+            const newQuantityNum = parseFloat(newQuantity);
+            const newPaidNum = parseFloat(newPaid);
+            
+            if (newQuantityNum <= 0 || newPriceNum <= 0 || newPaidNum < 0) {
+                alert('الرجاء إدخال قيم صحيحة | Lütfen geçerli değerler girin');
+                return;
+            }
+            
+            if (newPaidNum > newQuantityNum * newPriceNum) {
                 alert('المبلغ المدفوع لا يمكن أن يتجاوز الإجمالي | Ödenen tutar toplamı aşamaz');
                 return;
             }
             
-            alert('للتعديل، يرجى حذف عملية البيع الحالية وإضافة بيع جديد بالمعلومات الصحيحة | Düzenlemek için lütfen mevcut satışı silin ve doğru bilgilerle yeni bir satış ekleyin');
+            purchase.quantity = newQuantityNum;
+            purchase.originalQuantity = newQuantityNum;
+            purchase.price = newPriceNum;
+            purchase.paid = newPaidNum;
+            purchase.total = newQuantityNum * newPriceNum;
+            purchase.remainingAmount = purchase.total - newPaidNum;
             
+            if ((purchase.remaining || 0) > newQuantityNum) {
+                purchase.remaining = newQuantityNum;
+            }
+            
+            sales.forEach(sale => {
+                if (sale && sale.sourceId === purchaseId) {
+                    sale.purchasePrice = newPriceNum;
+                    sale.profitPerUnit = (sale.salePrice || 0) - newPriceNum;
+                    sale.profit = (sale.quantity || 0) * sale.profitPerUnit;
+                    
+                    if (sale.selectedSources && Array.isArray(sale.selectedSources)) {
+                        sale.selectedSources.forEach(source => {
+                            if (source && source.id === purchaseId) {
+                                source.price = newPriceNum;
+                            }
+                        });
+                        
+                        sale.profit = sale.selectedSources.reduce((sum, source) => {
+                            return sum + ((source.quantity || 0) * ((sale.salePrice || 0) - (source.price || 0)));
+                        }, 0);
+                    }
+                }
+            });
+            
+            saveData();
+            updatePurchasesTable();
+            updateSalesTable();
+            updateDashboardStats();
+            updatePurchaseSourcesList();
+            updateCustomerRemainingList();
+            alert('تم تعديل عملية الشراء وتحديث جميع المبيعات المرتبطة | Alım başarıyla düzenlendi ve tüm ilgili satışlar güncellendi');
+        }
+        
+        function editSale(saleId) {
+            alert('للتعديل، يرجى حذف عملية البيع الحالية وإضافة بيع جديد بالمعلومات الصحيحة | Düzenlemek için lütfen mevcut satışı silin ve doğru bilgilerle yeni bir satış ekleyin');
             deleteSale(saleId);
         }
         
         function updatePurchasesTable() {
             const tableBody = document.getElementById('purchasesTableBody');
+            if (!tableBody) return;
+            
             tableBody.innerHTML = '';
             
             let totalPurchasesAmount = 0;
             let totalPurchasesQuantity = 0;
+            let totalPurchasesRemaining = 0;
             let hasPurchases = false;
             
             const filterType = document.getElementById('purchaseFilter').value;
-            const filteredPurchases = purchases.filter(purchase => purchase.date === currentViewDate);
+            
+            if (!Array.isArray(purchases)) purchases = [];
+            
+            const filteredPurchases = purchases.filter(purchase => purchase && purchase.date === currentViewDate);
             
             filteredPurchases.forEach((purchase, index) => {
                 let showPurchase = false;
@@ -2729,32 +3223,64 @@
                 if (filterType === 'all') {
                     showPurchase = true;
                 } else if (filterType === 'active') {
-                    showPurchase = purchase.remaining > 0;
+                    showPurchase = (purchase.remaining || 0) > 0;
+                } else if (filterType === 'unpaid') {
+                    showPurchase = (purchase.remainingAmount || 0) > 0;
                 }
                 
                 if (showPurchase) {
                     hasPurchases = true;
-                    totalPurchasesAmount += purchase.total;
-                    totalPurchasesQuantity += purchase.quantity;
+                    totalPurchasesAmount += purchase.total || 0;
+                    totalPurchasesQuantity += purchase.quantity || 0;
+                    totalPurchasesRemaining += purchase.remainingAmount || 0;
                     
-                    const remainingPercentage = (purchase.remaining / purchase.originalQuantity) * 100;
+                    const remainingPercentage = purchase.originalQuantity > 0 ? ((purchase.remaining || 0) / purchase.originalQuantity) * 100 : 0;
                     let remainingClass = 'remaining-high';
                     if (remainingPercentage === 0) remainingClass = 'remaining-zero';
                     else if (remainingPercentage < 30) remainingClass = 'remaining-low';
                     else if (remainingPercentage < 60) remainingClass = 'remaining-medium';
                     
+                    const paidPercentage = purchase.total > 0 ? ((purchase.paid || 0) / purchase.total) * 100 : 0;
+                    let paymentStatus = '';
+                    let paymentColor = '#27ae60';
+                    
+                    if (paidPercentage === 0) {
+                        paymentStatus = 'غير مدفوعة';
+                        paymentColor = '#e74c3c';
+                    } else if (paidPercentage >= 99.99) {
+                        paymentStatus = 'مدفوعة بالكامل';
+                        paymentColor = '#27ae60';
+                    } else {
+                        paymentStatus = `مدفوعة جزئياً ${paidPercentage.toFixed(1)}%`;
+                        paymentColor = '#f39c12';
+                    }
+                    
                     const row = document.createElement('tr');
                     row.innerHTML = `
                         <td>${index + 1}</td>
-                        <td>${purchase.quantity.toFixed(2)} كغ</td>
-                        <td><span class="dollar">$</span> ${purchase.price.toFixed(2)}</td>
-                        <td><span class="dollar">$</span> ${purchase.total.toFixed(2)}</td>
-                        <td>${purchase.date}</td>
-                        <td><span class="remaining-quantity ${remainingClass}">${purchase.remaining.toFixed(2)} كغ</span></td>
+                        <td>${(purchase.quantity || 0).toFixed(2)} كغ</td>
+                        <td><span class="dollar">$</span> ${(purchase.price || 0).toFixed(2)}</td>
+                        <td><span class="dollar">$</span> ${(purchase.total || 0).toFixed(2)}</td>
+                        <td>${purchase.date || ''}</td>
+                        <td><span class="remaining-quantity ${remainingClass}">${(purchase.remaining || 0).toFixed(2)} كغ</span></td>
+                        <td>
+                            <div class="purchase-payment-status">
+                                <span style="color: ${paymentColor}; font-weight: bold;">${paymentStatus}</span>
+                                <div class="payment-progress">
+                                    <div class="payment-progress-bar" style="width: ${paidPercentage}%; background-color: ${paymentColor};"></div>
+                                </div>
+                                <span style="font-size: 0.9rem;">${(purchase.paid || 0).toFixed(2)}<span class="dollar">$</span> / ${(purchase.total || 0).toFixed(2)}<span class="dollar">$</span></span>
+                            </div>
+                        </td>
                         <td>
                             <button class="btn btn-sm btn-warning" onclick="editPurchase(${purchase.id})" title="تعديل | Düzenle">
                                 <i class="fas fa-edit"></i>
                             </button>
+                            ${(purchase.remainingAmount || 0) > 0 ? `
+                                <button class="btn btn-sm btn-orange" onclick="openPurchaseReceiptModal(${purchase.id})" title="استلام قيمة | Tutar Al">
+                                    <i class="fas fa-money-bill-wave"></i>
+                                </button>
+                            ` : ''}
                             <button class="btn btn-sm btn-danger" onclick="deletePurchase(${purchase.id})" title="حذف | Sil">
                                 <i class="fas fa-trash"></i>
                             </button>
@@ -2773,10 +3299,13 @@
             }
             
             document.getElementById('totalPurchasesFooter').innerHTML = totalPurchasesAmount.toFixed(2) + ' <span class="dollar">$</span>';
+            document.getElementById('totalPurchasesRemaining').innerHTML = totalPurchasesRemaining.toFixed(2) + ' <span class="dollar">$</span>';
         }
         
         function updateSalesTable() {
             const tableBody = document.getElementById('salesTableBody');
+            if (!tableBody) return;
+            
             tableBody.innerHTML = '';
             
             let totalSalesQuantity = 0;
@@ -2786,9 +3315,11 @@
             let hasSales = false;
             
             const filterType = document.getElementById('salesFilter').value;
-            const filteredSales = sales.filter(sale => sale.date === currentViewDate);
             
-            // تجميع المبيعات حسب parentSaleId
+            if (!Array.isArray(sales)) sales = [];
+            
+            const filteredSales = sales.filter(sale => sale && sale.date === currentViewDate);
+            
             const groupedSales = {};
             filteredSales.forEach(sale => {
                 if (!groupedSales[sale.parentSaleId]) {
@@ -2812,7 +3343,7 @@
                 } else if (filterType === 'today') {
                     showGroup = true;
                 } else if (filterType === 'pending') {
-                    const hasPending = group.sources.some(sale => sale.remaining > 0);
+                    const hasPending = group.sources.some(sale => (sale.remaining || 0) > 0);
                     showGroup = hasPending;
                 }
                 
@@ -2820,16 +3351,15 @@
                     hasSales = true;
                     
                     const firstSale = group.sources[0];
-                    const profitClass = firstSale.profit >= 0 ? 'badge-sale' : 'badge-purchase';
-                    const profitSign = firstSale.profit >= 0 ? '+' : '';
+                    const profitClass = (firstSale.profit || 0) >= 0 ? 'badge-sale' : 'badge-purchase';
+                    const profitSign = (firstSale.profit || 0) >= 0 ? '+' : '';
                     
-                    // حساب إجماليات المجموعة
                     let groupTotalAmount = 0;
                     let groupTotalRemaining = 0;
                     
                     group.sources.forEach(sale => {
-                        groupTotalAmount += sale.total;
-                        groupTotalRemaining += sale.remaining;
+                        groupTotalAmount += sale.total || 0;
+                        groupTotalRemaining += sale.remaining || 0;
                     });
                     
                     let remainingClass = 'remaining-high';
@@ -2841,23 +3371,23 @@
                     headerRow.className = 'sales-source-header';
                     headerRow.innerHTML = `
                         <td rowspan="${group.sources.length}">${saleIndex}</td>
-                        <td rowspan="${group.sources.length}">${firstSale.customerName}</td>
-                        <td><strong>المصدر ${firstSale.sourceIndex}</strong></td>
-                        <td>${firstSale.quantity.toFixed(2)} كغ</td>
-                        <td><span class="dollar">$</span> ${firstSale.purchasePrice.toFixed(2)}</td>
-                        <td><span class="dollar">$</span> ${firstSale.salePrice.toFixed(2)}</td>
-                        <td><span class="dollar">$</span> ${firstSale.profitPerUnit.toFixed(2)}</td>
-                        <td><span class="badge ${profitClass}"><span class="dollar">$</span> ${profitSign}${firstSale.profit.toFixed(2)}</span></td>
-                        <td><span class="dollar">$</span> ${firstSale.total.toFixed(2)}</td>
+                        <td rowspan="${group.sources.length}">${escapeHTML(firstSale.customerName || '')}</td>
+                        <td><strong>المصدر ${firstSale.sourceIndex || 1}</strong></td>
+                        <td>${(firstSale.quantity || 0).toFixed(2)} كغ</td>
+                        <td><span class="dollar">$</span> ${(firstSale.purchasePrice || 0).toFixed(2)}</td>
+                        <td><span class="dollar">$</span> ${(firstSale.salePrice || 0).toFixed(2)}</td>
+                        <td><span class="dollar">$</span> ${(firstSale.profitPerUnit || 0).toFixed(2)}</td>
+                        <td><span class="badge ${profitClass}"><span class="dollar">$</span> ${profitSign}${(firstSale.profit || 0).toFixed(2)}</span></td>
+                        <td><span class="dollar">$</span> ${(firstSale.total || 0).toFixed(2)}</td>
                         <td rowspan="${group.sources.length}">
                             <span class="remaining-quantity ${remainingClass}"><strong>${groupTotalRemaining.toFixed(2)} <span class="dollar">$</span></strong></span>
                         </td>
-                        <td rowspan="${group.sources.length}">${firstSale.date}</td>
+                        <td rowspan="${group.sources.length}">${firstSale.date || ''}</td>
                         <td rowspan="${group.sources.length}">
                             <button class="btn btn-sm btn-warning" onclick="editSale(${firstSale.id})" title="تعديل | Düzenle">
                                 <i class="fas fa-edit"></i>
                             </button>
-                            ${group.sources.some(s => s.remaining > 0) ? `
+                            ${group.sources.some(s => (s.remaining || 0) > 0) ? `
                                 <button class="btn-receive" onclick="openReceivePaymentModal(${firstSale.id})" title="استلام دفعة | Ödeme Al">
                                     <i class="fas fa-money-bill-wave"></i>
                                 </button>
@@ -2869,33 +3399,33 @@
                     `;
                     tableBody.appendChild(headerRow);
                     
-                    totalSalesQuantity += firstSale.quantity;
-                    totalSalesAmount += firstSale.total;
-                    totalProfit += firstSale.profit;
-                    totalRemaining += groupTotalRemaining;
+                    totalSalesQuantity += firstSale.quantity || 0;
+                    totalSalesAmount += firstSale.total || 0;
+                    totalProfit += firstSale.profit || 0;
+                    totalRemaining += groupTotalRemaining || 0;
                     
                     for (let i = 1; i < group.sources.length; i++) {
                         const sale = group.sources[i];
-                        const sourceProfitClass = sale.profit >= 0 ? 'badge-sale' : 'badge-purchase';
-                        const sourceProfitSign = sale.profit >= 0 ? '+' : '';
+                        const sourceProfitClass = (sale.profit || 0) >= 0 ? 'badge-sale' : 'badge-purchase';
+                        const sourceProfitSign = (sale.profit || 0) >= 0 ? '+' : '';
                         
                         const sourceRow = document.createElement('tr');
                         sourceRow.className = 'sales-source-row';
                         sourceRow.innerHTML = `
-                            <td><strong>المصدر ${sale.sourceIndex}</strong></td>
-                            <td>${sale.quantity.toFixed(2)} كغ</td>
-                            <td><span class="dollar">$</span> ${sale.purchasePrice.toFixed(2)}</td>
-                            <td><span class="dollar">$</span> ${sale.salePrice.toFixed(2)}</td>
-                            <td><span class="dollar">$</span> ${sale.profitPerUnit.toFixed(2)}</td>
-                            <td><span class="badge ${sourceProfitClass}"><span class="dollar">$</span> ${sourceProfitSign}${sale.profit.toFixed(2)}</span></td>
-                            <td><span class="dollar">$</span> ${sale.total.toFixed(2)}</td>
+                            <td><strong>المصدر ${sale.sourceIndex || i+1}</strong></td>
+                            <td>${(sale.quantity || 0).toFixed(2)} كغ</td>
+                            <td><span class="dollar">$</span> ${(sale.purchasePrice || 0).toFixed(2)}</td>
+                            <td><span class="dollar">$</span> ${(sale.salePrice || 0).toFixed(2)}</td>
+                            <td><span class="dollar">$</span> ${(sale.profitPerUnit || 0).toFixed(2)}</td>
+                            <td><span class="badge ${sourceProfitClass}"><span class="dollar">$</span> ${sourceProfitSign}${(sale.profit || 0).toFixed(2)}</span></td>
+                            <td><span class="dollar">$</span> ${(sale.total || 0).toFixed(2)}</td>
                             <td></td>
                         `;
                         tableBody.appendChild(sourceRow);
                         
-                        totalSalesQuantity += sale.quantity;
-                        totalSalesAmount += sale.total;
-                        totalProfit += sale.profit;
+                        totalSalesQuantity += sale.quantity || 0;
+                        totalSalesAmount += sale.total || 0;
+                        totalProfit += sale.profit || 0;
                     }
                     
                     saleIndex++;
@@ -2917,29 +3447,34 @@
         }
         
         function updateDashboardStats() {
-            const todaySales = sales.filter(sale => sale.date === currentViewDate);
-            const todayPurchases = purchases.filter(purchase => purchase.date === currentViewDate);
-            const activePurchases = todayPurchases.filter(purchase => purchase.remaining > 0);
+            if (!Array.isArray(sales)) sales = [];
+            if (!Array.isArray(purchases)) purchases = [];
             
-            const totalActivePurchasesQuantity = activePurchases.reduce((sum, purchase) => sum + purchase.quantity, 0);
-            const totalActivePurchasesAmount = activePurchases.reduce((sum, purchase) => sum + purchase.total, 0);
+            const todaySales = sales.filter(sale => sale && sale.date === currentViewDate);
+            const todayPurchases = purchases.filter(purchase => purchase && purchase.date === currentViewDate);
+            const activePurchases = todayPurchases.filter(purchase => purchase && (purchase.remaining || 0) > 0);
             
-            const totalTodaySalesQuantity = todaySales.reduce((sum, sale) => sum + sale.quantity, 0);
-            const totalTodaySalesAmount = todaySales.reduce((sum, sale) => sum + sale.total, 0);
+            const totalActivePurchasesQuantity = activePurchases.reduce((sum, purchase) => sum + (purchase.quantity || 0), 0);
+            const totalActivePurchasesAmount = activePurchases.reduce((sum, purchase) => sum + (purchase.total || 0), 0);
+            const totalActivePurchasesRemaining = activePurchases.reduce((sum, purchase) => sum + (purchase.remainingAmount || 0), 0);
             
-            const totalPurchasesAll = purchases.reduce((sum, purchase) => sum + purchase.quantity, 0);
-            const totalSalesAll = sales.reduce((sum, sale) => sum + sale.quantity, 0);
+            const totalTodaySalesQuantity = todaySales.reduce((sum, sale) => sum + (sale.quantity || 0), 0);
+            const totalTodaySalesAmount = todaySales.reduce((sum, sale) => sum + (sale.total || 0), 0);
+            
+            const totalPurchasesAll = purchases.reduce((sum, purchase) => sum + (purchase.quantity || 0), 0);
+            const totalSalesAll = sales.reduce((sum, sale) => sum + (sale.quantity || 0), 0);
             const currentInventoryQuantity = totalPurchasesAll - totalSalesAll;
-            const currentInventoryValue = purchases.reduce((sum, purchase) => sum + (purchase.remaining * purchase.price), 0);
+            const currentInventoryValue = purchases.reduce((sum, purchase) => sum + ((purchase.remaining || 0) * (purchase.price || 0)), 0);
             
-            const totalTodayProfit = todaySales.reduce((sum, sale) => sum + sale.profit, 0);
-            const totalTodayRemaining = todaySales.reduce((sum, sale) => sum + sale.remaining, 0);
+            const totalTodayProfit = todaySales.reduce((sum, sale) => sum + (sale.profit || 0), 0);
+            const totalTodayRemaining = todaySales.reduce((sum, sale) => sum + (sale.remaining || 0), 0);
             
             document.getElementById('total-purchases').textContent = totalActivePurchasesQuantity.toFixed(2) + ' كغ';
             document.getElementById('purchases-total').innerHTML = totalActivePurchasesAmount.toFixed(2) + ' <span class="dollar">$</span>';
+            document.getElementById('purchases-remaining').innerHTML = `مستحق: ${totalActivePurchasesRemaining.toFixed(2)} <span class="dollar">$</span>`;
             document.getElementById('total-sales').textContent = totalTodaySalesQuantity.toFixed(2) + ' كغ';
             document.getElementById('sales-total').innerHTML = totalTodaySalesAmount.toFixed(2) + ' <span class="dollar">$</span>';
-            document.getElementById('current-inventory').textContent = currentInventoryQuantity.toFixed(2) + ' كغ';
+            document.getElementById('current-inventory').textContent = Math.max(0, currentInventoryQuantity).toFixed(2) + ' كغ';
             document.getElementById('inventory-total').innerHTML = currentInventoryValue.toFixed(2) + ' <span class="dollar">$</span>';
             document.getElementById('total-profit').innerHTML = totalTodayProfit.toFixed(2) + ' <span class="dollar">$</span>';
             document.getElementById('pending-amount').innerHTML = `مستحق اليوم: ${totalTodayRemaining.toFixed(2)} <span class="dollar">$</span>`;
@@ -3019,27 +3554,29 @@
             updateSalesTable();
             updateCustomerRemainingList();
             
-            const todaySales = sales.filter(sale => sale.date === currentViewDate);
-            const todayPurchases = purchases.filter(purchase => purchase.date === currentViewDate);
-            const activePurchases = todayPurchases.filter(purchase => purchase.remaining > 0);
+            const todaySales = sales.filter(sale => sale && sale.date === currentViewDate);
+            const todayPurchases = purchases.filter(purchase => purchase && purchase.date === currentViewDate);
+            const activePurchases = todayPurchases.filter(purchase => purchase && (purchase.remaining || 0) > 0);
             
-            const totalActivePurchasesQuantity = activePurchases.reduce((sum, purchase) => sum + purchase.quantity, 0);
-            const totalActivePurchasesAmount = activePurchases.reduce((sum, purchase) => sum + purchase.total, 0);
-            const totalTodaySalesQuantity = todaySales.reduce((sum, sale) => sum + sale.quantity, 0);
-            const totalTodaySalesAmount = todaySales.reduce((sum, sale) => sum + sale.total, 0);
-            const totalTodayProfit = todaySales.reduce((sum, sale) => sum + sale.profit, 0);
-            const totalTodayRemaining = todaySales.reduce((sum, sale) => sum + sale.remaining, 0);
+            const totalActivePurchasesQuantity = activePurchases.reduce((sum, purchase) => sum + (purchase.quantity || 0), 0);
+            const totalActivePurchasesAmount = activePurchases.reduce((sum, purchase) => sum + (purchase.total || 0), 0);
+            const totalActivePurchasesRemaining = activePurchases.reduce((sum, purchase) => sum + (purchase.remainingAmount || 0), 0);
+            const totalTodaySalesQuantity = todaySales.reduce((sum, sale) => sum + (sale.quantity || 0), 0);
+            const totalTodaySalesAmount = todaySales.reduce((sum, sale) => sum + (sale.total || 0), 0);
+            const totalTodayProfit = todaySales.reduce((sum, sale) => sum + (sale.profit || 0), 0);
+            const totalTodayRemaining = todaySales.reduce((sum, sale) => sum + (sale.remaining || 0), 0);
             
-            const totalPurchasesAll = purchases.reduce((sum, purchase) => sum + purchase.quantity, 0);
-            const totalSalesAll = sales.reduce((sum, sale) => sum + sale.quantity, 0);
+            const totalPurchasesAll = purchases.reduce((sum, purchase) => sum + (purchase.quantity || 0), 0);
+            const totalSalesAll = sales.reduce((sum, sale) => sum + (sale.quantity || 0), 0);
             const currentInventoryQuantity = totalPurchasesAll - totalSalesAll;
-            const currentInventoryValue = purchases.reduce((sum, purchase) => sum + (purchase.remaining * purchase.price), 0);
+            const currentInventoryValue = purchases.reduce((sum, purchase) => sum + ((purchase.remaining || 0) * (purchase.price || 0)), 0);
             
             document.getElementById('total-purchases').textContent = totalActivePurchasesQuantity.toFixed(2) + ' كغ';
             document.getElementById('purchases-total').innerHTML = totalActivePurchasesAmount.toFixed(2) + ' <span class="dollar">$</span>';
+            document.getElementById('purchases-remaining').innerHTML = `إجمالي المستحق: ${totalActivePurchasesRemaining.toFixed(2)} <span class="dollar">$</span>`;
             document.getElementById('total-sales').textContent = totalTodaySalesQuantity.toFixed(2) + ' كغ';
             document.getElementById('sales-total').innerHTML = totalTodaySalesAmount.toFixed(2) + ' <span class="dollar">$</span>';
-            document.getElementById('current-inventory').textContent = currentInventoryQuantity.toFixed(2) + ' كغ';
+            document.getElementById('current-inventory').textContent = Math.max(0, currentInventoryQuantity).toFixed(2) + ' كغ';
             document.getElementById('inventory-total').innerHTML = currentInventoryValue.toFixed(2) + ' <span class="dollar">$</span>';
             document.getElementById('total-profit').innerHTML = totalTodayProfit.toFixed(2) + ' <span class="dollar">$</span>';
             document.getElementById('pending-amount').innerHTML = `إجمالي المستحق: ${totalTodayRemaining.toFixed(2)} <span class="dollar">$</span>`;
@@ -3077,7 +3614,9 @@
                 return;
             }
             
-            const dateSales = sales.filter(sale => sale.date === selectedDate);
+            if (!Array.isArray(sales)) sales = [];
+            
+            const dateSales = sales.filter(sale => sale && sale.date === selectedDate);
             
             if (dateSales.length === 0) {
                 document.getElementById('reportContent').innerHTML = `
@@ -3105,15 +3644,15 @@
                 groupedSales[sale.parentSaleId].sources.push(sale);
             });
             
-            const totalQuantity = dateSales.reduce((sum, sale) => sum + sale.quantity, 0);
-            const totalRevenue = dateSales.reduce((sum, sale) => sum + sale.total, 0);
-            const totalProfit = dateSales.reduce((sum, sale) => sum + sale.profit, 0);
-            const totalPaid = dateSales.reduce((sum, sale) => sum + sale.paid, 0);
-            const totalRemaining = dateSales.reduce((sum, sale) => sum + sale.remaining, 0);
+            const totalQuantity = dateSales.reduce((sum, sale) => sum + (sale.quantity || 0), 0);
+            const totalRevenue = dateSales.reduce((sum, sale) => sum + (sale.total || 0), 0);
+            const totalProfit = dateSales.reduce((sum, sale) => sum + (sale.profit || 0), 0);
+            const totalPaid = dateSales.reduce((sum, sale) => sum + (sale.paid || 0), 0);
+            const totalRemaining = dateSales.reduce((sum, sale) => sum + (sale.remaining || 0), 0);
             
             let totalPurchaseCost = 0;
             dateSales.forEach(sale => {
-                totalPurchaseCost += sale.quantity * sale.purchasePrice;
+                totalPurchaseCost += (sale.quantity || 0) * (sale.purchasePrice || 0);
             });
             
             let salesTableHTML = '';
@@ -3123,27 +3662,26 @@
                 const group = groupedSales[parentSaleId];
                 
                 if (group.sources.length > 0) {
-                    // حساب إجماليات المجموعة
                     let groupTotalRemaining = 0;
                     group.sources.forEach(sale => {
-                        groupTotalRemaining += sale.remaining;
+                        groupTotalRemaining += sale.remaining || 0;
                     });
                     
                     group.sources.forEach((sale, sourceIndex) => {
-                        const profitClass = sale.profit >= 0 ? 'profit-positive' : 'profit-negative';
-                        const profitSign = sale.profit >= 0 ? '+' : '';
+                        const profitClass = (sale.profit || 0) >= 0 ? 'profit-positive' : 'profit-negative';
+                        const profitSign = (sale.profit || 0) >= 0 ? '+' : '';
                         
                         salesTableHTML += `
                             <tr>
                                 <td>${saleIndex}</td>
-                                <td>${sale.customerName}</td>
+                                <td>${escapeHTML(sale.customerName || '')}</td>
                                 <td>المصدر ${sourceIndex + 1}</td>
-                                <td>${sale.quantity.toFixed(2)} كغ</td>
-                                <td><span class="dollar">$</span> ${sale.purchasePrice.toFixed(2)}</td>
-                                <td><span class="dollar">$</span> ${sale.salePrice.toFixed(2)}</td>
-                                <td><span class="dollar">$</span> ${sale.profitPerUnit.toFixed(2)}</td>
-                                <td class="${profitClass}"><span class="dollar">$</span> ${profitSign}${sale.profit.toFixed(2)}</td>
-                                <td><span class="dollar">$</span> ${sale.total.toFixed(2)}</td>
+                                <td>${(sale.quantity || 0).toFixed(2)} كغ</td>
+                                <td><span class="dollar">$</span> ${(sale.purchasePrice || 0).toFixed(2)}</td>
+                                <td><span class="dollar">$</span> ${(sale.salePrice || 0).toFixed(2)}</td>
+                                <td><span class="dollar">$</span> ${(sale.profitPerUnit || 0).toFixed(2)}</td>
+                                <td class="${profitClass}"><span class="dollar">$</span> ${profitSign}${(sale.profit || 0).toFixed(2)}</td>
+                                <td><span class="dollar">$</span> ${(sale.total || 0).toFixed(2)}</td>
                                 <td>${groupTotalRemaining.toFixed(2)} <span class="dollar">$</span></td>
                             </tr>
                         `;
@@ -3242,24 +3780,25 @@
                 day: 'numeric'
             });
             
-            // حساب الكمية المتبقية وتكلفتها
-            const remainingPurchases = purchases.filter(purchase => purchase.remaining > 0);
+            if (!Array.isArray(purchases)) purchases = [];
+            
+            const remainingPurchases = purchases.filter(purchase => purchase && (purchase.remaining || 0) > 0);
             let totalRemainingQuantity = 0;
             let totalRemainingValue = 0;
             let remainingDetailsHTML = '';
             
             if (remainingPurchases.length > 0) {
                 remainingPurchases.forEach((purchase, index) => {
-                    totalRemainingQuantity += purchase.remaining;
-                    totalRemainingValue += purchase.remaining * purchase.price;
+                    totalRemainingQuantity += purchase.remaining || 0;
+                    totalRemainingValue += (purchase.remaining || 0) * (purchase.price || 0);
                     
                     remainingDetailsHTML += `
                         <tr>
                             <td>${index + 1}</td>
-                            <td>${purchase.date}</td>
-                            <td class="number-cell">${purchase.remaining.toFixed(2)} كغ</td>
-                            <td class="number-cell"><span class="dollar-print">$</span> ${purchase.price.toFixed(2)}</td>
-                            <td class="number-cell"><span class="dollar-print">$</span> ${(purchase.remaining * purchase.price).toFixed(2)}</td>
+                            <td>${purchase.date || ''}</td>
+                            <td class="number-cell">${(purchase.remaining || 0).toFixed(2)} كغ</td>
+                            <td class="number-cell"><span class="dollar-print">$</span> ${(purchase.price || 0).toFixed(2)}</td>
+                            <td class="number-cell"><span class="dollar-print">$</span> ${((purchase.remaining || 0) * (purchase.price || 0)).toFixed(2)}</td>
                         </tr>
                     `;
                 });
@@ -3268,31 +3807,30 @@
             let salesTableHTML = '';
             let saleIndex = 1;
             
-            Object.keys(groupedSales).forEach(parentSaleId => {
+            Object.keys(groupedSales || {}).forEach(parentSaleId => {
                 const group = groupedSales[parentSaleId];
                 
-                if (group.sources.length > 0) {
-                    // حساب إجماليات المجموعة
+                if (group && group.sources && group.sources.length > 0) {
                     let groupTotalRemaining = 0;
                     group.sources.forEach(sale => {
-                        groupTotalRemaining += sale.remaining;
+                        groupTotalRemaining += sale.remaining || 0;
                     });
                     
                     group.sources.forEach((sale, sourceIndex) => {
-                        const profitClass = sale.profit >= 0 ? 'profit-positive' : 'profit-negative';
-                        const profitSign = sale.profit >= 0 ? '+' : '';
+                        const profitClass = (sale.profit || 0) >= 0 ? 'profit-positive' : 'profit-negative';
+                        const profitSign = (sale.profit || 0) >= 0 ? '+' : '';
                         
                         salesTableHTML += `
                             <tr>
                                 <td>${saleIndex}</td>
-                                <td>${sale.customerName}</td>
+                                <td>${escapeHTML(sale.customerName || '')}</td>
                                 <td>المصدر ${sourceIndex + 1}</td>
-                                <td class="number-cell">${sale.quantity.toFixed(2)} كغ</td>
-                                <td class="number-cell"><span class="dollar-print">$</span> ${sale.purchasePrice.toFixed(2)}</td>
-                                <td class="number-cell"><span class="dollar-print">$</span> ${sale.salePrice.toFixed(2)}</td>
-                                <td class="number-cell"><span class="dollar-print">$</span> ${sale.profitPerUnit.toFixed(2)}</td>
-                                <td class="number-cell ${profitClass}"><span class="dollar-print">$</span> ${profitSign}${sale.profit.toFixed(2)}</td>
-                                <td class="number-cell"><span class="dollar-print">$</span> ${sale.total.toFixed(2)}</td>
+                                <td class="number-cell">${(sale.quantity || 0).toFixed(2)} كغ</td>
+                                <td class="number-cell"><span class="dollar-print">$</span> ${(sale.purchasePrice || 0).toFixed(2)}</td>
+                                <td class="number-cell"><span class="dollar-print">$</span> ${(sale.salePrice || 0).toFixed(2)}</td>
+                                <td class="number-cell"><span class="dollar-print">$</span> ${(sale.profitPerUnit || 0).toFixed(2)}</td>
+                                <td class="number-cell ${profitClass}"><span class="dollar-print">$</span> ${profitSign}${(sale.profit || 0).toFixed(2)}</td>
+                                <td class="number-cell"><span class="dollar-print">$</span> ${(sale.total || 0).toFixed(2)}</td>
                                 <td class="number-cell">${groupTotalRemaining.toFixed(2)} <span class="dollar-print">$</span></td>
                             </tr>
                         `;
@@ -3309,7 +3847,7 @@
                     <div class="print-header-info">
                         <div>
                             <p><strong>تاريخ التقرير | Rapor Tarihi:</strong> ${selectedDate}</p>
-                            <p><strong>عدد المعاملات | İşlem Sayısı:</strong> ${Object.keys(groupedSales).length}</p>
+                            <p><strong>عدد المعاملات | İşlem Sayısı:</strong> ${Object.keys(groupedSales || {}).length}</p>
                         </div>
                         <div>
                             <p><strong>تاريخ الإنشاء | Oluşturma Tarihi:</strong> ${printDate}</p>
@@ -3323,7 +3861,7 @@
                     <div class="print-summary-grid">
                         <div class="print-summary-item">
                             <h4>عدد المعاملات<br>İşlem Sayısı</h4>
-                            <p>${Object.keys(groupedSales).length}</p>
+                            <p>${Object.keys(groupedSales || {}).length}</p>
                         </div>
                         <div class="print-summary-item">
                             <h4>إجمالي الكمية<br>Toplam Miktar</h4>
@@ -3375,7 +3913,6 @@
                     </table>
                 </div>
                 
-                <!-- الصفحة الثانية: الكمية المتبقية وتكلفتها -->
                 <div class="page-break">
                     <div class="remaining-section">
                         <h3>الكمية المتبقية في المخزون وتكلفتها | Stokta Kalan Miktar ve Maliyeti</h3>
@@ -3431,14 +3968,14 @@
                     <h3 style="text-align: center; margin-bottom: 15px; font-size: 13pt;">إحصائيات المبيعات | Satış İstatistikleri</h3>
                     <div class="print-totals-grid">
                         <div>
-                            <p><strong>عدد المعاملات | İşlem Sayısı:</strong> ${Object.keys(groupedSales).length}</p>
+                            <p><strong>عدد المعاملات | İşlem Sayısı:</strong> ${Object.keys(groupedSales || {}).length}</p>
                             <p><strong>إجمالي الكمية المباعة | Toplam Satılan Miktar:</strong> ${totalQuantity.toFixed(2)} كغ</p>
-                            <p><strong>متوسط سعر الشراء | Ortalama Alış Fiyatı:</strong> <span class="dollar-print">$</span> ${(totalPurchaseCost / totalQuantity || 0).toFixed(2)}</p>
+                            <p><strong>متوسط سعر الشراء | Ortalama Alış Fiyatı:</strong> <span class="dollar-print">$</span> ${(totalQuantity > 0 ? totalPurchaseCost / totalQuantity : 0).toFixed(2)}</p>
                         </div>
                         <div>
-                            <p><strong>متوسط سعر البيع | Ortalama Satış Fiyatı:</strong> <span class="dollar-print">$</span> ${(totalRevenue / totalQuantity || 0).toFixed(2)}</p>
-                            <p><strong>متوسط ربح القطعة | Ortalama Parça Kârı:</strong> <span class="dollar-print">$</span> ${(totalProfit / totalQuantity || 0).toFixed(2)}</p>
-                            <p><strong>نسبة الربحية | Kârlılık Oranı:</strong> ${((totalProfit / totalPurchaseCost) * 100 || 0).toFixed(2)}%</p>
+                            <p><strong>متوسط سعر البيع | Ortalama Satış Fiyatı:</strong> <span class="dollar-print">$</span> ${(totalQuantity > 0 ? totalRevenue / totalQuantity : 0).toFixed(2)}</p>
+                            <p><strong>متوسط ربح القطعة | Ortalama Parça Kârı:</strong> <span class="dollar-print">$</span> ${(totalQuantity > 0 ? totalProfit / totalQuantity : 0).toFixed(2)}</p>
+                            <p><strong>نسبة الربحية | Kârlılık Oranı:</strong> ${(totalPurchaseCost > 0 ? (totalProfit / totalPurchaseCost) * 100 : 0).toFixed(2)}%</p>
                         </div>
                     </div>
                 </div>
@@ -3479,7 +4016,10 @@
                 </div>
             `;
             
-            document.getElementById('printable-report').innerHTML = printableReportHTML;
+            const printableReport = document.getElementById('printable-report');
+            if (printableReport) {
+                printableReport.innerHTML = printableReportHTML;
+            }
         }
         
         function printReportDirectly() {
@@ -3489,23 +4029,20 @@
             
             setTimeout(() => {
                 const printableReport = document.getElementById('printable-report');
-                if (printableReport.innerHTML.trim() === '') {
+                if (printableReport && printableReport.innerHTML.trim() === '') {
                     alert('لا توجد بيانات للطباعة. الرجاء إنشاء تقرير أولاً. | Yazdırılacak veri yok. Lütfen önce rapor oluşturun.');
                     return;
                 }
                 
-                printableReport.style.display = 'block';
-                window.print();
-                
-                setTimeout(() => {
-                    printableReport.style.display = 'none';
-                }, 100);
+                if (printableReport) {
+                    printableReport.style.display = 'block';
+                    window.print();
+                    
+                    setTimeout(() => {
+                        printableReport.style.display = 'none';
+                    }, 100);
+                }
             }, 100);
-        }
-        
-        function saveData() {
-            localStorage.setItem('alanharPurchases', JSON.stringify(purchases));
-            localStorage.setItem('alanharSales', JSON.stringify(sales));
         }
         
         function resetAllData() {
@@ -3513,6 +4050,7 @@
                 purchases = [];
                 sales = [];
                 currentSaleData = null;
+                currentPurchaseForReceipt = null;
                 currentSaleForReceive = null;
                 selectedSources = [];
                 currentViewDate = new Date().toISOString().split('T')[0];
@@ -3535,8 +4073,8 @@
         
         function exportData() {
             const data = {
-                purchases: purchases,
-                sales: sales,
+                purchases: Array.isArray(purchases) ? purchases : [],
+                sales: Array.isArray(sales) ? sales : [],
                 exportDate: new Date().toISOString()
             };
             
@@ -3563,10 +4101,11 @@
                 try {
                     const data = JSON.parse(e.target.result);
                     
-                    if (data.purchases && data.sales) {
+                    if (data.purchases && Array.isArray(data.purchases)) {
                         purchases = data.purchases;
-                        sales = data.sales;
+                        sales = Array.isArray(data.sales) ? data.sales : [];
                         currentSaleData = null;
+                        currentPurchaseForReceipt = null;
                         currentSaleForReceive = null;
                         selectedSources = [];
                         currentViewDate = new Date().toISOString().split('T')[0];
@@ -3586,52 +4125,12 @@
                         alert('ملف غير صالح | Geçersiz dosya');
                     }
                 } catch (error) {
+                    console.error('خطأ في استيراد البيانات:', error);
                     alert('خطأ في قراءة الملف | Dosya okuma hatası');
                 }
             };
             reader.readAsText(file);
         }
-        
-        document.addEventListener('DOMContentLoaded', function() {
-            const header = document.querySelector('header .container');
-            
-            const resetButton = document.createElement('button');
-            resetButton.innerHTML = '<i class="fas fa-trash-alt"></i> حذف جميع البيانات | Tüm Verileri Sil';
-            resetButton.className = 'btn btn-danger no-print';
-            resetButton.style.position = 'absolute';
-            resetButton.style.top = '25px';
-            resetButton.style.left = '25px';
-            resetButton.onclick = resetAllData;
-            
-            const exportButton = document.createElement('button');
-            exportButton.innerHTML = '<i class="fas fa-download"></i> تصدير البيانات | Verileri Dışa Aktar';
-            exportButton.className = 'btn btn-warning no-print';
-            exportButton.style.position = 'absolute';
-            exportButton.style.top = '25px';
-            exportButton.style.right = '25px';
-            exportButton.onclick = exportData;
-            
-            const importInput = document.createElement('input');
-            importInput.type = 'file';
-            importInput.accept = '.json';
-            importInput.style.display = 'none';
-            importInput.id = 'importInput';
-            importInput.onchange = importData;
-            document.body.appendChild(importInput);
-            
-            const importButton = document.createElement('button');
-            importButton.innerHTML = '<i class="fas fa-upload"></i> استيراد البيانات | Verileri İçe Aktar';
-            importButton.className = 'btn btn-success no-print';
-            importButton.style.position = 'absolute';
-            importButton.style.top = '80px';
-            importButton.style.right = '25px';
-            importButton.onclick = () => document.getElementById('importInput').click();
-            
-            header.style.position = 'relative';
-            header.appendChild(resetButton);
-            header.appendChild(exportButton);
-            header.appendChild(importButton);
-        });
     </script>
 </body>
 </html>
